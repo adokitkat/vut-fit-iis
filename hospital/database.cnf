@@ -1,6 +1,0 @@
-[client]
-host = localhost:/var/run/mysql/mysql.sock
-database = xmudry01
-user = xmudry01
-password = n3aridej
-default-character-set = utf8
