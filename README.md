@@ -17,7 +17,7 @@
 
 ## Pushing changes to the repositary
 
-Use VS Code Git GUI (RECOMMENDED), etc. or manually:
+Use **VS Code** Git GUI (RECOMMENDED), etc. or manually:
 
 - ```git add .```
 - ```git commit -m "Message"```
