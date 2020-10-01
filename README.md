@@ -15,7 +15,7 @@
   - On UNIX-like: ```heroku local web```
 - Open browser at: ```localhost:5000```
 
-## Pushing changes to the repositary
+## Pushing changes to the repository
 
 Use **VS Code** Git GUI (RECOMMENDED), etc. or manually:
 
@@ -25,7 +25,7 @@ Use **VS Code** Git GUI (RECOMMENDED), etc. or manually:
 
 ## Web deployment
 
-Site is automatically deployed when pushed to Github repositary if everything is OK.
+Site is automatically deployed when pushed to Github repository if everything is OK.
 
 Test the site beforehand!
 
