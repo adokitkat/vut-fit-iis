@@ -1,0 +1,22 @@
+{
+  "name": "IIS project",
+  "description": "A project for IIS class at BUT FIT in Brno, CZ. Information system for hospitals.",
+  "image": "heroku/python",
+  "repository": "https://github.com/adokitkat/vut-fit-iis",
+  "keywords": ["python", "django" ],
+  "addons": [ "heroku-postgresql" ],
+  "env": {
+    "SECRET_KEY": {
+      "description": "The secret key for the Django application.",
+      "generator": "secret"
+    }
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test-setup": "python manage.py collectstatic --noinput",
+        "test": "python manage.py test"
+      }
+    }
+  }
+}
