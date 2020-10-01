@@ -1,1 +1,2 @@
 web: python manage.py runserver 5000
+collect: python manage.py collectstatic

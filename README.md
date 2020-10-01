@@ -1,8 +1,35 @@
 # IIS projekt - Nemocnica
 
-Install dependencies: Python 3 + pip, ```pip install --user django mysqlclient```
+## Install dependencies + setup
 
-Start the app: ```python manage.py runserver 8080``` => open browser at: ```localhost:8080```
+- Git, [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install), Python 3 + pip
+- Clone the repository, ```cd vut-fit-iis```
+- ```pip install --user -r requirements.txt```
+- ```heroku login```
+
+## Start the app locally
+
+- First step when not already ran: ```heroku local collectstatic```
+- Run the server:
+  - On Windows: ```heroku local web -f Procfile.windows```
+  - On UNIX-like: ```heroku local web```
+- Open browser at: ```localhost:5000```
+
+## Pushing changes to the repositary
+
+Use VS Code Git GUI (RECOMMENDED), etc. or manually:
+
+- ```git add .```
+- ```git commit -m "Message"```
+- ```git push```
+
+## Web deployment
+
+Site is automatically deployed when pushed to Github repositary if everything is OK.
+
+Test the site beforehand!
+
+## Files
 
 In ```/hospital``` folder is the project folder for the whole website
 
