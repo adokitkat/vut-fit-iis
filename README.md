@@ -14,7 +14,7 @@
   - Windows: ```heroku local setup -f Procfile.windows```
   - UNIX-like: ```heroku local setup```
 
-## Start the app locally
+## Start the project locally
 
 - First step when not already ran: ```heroku local collectstatic``` (DON'T KNOW IF NECESSARY)
 - Run the server:
