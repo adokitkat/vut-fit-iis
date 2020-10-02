@@ -7,7 +7,6 @@
 - Clone the repository, ```cd vut-fit-iis```
 - ```heroku local setup```
 
-
 ## Start the app locally
 
 - First step when not already ran: ```heroku local collectstatic``` (DON'T KNOW IF NECESSARY)
