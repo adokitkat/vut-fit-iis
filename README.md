@@ -10,14 +10,17 @@
   
 - ```heroku login```
 - Clone the repository, ```cd vut-fit-iis```
-- ```heroku local setup```
+- Windows:
+  - ```heroku local setup -f Procfile.windows```
+- UNIX-like:
+  - ```heroku local setup```
 
 ## Start the app locally
 
 - First step when not already ran: ```heroku local collectstatic``` (DON'T KNOW IF NECESSARY)
 - Run the server:
-  - On Windows: ```heroku local web -f Procfile.windows```
-  - On UNIX-like: ```heroku local web```
+  - Windows: ```heroku local web -f Procfile.windows```
+  - UNIX-like: ```heroku local web```
 - Open browser at: ```localhost:5000```
 
 ## Pushing changes to the repository
