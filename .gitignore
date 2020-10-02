@@ -2,4 +2,5 @@
 staticfiles
 .vscode
 .env
+.local
 db.sqlite3
