@@ -1,2 +1,3 @@
 web: gunicorn hospital.wsgi --log-file -
-collect: python3 manage.py collectstatic
+collectstatic: python3 manage.py collectstatic
+setup: pip3 install --user -r requirements.txt

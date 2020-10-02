@@ -2,14 +2,15 @@
 
 ## Install dependencies + setup
 
-- Git, [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install), Python 3 + pip
-- Clone the repository, ```cd vut-fit-iis```
-- ```pip install --user -r requirements.txt```
+- Git, [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install), Python 3 + pip3, ```sudo apt install postresql libpq-dev```
 - ```heroku login```
+- Clone the repository, ```cd vut-fit-iis```
+- ```heroku local setup```
+
 
 ## Start the app locally
 
-- First step when not already ran: ```heroku local collectstatic```
+- First step when not already ran: ```heroku local collectstatic``` (DON'T KNOW IF NECESSARY)
 - Run the server:
   - On Windows: ```heroku local web -f Procfile.windows```
   - On UNIX-like: ```heroku local web```
