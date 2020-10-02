@@ -2,7 +2,12 @@
 
 ## Install dependencies + setup
 
-- Git, [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install), Python 3 + pip3, ```sudo apt install postresql libpq-dev```
+- Windows:
+  - Git, Python 3 + pip3, [PostrgreSQL](https://www.postgresql.org/download/), [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli#download-and-install)
+- Linux (Debian/Ubuntu/PopOS):
+  - ```sudo apt install -y git python3 python3-pip postresql libpq-dev snap```
+  - ```sudo snap install --classic heroku```
+  
 - ```heroku login```
 - Clone the repository, ```cd vut-fit-iis```
 - ```heroku local setup```
