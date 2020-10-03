@@ -1,4 +1,4 @@
-# IIS projekt - Nemocnica
+# IIS project - Electronic health card information system
 
 ## Install dependencies + setup
 
