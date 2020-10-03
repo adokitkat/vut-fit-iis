@@ -38,7 +38,7 @@ Use **VS Code** Git GUI (RECOMMENDED), etc. or manually:
 
 Site is automatically deployed when pushed to Github repository if everything is OK.
 
-Test the site beforehand!
+**Test the site before pushing to Github!**
 
 ## Files
 
