@@ -2,3 +2,4 @@ web: python manage.py runserver 5000
 collectstatic: python manage.py collectstatic
 setup: pip install --user -r requirements.txt
 migrate: python manage.py migrate
+makemigrations: python manage.py makemigrations
