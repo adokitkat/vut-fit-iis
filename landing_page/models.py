@@ -29,10 +29,10 @@ class User(models.Model):
     return id
 
   def get_role(self):
-    return self.Role(self.role)
+    return self.Role(self.role).label
 
   def __str__(self):
-    return self.first_name + ' ' + self.last_name
+    return self.first_name + ' ' + self.last_name + ', ' + self.get_role()
 
 class Problem(models.Model):
   name        = models.CharField(max_length=50)
@@ -67,11 +67,11 @@ class Ticket(models.Model):
   id_doctor  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Doctor')
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
-  def __str__(self):
-    return self.Status(self.status) + ', ' + User(self.id_user).__str__() + ', ' + User(self.id_doctor).__str__() + ', '  + str(self.exam_date)
+  def __str__(self): # TODO: Toto asi zmenit
+    return id + ', ' +  self.get_status() + ', ' + User(self.id_user).__str__() + ', ' + User(self.id_doctor).__str__() + ', '  + str(self.exam_date)
 
   def get_status(self):
-    return self.Status(self.status)
+    return self.Status(self.status).label
 class HealthRecord(models.Model):
   comment = models.TextField(blank=True)
 
