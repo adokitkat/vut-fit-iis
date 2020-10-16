@@ -2,7 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _ # gettext_lazy => wrap __proxy__ in str() in function... bug?
 
 # TODO:
-# Niektore DateTime aby mohli byt NULL / blank
+# Niektore DateTime aby mohli byt NULL / blank => should be done?
 
 class User(models.Model):
   first_name = models.CharField(max_length=50)
@@ -42,7 +42,7 @@ class Problem(models.Model):
 
   created  = models.DateTimeField(auto_now_add=True)
   modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True)
+  closed   = models.DateTimeField(blank=True, null=True)
 
   id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
@@ -68,7 +68,7 @@ class Ticket(models.Model):
 
   created  = models.DateTimeField(auto_now_add=True)
   modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True)
+  closed   = models.DateTimeField(blank=True, null=True)
   
   id_user    = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Patient')
   id_doctor  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Doctor')
@@ -85,7 +85,7 @@ class HealthRecord(models.Model):
 
   created  = models.DateTimeField(auto_now_add=True)
   modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True)
+  closed   = models.DateTimeField(blank=True, null=True)
   
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
   id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
@@ -105,7 +105,7 @@ class File(models.Model):
 
   created  = models.DateTimeField(auto_now_add=True)
   #modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True)
+  closed   = models.DateTimeField(blank=True, null=True)
   
   id_health_record = models.ForeignKey(HealthRecord, on_delete=models.CASCADE)
 
