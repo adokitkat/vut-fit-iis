@@ -44,7 +44,7 @@ class Problem(models.Model):
   id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   def __str__(self):
-    return self.name + ', ' + User(self.id_user).__str__() #+ ', ' + self.created
+    return self.name + ', ' + User(self.id_user).__str__() + ', ' + str(self.created)
 
 class Ticket(models.Model):
   class Status(models.TextChoices):
@@ -66,7 +66,7 @@ class Ticket(models.Model):
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
   def __str__(self):
-    return self.Status(self.status) + ', ' + User(self.id_user).__str__() + ', ' + User(self.id_doctor).__str__() + ', ' # + self.exam_date
+    return self.Status(self.status) + ', ' + User(self.id_user).__str__() + ', ' + User(self.id_doctor).__str__() + ', '  + str(self.exam_date)
 
   def get_status(self):
     return self.Status(self.status)
@@ -80,12 +80,13 @@ class HealthRecord(models.Model):
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
   id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
-def user_directory_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-    return 'user_{0}/{1}'.format(instance.user.id, filename)
+# TODO:
+#def user_directory_path(instance, filename):
+#    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+#    return 'user_{0}/{1}'.format(instance.file.id, filename)
 
 class File(models.Model):
-  file        = models.FileField(upload_to=user_directory_path) # Mazanie suboru spolu s polozkou v databazi?
+  file        = models.FileField(upload_to='uploads/%Y/%m/%d/') # Mazanie suboru spolu s polozkou v databazi?
   name        = models.CharField(max_length=50)
   description = models.TextField(blank=True)
 
