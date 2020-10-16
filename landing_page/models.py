@@ -1,7 +1,9 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
-# Create your models here.
+# TODO:
+# Fixnut __str__()
+# Niektore DateTime aby mohli byt NULL / blank
 
 class User(models.Model):
   first_name = models.CharField(max_length=50)
