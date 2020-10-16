@@ -1,5 +1,5 @@
 from django.db import models
-from django.utils.translation import gettext as _ # not gettext_lazy ...
+from django.utils.translation import gettext_lazy as _ # gettext_lazy => wrap __proxy__ in str() in function... bug?
 
 # TODO:
 # Niektore DateTime aby mohli byt NULL / blank
@@ -28,7 +28,7 @@ class User(models.Model):
     return id
 
   def get_role(self):
-    return self.Role(self.role).label
+    return str(self.Role(self.role).label)
 
   def get_name(self):
     return self.first_name + ' ' + self.last_name
@@ -75,7 +75,7 @@ class Ticket(models.Model):
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
   def get_status(self):
-    return self.Status(self.status).label
+    return str(self.Status(self.status).label)
 
   def __str__(self): # TODO: Toto asi zmenit
     return 'PATIENT: ' + self.id_user.get_name() + ', DOCTOR: '  + self.id_doctor.get_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
