@@ -1,0 +1,7 @@
+{% if Users %}
+<h2>Users:</h2>
+{% endif %}
+
+{% for user in Users %}
+<ul>{{ user.get_name }}</ul>
+{% endfor %}
