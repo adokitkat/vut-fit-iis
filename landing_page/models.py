@@ -44,7 +44,7 @@ class Problem(models.Model):
   id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
   def __str__(self):
-    return self.name + ', ' + User(self.id_user).__str__() + ', ' + self.created
+    return self.name + ', ' + User(self.id_user).__str__() #+ ', ' + self.created
 
 class Ticket(models.Model):
   class Status(models.TextChoices):
@@ -66,7 +66,7 @@ class Ticket(models.Model):
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
   def __str__(self):
-    return self.Status(self.status) + ', ' + User(self.id_user).__str__() + ', ' + User(self.id_doctor).__str__() + ', ' + self.exam_date
+    return self.Status(self.status) + ', ' + User(self.id_user).__str__() + ', ' + User(self.id_doctor).__str__() + ', ' # + self.exam_date
 
   def get_status(self):
     return self.Status(self.status)
