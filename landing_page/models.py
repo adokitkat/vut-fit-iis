@@ -1,8 +1,7 @@
 from django.db import models
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext as _ # not gettext_lazy ...
 
 # TODO:
-# Fixnut __str__()
 # Niektore DateTime aby mohli byt NULL / blank
 
 class User(models.Model):
@@ -31,9 +30,11 @@ class User(models.Model):
   def get_role(self):
     return self.Role(self.role).label
 
-  def __str__(self):
-    return self.first_name + ' ' + self.last_name + ', ' + self.get_role()
+  def get_name(self):
+    return self.first_name + ' ' + self.last_name
 
+  def __str__(self):
+    return self.get_name() + ', ' + self.get_role()
 class Problem(models.Model):
   name        = models.CharField(max_length=50)
   description = models.TextField(blank=True)
@@ -45,8 +46,14 @@ class Problem(models.Model):
 
   id_user = models.ForeignKey(User, on_delete=models.CASCADE)
 
+  def get_name(self):
+    return self.name
+
+  def get_state(self):
+    return self.state
+
   def __str__(self):
-    return self.name + ', ' + User(self.id_user).__str__() + ', ' + str(self.created)
+    return 'PROBLEM: ' + self.get_name() + ', STATE: ' + self.get_state() + ', PATIENT: ' + self.id_user.get_name() + ', CREATED: ' + str(self.created)[:-13] + ', MODIFIED: ' + str(self.modified)[:-13]
 
 class Ticket(models.Model):
   class Status(models.TextChoices):
@@ -67,11 +74,12 @@ class Ticket(models.Model):
   id_doctor  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Doctor')
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
-  def __str__(self): # TODO: Toto asi zmenit
-    return id + ', ' +  self.get_status() + ', ' + User(self.id_user).__str__() + ', ' + User(self.id_doctor).__str__() + ', '  + str(self.exam_date)
-
   def get_status(self):
     return self.Status(self.status).label
+
+  def __str__(self): # TODO: Toto asi zmenit
+    return 'PATIENT: ' + self.id_user.get_name() + ', DOCTOR: '  + self.id_doctor.get_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
+
 class HealthRecord(models.Model):
   comment = models.TextField(blank=True)
 
@@ -81,6 +89,9 @@ class HealthRecord(models.Model):
   
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
   id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+
+  def __str__(self): # TODO: Toto asi zmenit
+    return 'PATIENT: ' + self.id_problem.id_user.get_name()  + ', PROBLEM: ' + self.id_problem.get_name() + ', CREATED: ' + str(self.created)[:-13] + ', MODIFIED: ' + str(self.modified)[:-13]
 
 # TODO:
 #def user_directory_path(instance, filename):
@@ -99,4 +110,4 @@ class File(models.Model):
   id_health_record = models.ForeignKey(HealthRecord, on_delete=models.CASCADE)
 
   def __str__(self):
-    return self.name
+    return 'NAME: ' + self.name + ', PATIENT: ' + self.id_health_record.id_problem.id_user.get_name() + ', CREATED: ' + str(self.created)[:-13] 
