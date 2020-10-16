@@ -21,7 +21,7 @@ class User(models.Model):
   
   created  = models.DateTimeField(auto_now_add=True)
   modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True)
+  alive    = models.BooleanField(default=True)
 
   def get_id(self):
     return id
