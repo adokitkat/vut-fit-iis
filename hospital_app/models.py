@@ -35,6 +35,7 @@ class User(models.Model):
 
   def __str__(self):
     return self.get_name() + ', ' + self.get_role()
+
 class Problem(models.Model):
   name        = models.CharField(max_length=50)
   description = models.TextField(blank=True)
