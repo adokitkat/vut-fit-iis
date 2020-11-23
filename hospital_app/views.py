@@ -14,7 +14,19 @@ from django.http import HttpResponse
 @login_required
 def index(request):
     users = CustomUser.objects.all()
-    context = {'Users': users}
+    context = {
+        'Users': users,
+        'index_active': True,
+        }
+    return render(request, 'hospital_app/index.html', context)
+
+@login_required
+def index2(request):
+    users = CustomUser.objects.all()
+    context = {
+        'Users': users,
+        'index2_active': True,
+        }
     return render(request, 'hospital_app/index.html', context)
 
 def signup(request):
