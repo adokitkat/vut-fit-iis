@@ -1,17 +1,37 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser #, Group
 from django.utils.translation import gettext_lazy as _ # gettext_lazy => wrap __proxy__ in str() in function... bug?
-
+from django.conf import settings
+from .managers import CustomUserManager
 # TODO:
 # Niektore DateTime aby mohli byt NULL / blank => should be done?
 
-class User(models.Model):
-  first_name = models.CharField(max_length=50)
-  last_name  = models.CharField(max_length=50)
-  address    = models.CharField(max_length=300)
-  email      = models.EmailField(max_length=254, blank=True)
-  tel_number = models.CharField(max_length=50, blank=True)
-  birth_date = models.DateField()
+class CustomUser(AbstractUser): #models.Model
+  """
+  Custom user model, email used as username
 
+  Default AbstractUser fields:
+    first_name,
+    last_name, 
+    email,
+    date_joined,  #date_created  = models.DateTimeField(auto_now_add=True)
+    active ,      #alive = models.BooleanField(default=True)
+    ...
+  """
+  username = None # Overriding default username
+  email = models.EmailField(_('email address'), unique=True, blank=False) # Setting up email for username usage
+  first_name = models.CharField(_('first name'), max_length=150, blank=False) # Overriding blank=True
+  last_name = models.CharField(_('last name'), max_length=150, blank=False)   # Overriding blank=True
+
+  address    = models.CharField(max_length=300)
+  tel_number = models.CharField(_('telephone number'), max_length=50, blank=True)
+
+  date_birth = models.DateField(_('date of birth'), blank=False, null=True) #FIXME: nullable
+  #date_joined
+  date_modified = models.DateTimeField(auto_now=True)
+  date_died = models.DateTimeField(_('date of death'), blank=True, null=True)
+  #active
+  
   class Role(models.TextChoices):
     PATIENT = 'P', _('Patient')
     DOC     = 'D', _('Doctor')
@@ -20,9 +40,10 @@ class User(models.Model):
 
   role = models.CharField(max_length=1, choices=Role.choices, default=Role.PATIENT)
   
-  created  = models.DateTimeField(auto_now_add=True)
-  modified = models.DateTimeField(auto_now=True)
-  alive    = models.BooleanField(default=True)
+  USERNAME_FIELD = 'email' # Changing username to be same as email
+  REQUIRED_FIELDS = [] # Required for SUPERUSERS only - prompt all blank=False (but username & password) when creating a superuser, crash otherwise
+
+  objects = CustomUserManager()
 
   def get_id(self):
     return id
@@ -30,22 +51,25 @@ class User(models.Model):
   def get_role(self):
     return str(self.Role(self.role).label)
 
-  def get_name(self):
-    return self.first_name + ' ' + self.last_name
+  def get_email(self):
+    return self.email
 
   def __str__(self):
-    return self.get_name() + ', ' + self.get_role()
+    if str(self.Role(self.role)) == self.Role.ADMIN:
+      return self.get_email() + ', ' + self.get_role().upper()
+    else:
+      return self.get_full_name() + ', ' + self.get_role()
 
 class Problem(models.Model):
   name        = models.CharField(max_length=50)
   description = models.TextField(blank=True)
   state       = models.CharField(max_length=50)
 
-  created  = models.DateTimeField(auto_now_add=True)
-  modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True, null=True)
+  date_created  = models.DateTimeField(auto_now_add=True)
+  date_modified = models.DateTimeField(auto_now=True)
+  date_closed   = models.DateTimeField(blank=True, null=True)
 
-  id_user = models.ForeignKey(User, on_delete=models.CASCADE)
+  id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
   def get_name(self):
     return self.name
@@ -54,7 +78,7 @@ class Problem(models.Model):
     return self.state
 
   def __str__(self):
-    return 'PROBLEM: ' + self.get_name() + ', STATE: ' + self.get_state() + ', PATIENT: ' + self.id_user.get_name() + ', CREATED: ' + str(self.created)[:-13] + ', MODIFIED: ' + str(self.modified)[:-13]
+    return 'PROBLEM: ' + self.get_name() + ', STATE: ' + self.get_state() + ', PATIENT: ' + self.id_user.get_full_name() + ', JOINED: ' + str(self.date_JOINED)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
 
 class Ticket(models.Model):
   class Status(models.TextChoices):
@@ -67,32 +91,32 @@ class Ticket(models.Model):
   description = models.TextField(blank=True)
   exam_date   = models.DateTimeField(blank=True)
 
-  created  = models.DateTimeField(auto_now_add=True)
-  modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True, null=True)
+  date_created  = models.DateTimeField(auto_now_add=True)
+  date_modified = models.DateTimeField(auto_now=True)
+  date_closed   = models.DateTimeField(blank=True, null=True)
   
-  id_user    = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Patient')
-  id_doctor  = models.ForeignKey(User, on_delete=models.CASCADE, related_name='Doctor')
+  id_user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Patient')
+  id_doctor  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Doctor')
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
   def get_status(self):
     return str(self.Status(self.status).label)
 
   def __str__(self): # TODO: Toto asi zmenit
-    return 'PATIENT: ' + self.id_user.get_name() + ', DOCTOR: '  + self.id_doctor.get_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
+    return 'PATIENT: ' + self.id_user.get_full_name() + ', DOCTOR: '  + self.id_doctor.get_full_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
 
 class HealthRecord(models.Model):
   comment = models.TextField(blank=True)
 
-  created  = models.DateTimeField(auto_now_add=True)
-  modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True, null=True)
+  date_created  = models.DateTimeField(auto_now_add=True)
+  date_modified = models.DateTimeField(auto_now=True)
+  date_closed   = models.DateTimeField(blank=True, null=True)
   
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
   id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
   def __str__(self): # TODO: Toto asi zmenit
-    return 'PATIENT: ' + self.id_problem.id_user.get_name()  + ', PROBLEM: ' + self.id_problem.get_name() + ', CREATED: ' + str(self.created)[:-13] + ', MODIFIED: ' + str(self.modified)[:-13]
+    return 'PATIENT: ' + self.id_problem.id_user.get_name()  + ', PROBLEM: ' + self.id_problem.get_name() + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
 
 # TODO:
 #def user_directory_path(instance, filename):
@@ -104,11 +128,11 @@ class File(models.Model):
   name        = models.CharField(max_length=50)
   description = models.TextField(blank=True)
 
-  created  = models.DateTimeField(auto_now_add=True)
-  #modified = models.DateTimeField(auto_now=True)
-  closed   = models.DateTimeField(blank=True, null=True)
+  date_created  = models.DateTimeField(auto_now_add=True)
+  #date_modified = models.DateTimeField(auto_now=True)
+  date_closed   = models.DateTimeField(blank=True, null=True)
   
   id_health_record = models.ForeignKey(HealthRecord, on_delete=models.CASCADE)
 
   def __str__(self):
-    return 'NAME: ' + self.name + ', PATIENT: ' + self.id_health_record.id_problem.id_user.get_name() + ', CREATED: ' + str(self.created)[:-13] 
+    return 'NAME: ' + self.name + ', PATIENT: ' + self.id_health_record.id_problem.id_user.get_full_name() + ', CREATED: ' + str(self.date_created)[:-13] 
