@@ -24,7 +24,7 @@ class CustomUser(AbstractUser): #models.Model
   last_name = models.CharField(_('last name'), max_length=150, blank=False)   # Overriding blank=True
 
   address    = models.CharField(max_length=300)
-  tel_number = models.CharField(_('telephone number'), max_length=50, blank=True)
+  tel_number = models.CharField(_('telephone number'), max_length=50, blank=True, null=True)
 
   date_birth = models.DateField(_('date of birth'), blank=False, null=True) #FIXME: nullable
   #date_joined
