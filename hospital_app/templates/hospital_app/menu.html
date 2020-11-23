@@ -1,27 +1,39 @@
+{% url 'profile' user.id as current_user_profile %}
+
 {% if user.is_authenticated %}
 
   <nav class="nav nav-pills flex-column text-light">
 
-    <div class="container-fluid text-center rounded bg-info mb-2">
-      <h6 class="mt-2 font-weight-bold" style="font-size: 1.1rem;">{{ user.get_short_name }}</h6>
-      <h6 class="font-weight-light" style="font-size: 0.9rem;">{{ user.get_role }}</h6>
+    <div class="container-fluid text-center rounded bg-info mb-1">
+      <a class="nav-link text-light" href="{{ current_user_profile }}">
+        <h6 class="mt-2 font-weight-bold" style="font-size: 1.1rem;">{{ user.get_short_name }}</h6>
+        <h6 class="font-weight-light" style="font-size: 0.9rem;">{{ user.get_role }}</h6>
+      </a>
     </div>
 
     <ul class="navbar-nav text-center">
       
       <li class="nav-item mb-1">
-        <a class="nav-link text-light {% if index_active %}active{% endif %}" href="{% url 'index' %}">index</a>
+        <a class="nav-link text-light {% if index_active %}active{% endif %}" href="{% url 'index' %}">Home</a>
       </li>
       
       <li class="nav-item mb-1">
-        <a class="nav-link text-light {% if index2_active %}active{% endif %}" href="{% url 'index2' %}">index2</a>
+        <a class="nav-link text-light {% if users_active %}active{% endif %}" href="{% url 'users' %}">User Table</a>
       </li>
       
+      <li class="nav-item mb-1">
+        <a class="nav-link disabled {% if doctors_active %}active{% endif %}" href="{% url 'users' %}" tabindex="-1" aria-disabled="true">Doctors</a>
+      </li>
+
+      <li class="nav-item mb-1">
+        <a class="nav-link disabled {% if patients_active %}active{% endif %}" href="{% url 'users' %}" tabindex="-1" aria-disabled="true">Patients</a>
+      </li>
+
       <li class="nav-item mb-1">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>
       
-      <li class="nav-item mb-1">
+      <li class="nav-item log-out-bottom-align">
         <a class="nav-link text-light bg-danger" data-toggle="modal" data-target="#logoutModal" href="#">Log Out</a>
       </li>
 

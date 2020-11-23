@@ -1,5 +1,6 @@
 from django.contrib.auth import authenticate, login
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.core import serializers
 
 from django.contrib.auth.decorators import login_required, permission_required
 
@@ -21,13 +22,23 @@ def index(request):
     return render(request, 'hospital_app/index.html', context)
 
 @login_required
-def index2(request):
+def users(request):
     users = CustomUser.objects.all()
     context = {
         'Users': users,
-        'index2_active': True,
+        'users_active': True,
         }
-    return render(request, 'hospital_app/index.html', context)
+    #users_serialized = serializers.serialize('json', [ users, ])
+    return render(request, 'hospital_app/users.html', context)
+
+@login_required
+def profile(request, user_id):
+    u = get_object_or_404(CustomUser, pk=user_id)
+    context = {
+        'User': u,
+        'profile_active': True,
+    }
+    return render(request, 'hospital_app/profile.html', context)
 
 def signup(request):
     if request.method == 'POST':

@@ -1,0 +1,59 @@
+{% extends "hospital_app/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    <div class="container-fluid">
+      <div class="row full-height">
+
+        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 p-2">
+
+          {% if Users %}
+            <div class="table-responsive rounded">
+              <table class="table table-striped" data-filter-control="true">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col" data-field="Role" data-filter-control="select">Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for u in Users %}
+                  {% url 'profile' u.id as user_profile %}
+                  <tr>
+                    <th scope="row">{{ u.id}}</th>
+                    <td>
+                      <a href="{{ user_profile }}">
+                        {{ u.get_full_name }}
+                      </a>
+                    </td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.get_role }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <h2 class="text-center">There are no users...</h2>
+          {% endif %}
+
+          
+
+        </div>
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 p-2 bg-dark">
+          {% include "hospital_app/menu.html" %}
+        </div>
+      
+      </div>
+    </div>
+
+  {% endif %}
+
+{% endblock %}
