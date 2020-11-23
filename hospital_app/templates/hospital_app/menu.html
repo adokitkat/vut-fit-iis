@@ -2,18 +2,31 @@
 
 <nav class="nav nav-pills flex-column text-light">
 
-  <div class="container-fluid text-center">
-    <h6 class="">{{ user.get_short_name }}</h6>
-    <h6 class="">{{ user.get_role }}</h6>
+  <div class="container-fluid text-center rounded bg-info mb-2">
+    <h6 class="mt-2 font-weight-bold" style="font-size: 1.1rem;">{{ user.get_short_name }}</h6>
+    <h6 class="font-weight-light" style="font-size: 0.9rem;">{{ user.get_role }}</h6>
   </div>
-  
-  <a class="nav-link text-light {% if index_active %}active bg-warning{% endif %}" href="{% url 'index' %}">index</a>
-  <a class="nav-link text-light {% if index2_active %}active bg-warning{% endif %}" href="{% url 'index2' %}">index2</a>
-  
-  <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
 
-  <a class="nav-link text-light" href="{% url 'logout' %}">Log Out</a>
+  <ul class="navbar-nav text-center">
+    
+    <li class="nav-item">
+      <a class="nav-link text-light {% if index_active %}active{% endif %}" href="{% url 'index' %}">index</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link text-light {% if index2_active %}active{% endif %}" href="{% url 'index2' %}">index2</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+    </li>
+    
+    <li class="nav-item">
+      <a class="nav-link text-light" href="{% url 'logout' %}">Log Out</a>
+    </li>
 
+  </ul>
+  
 </nav>
 
 {% endif %}
