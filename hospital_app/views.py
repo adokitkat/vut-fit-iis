@@ -10,6 +10,8 @@ from .models import CustomUser
 from django.http import HttpResponse
 #@login_required
 #@permission_required('permission', raise_exception=True)
+
+@login_required
 def index(request):
     users = CustomUser.objects.all()
     context = {'Users': users}

@@ -1,7 +1,7 @@
 <!-- extends 'base.html' -->
 
 {% block content %}
-  <h2>Sign up</h2>
+  <h2>Sign Up</h2>
   <form method="post">
     {% csrf_token %}
     {% for field in form %}
@@ -16,6 +16,8 @@
         {% endfor %}
       </p>
     {% endfor %}
-    <button type="submit">Sign up</button>
+    <button type="submit">Sign Up</button>
   </form>
 {% endblock %}
+
+<p>Already have the account? <a href="{% url 'login' %}">Log In</a></p>
