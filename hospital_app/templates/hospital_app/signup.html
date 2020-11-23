@@ -1,23 +1,54 @@
-<!-- extends 'base.html' -->
+{% extends "base.html" %}
+
+{% load crispy_forms_tags %}
 
 {% block content %}
-  <h2>Sign Up</h2>
+
+  <h1 class="mt-3 text-center">Sign Up</h1>
+  <hr class="mt-0 mb-4">
+
   <form method="post">
     {% csrf_token %}
-    {% for field in form %}
-      <p>
-        {{ field.label_tag }}<br>
-        {{ field }}
-        {% if field.help_text %}
-          <small style="color: grey">{{ field.help_text }}</small>
-        {% endif %}
-        {% for error in field.errors %}
-          <p style="color: red">{{ error }}</p>
-        {% endfor %}
-      </p>
-    {% endfor %}
-    <button type="submit">Sign Up</button>
-  </form>
-{% endblock %}
 
-<p>Already have the account? <a href="{% url 'login' %}">Log In</a></p>
+    <div class="row">
+      <div class="col-6">
+        {{ form.first_name|as_crispy_field }}
+      </div>
+      <div class="col-6">
+        {{ form.last_name|as_crispy_field }}
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6">
+        {{ form.address|as_crispy_field }}
+      </div>
+      <div class="col-6">
+        {{ form.date_birth|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.email|as_crispy_field }}
+      </div>
+      <div class="col-6">
+        {{ form.tel_number|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-6">
+        {{ form.password1|as_crispy_field }}
+      </div>
+      <div class="col-6">
+        {{ form.password2|as_crispy_field }}
+      </div>
+    </div>
+
+    <div class="text-center">
+      <button type="submit" class="btn btn-success mt-1">Sign Up</button>
+      <p class="mt-3">Already have the account? <a href="{% url 'login' %}">Log In</a></p>
+    </div>
+  </form>
+  
+{% endblock %}

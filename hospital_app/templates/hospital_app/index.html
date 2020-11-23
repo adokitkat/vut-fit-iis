@@ -1,21 +1,50 @@
-{% if Users %}
-<h2>Users:</h2>
-{% endif %}
+{% extends "base.html" %}
 
-{% for u in Users %}
-  {% if u.get_full_name == "" %}
-    {% if user.is_authenticated %}
-<ul>{{ u.get_email }} - {{ u.get_role }} </ul>
-    {% endif %}
-  {% else %}
-<ul>{{ u.get_full_name }} {% if user.is_authenticated %} - {{ u.get_role }} {% endif %}</ul>
-  {% endif %}
-{% endfor %}
+{% load crispy_forms_tags %}
+
+{% block content %}
 
 {% if user.is_authenticated %}
-  Hi {{ user.email }}!
+  
+  {% if Users %}
+    <table class="table table-striped">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Name</th>
+          <th scope="col">E-mail</th>
+          <th scope="col">Role</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in Users %}
+        <tr>
+          <th scope="row">{{ forloop.counter }}</th>
+          <td>{{ u.get_full_name }}</td>
+          <td>{{ u.email }}</td>
+          <td>{{ u.get_role }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <h2>There are no users...</h2>
+  {% endif %}
+
+{% endif %}
+
+{% if user.is_authenticated %}
+  {% if u.get_full_name == "" %}
+    Hi {{ user.get_short_name }}!
+  {% else %}
+    Hi {{ user.email }}!
+  {% endif %}
+
   <p><a href="{% url 'logout' %}">Log Out</a></p>
 {% else %}
   <p>You are not logged in</p>
   <a href="{% url 'login' %}">Log In</a>
 {% endif %}
+
+
+{% endblock %}

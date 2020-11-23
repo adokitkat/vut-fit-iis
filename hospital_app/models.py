@@ -15,7 +15,7 @@ class CustomUser(AbstractUser): #models.Model
     last_name, 
     email,
     date_joined,  #date_created  = models.DateTimeField(auto_now_add=True)
-    active ,      #alive = models.BooleanField(default=True)
+    active,       #alive = models.BooleanField(default=True)
     ...
   """
   username = None # Overriding default username
