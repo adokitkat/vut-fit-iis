@@ -2,6 +2,20 @@
 <h2>Users:</h2>
 {% endif %}
 
-{% for user in Users %}
-<ul>{{ user.get_name }}</ul>
+{% for u in Users %}
+  {% if u.get_full_name == "" %}
+    {% if user.is_authenticated %}
+<ul>{{ u.get_email }} - {{ u.get_role }} </ul>
+    {% endif %}
+  {% else %}
+<ul>{{ u.get_full_name }} {% if user.is_authenticated %} - {{ u.get_role }} {% endif %}</ul>
+  {% endif %}
 {% endfor %}
+
+{% if user.is_authenticated %}
+  Hi {{ user.email }}!
+  <p><a href="{% url 'logout' %}">Log Out</a></p>
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a>
+{% endif %}
