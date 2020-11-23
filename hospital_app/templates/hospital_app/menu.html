@@ -9,24 +9,42 @@
 
     <ul class="navbar-nav text-center">
       
-      <li class="nav-item">
+      <li class="nav-item mb-1">
         <a class="nav-link text-light {% if index_active %}active{% endif %}" href="{% url 'index' %}">index</a>
       </li>
       
-      <li class="nav-item">
+      <li class="nav-item mb-1">
         <a class="nav-link text-light {% if index2_active %}active{% endif %}" href="{% url 'index2' %}">index2</a>
       </li>
       
-      <li class="nav-item">
+      <li class="nav-item mb-1">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>
       
-      <li class="nav-item">
-        <a class="nav-link text-light bg-danger" href="{% url 'logout' %}">Log Out</a>
+      <li class="nav-item mb-1">
+        <a class="nav-link text-light bg-danger" data-toggle="modal" data-target="#logoutModal" href="#">Log Out</a>
       </li>
 
     </ul>
     
   </nav>
+
+<!-- Modal -->
+<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalCenterTitle">Do you really want to log out?</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">No</button>
+        <a type="button" class="btn btn-danger" href="{% url 'logout' %}">Yes</a>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endif %}

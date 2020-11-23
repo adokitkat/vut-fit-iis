@@ -4,59 +4,51 @@
 
 {% block content %}
 
-{% if user.is_authenticated %}
+  {% if user.is_authenticated %}
 
-  <div class="container-fluid">
+    <div class="container-fluid">
+      <div class="row full-height">
 
-  <div class="row full-height">
+        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 p-2">
 
-    <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 p-2">
-    
-      {% if Users %}
-        <div class="table-responsive">
-          <table class="table table-striped">
-            <thead class="thead-dark">
-              <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-                <th scope="col">E-mail</th>
-                <th scope="col">Role</th>
-              </tr>
-            </thead>
-            <tbody>
-              {% for u in Users %}
-              <tr>
-                <th scope="row">{{ forloop.counter }}</th>
-                <td>{{ u.get_full_name }}</td>
-                <td>{{ u.email }}</td>
-                <td>{{ u.get_role }}</td>
-              </tr>
-              {% endfor %}
-            </tbody>
-          </table>
+          {% if Users %}
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead class="thead-dark">
+                  <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">E-mail</th>
+                    <th scope="col">Role</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for u in Users %}
+                  <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ u.get_full_name }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.get_role }}</td>
+                  </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          {% else %}
+            <h2 class="text-center">There are no users...</h2>
+          {% endif %}
+
+          
+
         </div>
-      {% else %}
-        <h2>There are no users...</h2>
-      {% endif %}
 
-      {% if u.get_full_name == "" %}
-        Hi {{ user.get_short_name }}!
-      {% else %}
-        Hi {{ user.email }}!
-      {% endif %}
-
-      <p><a href="{% url 'logout' %}">Log Out</a></p>
-      {% else %}
-        <p>You are not logged in</p>
-        <a href="{% url 'login' %}">Log In</a>
-      {% endif %}
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 p-2 bg-dark">
+          {% include "hospital_app/menu.html" %}
+        </div>
+      
+      </div>
     </div>
 
-    <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 p-2 bg-dark">
-      {% include "hospital_app/menu.html" %}
-    </div>
-
-  </div>
-  </div>
+  {% endif %}
 
 {% endblock %}
