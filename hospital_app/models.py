@@ -128,7 +128,7 @@ class HealthRecord(models.Model):
   id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
   def __str__(self): # TODO: Toto asi zmenit
-    return 'PATIENT: ' + self.id_problem.id_user.get_name()  + ', PROBLEM: ' + self.id_problem.get_name() + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
+    return 'PATIENT: ' + self.id_problem.id_user.get_full_name()  + ', PROBLEM: ' + self.id_problem.get_name() + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
 
 # TODO:
 #def user_directory_path(instance, filename):
