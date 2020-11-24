@@ -1,5 +1,15 @@
+#navbar_ul {
+    width: 100%;
+}
 
 @media screen and (min-width: 576px) {
+
+    
+
+    #navbar_collapse {
+        margin-top: 5px;
+    }
+
     .order-last-big-screen {
         -ms-flex-order: 13;
         order: 13;
@@ -16,5 +26,20 @@
         transform: translateX(-50%);
         width: 100%;
         padding: 8px 8px 8px 8px;
+    }
+
+}
+
+@media screen and (max-width: 575px) {
+    #navbar {
+        justify-content: flex-end; 
+    }
+
+    .my-mt-1 {
+        margin-top: .25rem!important;
+    }
+
+    .my-mt-2 {
+        margin-top: .5rem!important;
     }
 }
