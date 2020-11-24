@@ -1,24 +1,20 @@
+/* Width of menu items */
 #navbar_ul {
     width: 100%;
 }
 
 @media screen and (min-width: 576px) {
-
-    
-
-    #navbar_collapse {
-        margin-top: 5px;
-    }
-
+    /* Media query for menu placement - right when big screen, left (top) on mobile */
     .order-last-big-screen {
         -ms-flex-order: 13;
         order: 13;
     }
-
+    /* Media query for elongnating view to fullscreen height */
     .full-height-big-screen {
         height: 100vh;
     }
-
+    
+    /* TODO: Not using anymore */
     .log-out-bottom-align {
         position: absolute;
         bottom: 0;
@@ -31,6 +27,7 @@
 }
 
 @media screen and (max-width: 575px) {
+    /* Navbar hamburger menu to left */
     #navbar {
         justify-content: flex-end; 
     }

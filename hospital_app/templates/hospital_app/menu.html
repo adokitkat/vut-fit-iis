@@ -4,7 +4,7 @@
 
 {% if user.is_authenticated %}
 
-  <nav id="navbar" class="nav navbar-expand-sm navbar-dark">
+  <nav id="navbar" class="nav navbar-expand-sm navbar-dark flex-grow-1">
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -18,7 +18,7 @@
         </a>
       </div>
 
-      <ul id="navbar_ul" class="navbar-nav flex-column nav-pills text-center" style="width: 100%;">
+      <ul id="navbar_ul" class="navbar-nav flex-column nav-pills text-center flex-grow-1" style="width: 100%;">
 
         <li class="nav-item mt-2 mb-1" >
           <a class="nav-link text-light p-auto {% if index_active %}active{% endif %}" href="{% url 'index' %}">Home{% if index_active %} <span class="sr-only">(current)</span>{% endif %}</a>
@@ -32,23 +32,23 @@
 
         {% endif %}
 
-        <li class="nav-item mb-1">
+        <li class="nav-item mb-1 mb-auto">
           <a class="nav-link disabled" tabindex="-1" aria-disabled="true" href="#">Disabled</a>
-        </li>
-
-        <li class="nav-item mt-2 mb-1" >
-          <a class="nav-link text-light p-auto bg-warning" href="{% url 'password_change' %}">Change password</a>
         </li>
 
         {% if user.is_superuser %}
 
           <li class="nav-item mb-1">
-            <a class="nav-link text-light {% if superuser_active %}active{% endif %}" href="{% url 'superuser' %}">Superuser{% if superuser_active %} <span class="sr-only">(current)</span>{% endif %}</a>
+            <a class="nav-link text-light {% if superuser_active %}active{% else %}bg-secondary{% endif %}" href="{% url 'superuser' %}">Superuser{% if superuser_active %} <span class="sr-only">(current)</span>{% endif %}</a>
           </li>
 
         {% endif %}
+
+        <li class="nav-item mb-1" >
+          <a class="nav-link text-light p-auto bg-warning" href="{% url 'password_change' %}">Change password</a>
+        </li>
       
-        <li class="nav-item log-out-bottom-align">
+        <li class="nav-item"> <!-- log-out-bottom-align -->
           <a class="nav-link text-light bg-danger" data-toggle="modal" data-target="#logoutModal" href="#">Log Out</a>
         </li>
 
