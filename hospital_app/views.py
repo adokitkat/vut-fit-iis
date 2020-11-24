@@ -21,6 +21,22 @@ class SuperuserRoleUpdate(UpdateView):
     #form_class = SuperuserRoleChangeForm
 """
 
+def superuser(request):
+    if request.method == 'POST':
+        superuser_role_form = SuperuserRoleChangeForm(request.POST, instance=request.user)
+        if superuser_role_form.is_valid():
+            superuser_role_form.save()
+            return redirect('superuser')
+    else:
+        superuser_role_form = SuperuserRoleChangeForm()
+
+    context = {
+        'superuser_role_form': superuser_role_form,
+        'superuser_active': True
+        }
+
+    return render(request, 'hospital_app/superuser_menu.html', context)
+"""
 def get_superuser_role_form(request):
     if request.method == 'POST':
         superuser_role_form = SuperuserRoleChangeForm(request.POST, instance=request.user)
@@ -30,16 +46,16 @@ def get_superuser_role_form(request):
         superuser_role_form = SuperuserRoleChangeForm()
 
     return superuser_role_form
-
+"""
 @login_required
 def index(request):
     context = {
         'index_active': True,
-        'superuser_role_form': get_superuser_role_form(request),
+        #'superuser_role_form': get_superuser_role_form(request),
         }
     
-    if request.method == "POST":
-        return HttpResponseRedirect("/")
+    #if request.method == "POST":
+    #    return HttpResponseRedirect("/")
     
     return render(request, 'hospital_app/index.html', context)
 
@@ -77,7 +93,7 @@ class UsersView(ListView):
             'filter_field': self.request.GET.get('filter_field', ''),
         })
         context['users_active'] = True
-        context['superuser_role_form'] = get_superuser_role_form(self.request)
+        #context['superuser_role_form'] = get_superuser_role_form(self.request)
 
         return context
 
@@ -88,11 +104,11 @@ def profile(request, user_id):
     context = {
         'User': u,
         'profile_active': True,
-        'superuser_role_form': get_superuser_role_form(request),
+        #'superuser_role_form': get_superuser_role_form(request),
     }
 
-    if request.method == "POST":
-        return HttpResponseRedirect("/")
+    #if request.method == "POST":
+    #    return HttpResponseRedirect("/")
 
     return render(request, 'hospital_app/profile.html', context)
 

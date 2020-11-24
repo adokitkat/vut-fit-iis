@@ -32,18 +32,12 @@
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>
 
-      {% if user.is_superuser and superuser_role_form.role %}
-        <li class="nav-item mt-2">
-          <form method="post" class="form">
-            <fieldset {% if users_active %}disabled="disabled"{% endif %}>
-            {% csrf_token %}
-            {{ superuser_role_form.role|as_crispy_field }}
-            <div class="text-center">
-              <button type="submit" class="btn btn-success mt-1">Change</button>
-            </div>
-            </fieldset>
-          </form>
+      {% if user.is_superuser %}
+
+        <li class="nav-item mt-2 mb-1">
+          <a class="nav-link text-light {% if superuser_active %}active{% endif %}" href="{% url 'superuser' %}">Superuser</a>
         </li>
+
       {% endif %}
       
       <li class="nav-item log-out-bottom-align">

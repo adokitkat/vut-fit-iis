@@ -1,0 +1,13 @@
+{% if superuser_role_form.role %}
+          <li class="nav-item mt-2">
+            <form method="post" class="form">
+              <fieldset {% if users_active %}disabled="disabled"{% endif %}>
+              {% csrf_token %}
+              {{ superuser_role_form.role|as_crispy_field }}
+              <div class="text-center">
+                <button type="submit" class="btn btn-success mt-1">Change</button>
+              </div>
+              </fieldset>
+            </form>
+          </li>
+        {% endif %}
