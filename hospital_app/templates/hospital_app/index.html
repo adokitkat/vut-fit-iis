@@ -7,15 +7,17 @@
   {% if user.is_authenticated %}
 
     <div class="container-fluid">
-      <div class="row full-height">
+      <div class="row full-height-big-screen">
+
+        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 p-2 bg-dark order-last-big-screen">
+          {% include "hospital_app/menu.html" %}
+        </div>
 
         <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 p-2">
           <h1 class="text-center">Hi, {{ user.get_short_name }}!</h1>
         </div>
-        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 p-2 bg-dark">
-          {% include "hospital_app/menu.html" %}
-        </div>
         
+
       </div>
     </div>
 
