@@ -2,6 +2,8 @@
 
 {% load crispy_forms_tags %}
 
+{% load static %}
+
 {% block content %}
 
   {% if user.is_authenticated %}
@@ -9,21 +11,33 @@
     <div class="container-fluid">
       <div class="row full-height">
 
-        <div class="col-lg-10 col-md-9 col-sm-9 col-xs-12 p-2">
+        <div class="col-lg-10 col-md-9 col-sm-9 col-12 p-2">
 
-          {% if Users %}
+          <form class="row">
+            <div class="col-lg-7 col-sm-6 col-5 pr-1">
+              {{ search_form.search|as_crispy_field }}
+            </div>
+            <div class="col-lg-3 col-sm-3 col-4 pl-1 pr-1">
+              {{ search_form.filter_field|as_crispy_field }}
+            </div>
+            <div class="col-lg-2 col-sm-3 col-3 pl-0 text-center align-bottom">
+              <input type="submit" class="btn btn-primary btn-block" value="Search">
+            </div>
+          </form>
+
+          {% if object_list %}
             <div class="table-responsive rounded">
-              <table class="table table-striped" data-filter-control="true">
+              <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
                 <thead class="thead-dark">
                   <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Name</th>
-                    <th scope="col">E-mail</th>
-                    <th scope="col" data-field="Role" data-filter-control="select">Role</th>
+                    <th scope="col" data-field="pk" data-filter-control="input">#</th>
+                    <th scope="col" data-field="fields.first_name">Name</th>
+                    <th scope="col" data-field="fields.email">E-mail</th>
+                    <th scope="col" data-field="fields.role" data-filter-control="input">Role</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {% for u in Users %}
+                  {% for u in object_list %}
                   {% url 'profile' u.id as user_profile %}
                   <tr>
                     <th scope="row">{{ u.id}}</th>
@@ -36,18 +50,18 @@
                     <td>{{ u.get_role }}</td>
                   </tr>
                   {% endfor %}
-                </tbody>
+                  </tbody>
               </table>
+            
             </div>
           {% else %}
             <h2 class="text-center">There are no users...</h2>
           {% endif %}
 
-          
 
         </div>
 
-        <div class="col-lg-2 col-md-3 col-sm-3 col-xs-12 p-2 bg-dark">
+        <div class="col-lg-2 col-md-3 col-sm-3 col-12 p-2 bg-dark">
           {% include "hospital_app/menu.html" %}
         </div>
       
