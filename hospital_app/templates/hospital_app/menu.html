@@ -17,16 +17,14 @@
         <a class="nav-link text-light {% if index_active %}active{% endif %}" href="{% url 'index' %}">Home</a>
       </li>
       
-      <li class="nav-item mb-1">
-        <a class="nav-link text-light {% if users_active %}active{% endif %}" href="{% url 'users' %}">Users</a>
-      </li>
+      {% if not user.is_patient %}
+        <li class="nav-item mb-1">
+          <a class="nav-link text-light {% if users_active %}active{% endif %}" href="{% url 'users' %}">Users</a>
+        </li>
+      {% endif %}
       
       <li class="nav-item mb-1">
         <a class="nav-link disabled {% if doctors_active %}active{% endif %}" href="{% url 'users' %}" tabindex="-1" aria-disabled="true">Doctors</a>
-      </li>
-
-      <li class="nav-item mb-1">
-        <a class="nav-link disabled {% if patients_active %}active{% endif %}" href="{% url 'users' %}" tabindex="-1" aria-disabled="true">Patients</a>
       </li>
 
       <li class="nav-item mb-1">
@@ -41,7 +39,7 @@
     
   </nav>
 
-<!-- Modal -->
+<!-- Log out modal -->
 <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">

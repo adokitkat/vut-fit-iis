@@ -54,6 +54,18 @@ class CustomUser(AbstractUser): #models.Model
   def get_email(self):
     return self.email
 
+  def is_patient(self):
+    return self.role == 'P'
+
+  def is_doctor(self):
+    return self.role == 'D'
+
+  def is_insurance_worker(self):
+    return self.role == 'H'
+
+  def is_admin(self):
+    return self.role == 'A'
+
   def __str__(self):
     if str(self.Role(self.role)) == self.Role.ADMIN:
       return self.get_email() + ', ' + self.get_role().upper()

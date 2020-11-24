@@ -1,38 +1,28 @@
 from django.contrib.auth import authenticate, login
 from django.shortcuts import render, redirect, get_object_or_404
-from django.core import serializers
-
+from django.views.generic import ListView
 from django.contrib.auth.decorators import login_required, permission_required
 
+from .decorators import admin_required, patient_required, doctor_required, insurance_worker_required, not_patient, not_doctor, not_insurance_worker
 from .forms import CustomUserCreationForm, UserFilterForm
 from .models import CustomUser
 
-from django.views.generic import ListView
-
-# Temporary view
-from django.http import HttpResponse
+#from django.http import HttpResponse
 #@login_required
 #@permission_required('permission', raise_exception=True)
 
 @login_required
 def index(request):
-    users = CustomUser.objects.all()
     context = {
-        'Users': users,
         'index_active': True,
         }
     return render(request, 'hospital_app/index.html', context)
-"""
-class UpdateSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Update
-        fields = ("user", "content", "schedule", "image")
 
-"""
 
 class UsersView(ListView):
     model = CustomUser
     template_name = 'hospital_app/users.html'
+    context_object_name = 'Users'
 
     def get_queryset(self):
         query = self.request.GET.get('search')
@@ -64,21 +54,10 @@ class UsersView(ListView):
         context['users_active'] = True
 
         return context
-        
-@login_required
-def users(request):
-    users = CustomUser.objects.all()
-    users_json = serializers.serialize('json', users)
-    context = {
-        'Users': users,
-        'Users_JSON': users_json,
-        'users_active': True,
-        }
-    #print(users_json)
-    return render(request, 'hospital_app/users.html', context)
 
 @login_required
 def profile(request, user_id):
+
     u = get_object_or_404(CustomUser, pk=user_id)
     context = {
         'User': u,
@@ -98,4 +77,4 @@ def signup(request):
             return redirect('index')
     else:
         form = CustomUserCreationForm()
-    return render(request, 'hospital_app/signup.html', {'form': form})
+    return render(request, 'hospital_app/signup.html', {'signup_form': form})
