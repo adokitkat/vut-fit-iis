@@ -3,7 +3,7 @@ from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import CustomUser
 import datetime
-#from crispy_forms.helper import FormHelper
+from crispy_forms.helper import FormHelper
 #from crispy_forms.layout import Layout, Submit, Row, Column
 
 class CustomUserCreationForm(UserCreationForm):
@@ -39,3 +39,15 @@ class UserFilterForm(forms.Form):
     )
   search = forms.CharField(required=False, label="")
   filter_field = forms.ChoiceField(choices=FILTER_CHOICES, label="")
+
+
+class SuperuserRoleChangeForm(UserChangeForm):
+
+  def __init__(self, *args, **kwargs):
+    super(SuperuserRoleChangeForm, self).__init__(*args, **kwargs)
+    self.helper = FormHelper()
+    self.helper.form_show_labels = False 
+
+  class Meta:
+    model = CustomUser
+    fields = ('role',)

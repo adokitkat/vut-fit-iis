@@ -1,5 +1,7 @@
 {% url 'profile' user.id as current_user_profile %}
 
+{% load crispy_forms_tags %}
+
 {% if user.is_authenticated %}
 
   <nav class="nav nav-pills flex-column text-light">
@@ -12,8 +14,7 @@
     </div>
 
     <ul class="navbar-nav text-center">
-      
-      <li class="nav-item mb-1">
+     <li class="nav-item mt-2 mb-1">
         <a class="nav-link text-light {% if index_active %}active{% endif %}" href="{% url 'index' %}">Home</a>
       </li>
       
@@ -30,6 +31,20 @@
       <li class="nav-item mb-1">
         <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
       </li>
+
+      {% if user.is_superuser and superuser_role_form.role %}
+        <li class="nav-item mt-2">
+          <form method="post" class="form">
+            <fieldset {% if users_active %}disabled="disabled"{% endif %}>
+            {% csrf_token %}
+            {{ superuser_role_form.role|as_crispy_field }}
+            <div class="text-center">
+              <button type="submit" class="btn btn-success mt-1" >Change</button>
+            </div>
+            </fieldset>
+          </form>
+        </li>
+      {% endif %}
       
       <li class="nav-item log-out-bottom-align">
         <a class="nav-link text-light bg-danger" data-toggle="modal" data-target="#logoutModal" href="#">Log Out</a>
