@@ -4,8 +4,8 @@ from .decorators import superuser_required, admin_required, patient_required, do
 from . import views
 #from django.views.generic import TemplateView
 
-
 urlpatterns = [
+    path('signup/', views.signup, name='signup'),
     path('', views.index, name='index'),
     
     #path('profile/', views.profile, name='profile'),
@@ -15,6 +15,5 @@ urlpatterns = [
     
     path('superuser/', views.superuser, name='superuser'), # <int:pk>/ login_required(superuser_required(views.SuperuserRoleUpdate.as_view(), '', '/'))
 
-    path('signup/', views.signup, name='signup'),
     path('accounts/', include('django.contrib.auth.urls')),
 ]

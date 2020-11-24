@@ -24,7 +24,7 @@
           <a class="nav-link text-light p-auto {% if index_active %}active{% endif %}" href="{% url 'index' %}">Home{% if index_active %} <span class="sr-only">(current)</span>{% endif %}</a>
         </li>
 
-        {% if not user.is_patient %}
+        {% if user %} <!-- FIXME: if not user.is_patient -->
 
           <li class="nav-item mb-1">
             <a class="nav-link text-light {% if users_active %}active{% endif %}" href="{% url 'users' %}">Users{% if users_active %} <span class="sr-only">(current)</span>{% endif %}</a>
@@ -34,6 +34,10 @@
 
         <li class="nav-item mb-1">
           <a class="nav-link disabled" tabindex="-1" aria-disabled="true" href="#">Disabled</a>
+        </li>
+
+        <li class="nav-item mt-2 mb-1" >
+          <a class="nav-link text-light p-auto bg-warning" href="{% url 'password_change' %}">Change password</a>
         </li>
 
         {% if user.is_superuser %}
