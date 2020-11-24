@@ -4,8 +4,8 @@
 
 {% if user.is_authenticated %}
 
-  <nav id="navbar" class="nav  navbar-expand-sm">
-    <button class="navbar-toggler bg-light" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
+  <nav id="navbar" class="nav navbar-expand-sm navbar-dark">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggler" aria-controls="navbarToggler" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
@@ -39,7 +39,7 @@
         {% if user.is_superuser %}
 
           <li class="nav-item mb-1">
-            <a class="nav-link text-light {% if superuser_active %}active{% endif %}" href="{% url 'superuser' %}">Superuser</a>
+            <a class="nav-link text-light {% if superuser_active %}active{% endif %}" href="{% url 'superuser' %}">Superuser{% if superuser_active %} <span class="sr-only">(current)</span>{% endif %}</a>
           </li>
 
         {% endif %}
