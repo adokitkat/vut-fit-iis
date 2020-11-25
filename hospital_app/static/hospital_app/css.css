@@ -3,6 +3,12 @@
     width: 100%;
 }
 
+/* Navbar hamburger button focus outline disable */
+#navbar_button:focus {
+    outline: none;
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
 @media screen and (min-width: 576px) {
     /* Media query for menu placement - right when big screen, left (top) on mobile */
     .order-last-big-screen {
