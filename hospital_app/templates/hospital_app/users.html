@@ -8,69 +8,54 @@
 
   {% if user.is_authenticated %}
 
-    <div class="container-fluid">
-      <div class="row full-height-big-screen">
-
-        <div class="col-lg-2 col-md-3 col-sm-3 col-12 p-2 bg-dark order-last-big-screen d-flex">
-          {% include "hospital_app/menu.html" %}
-        </div>
-
-        <div class="col-lg-10 col-md-9 col-sm-9 col-12 p-2">
-
-          <form class="row">
-            <div class="col-lg-7 col-sm-6 col-6 pr-1">
-              {{ search_form.search|as_crispy_field }}
-            </div>
-            <div class="col-lg-3 col-sm-3 col-3 pl-1 pr-1">
-              {{ search_form.filter_field|as_crispy_field }}
-            </div>
-            <div class="col-lg-2 col-sm-3 col-3 pl-0 text-center align-bottom">
-              <input type="submit" class="btn btn-primary btn-block" value="Search">
-            </div>
-          </form>
-
-          {% if Users %}
-            <div class="table-responsive rounded">
-              <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
-                <thead class="thead-dark">
-                  <tr>
-                    <th scope="col" data-field="pk" data-filter-control="input">#</th>
-                    <th scope="col" data-field="fields.first_name">Name</th>
-                    <th scope="col" data-field="fields.email">E-mail</th>
-                    <th scope="col" data-field="fields.role" data-filter-control="input">Role</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for u in Users %}
-                    
-                    {% if not user.is_admin and not u.is_admin or user.is_admin %}
-                      {% url 'profile' u.id as user_profile %}
-                      <tr>
-                        <th scope="row">{{ u.id}}</th>
-                        <td>
-                          <a href="{{ user_profile }}">
-                            {{ u.get_full_name }}
-                          </a>
-                        </td>
-                        <td>{{ u.email }}</td>
-                        <td>{{ u.get_role }}</td>
-                      </tr>
-                    {% endif %}
-
-                  {% endfor %}
-                  </tbody>
-              </table>
-            
-            </div>
-          {% else %}
-            <h2 class="text-center">There are no users...</h2>
-          {% endif %}
-
-
-        </div>
-      
+    <form class="row">
+      <div class="col-lg-7 col-sm-6 col-6 pr-1">
+        {{ search_form.search|as_crispy_field }}
       </div>
-    </div>
+      <div class="col-lg-3 col-sm-3 col-3 pl-1 pr-1">
+        {{ search_form.filter_field|as_crispy_field }}
+      </div>
+      <div class="col-lg-2 col-sm-3 col-3 pl-0 text-center align-bottom">
+        <input type="submit" class="btn btn-primary btn-block" value="Search">
+      </div>
+    </form>
+
+    {% if Users %}
+
+      <div class="table-responsive rounded">
+        <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col" data-field="pk" data-filter-control="input">#</th>
+              <th scope="col" data-field="fields.first_name">Name</th>
+              <th scope="col" data-field="fields.email">E-mail</th>
+              <th scope="col" data-field="fields.role" data-filter-control="input">Role</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for u in Users %}
+              
+              {% if not user.is_admin and not u.is_admin or user.is_admin %}
+                {% url 'profile' u.id as user_profile %}
+                <tr>
+                  <th scope="row">{{ u.id}}</th>
+                  <td>
+                    <a href="{{ user_profile }}">
+                      {{ u.get_full_name }}
+                    </a>
+                  </td>
+                  <td>{{ u.email }}</td>
+                  <td>{{ u.get_role }}</td>
+                </tr>
+              {% endif %}
+
+           {% endfor %}
+           </tbody>
+       </table>
+     </div>
+   {% else %}
+     <h2 class="text-center">There are no users...</h2>
+   {% endif %}
 
   {% endif %}
 
