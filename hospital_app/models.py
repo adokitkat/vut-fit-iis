@@ -45,14 +45,8 @@ class CustomUser(AbstractUser): #models.Model
 
   objects = CustomUserManager()
 
-  def get_id(self):
-    return id
-
   def get_role(self):
     return str(self.Role(self.role).label)
-
-  def get_email(self):
-    return self.email
 
   def is_patient(self):
     return self.role == 'P'
@@ -68,7 +62,7 @@ class CustomUser(AbstractUser): #models.Model
 
   def __str__(self):
     if str(self.Role(self.role)) == self.Role.ADMIN:
-      return self.get_email() + ', ' + self.get_role().upper()
+      return self.email + ', ' + self.get_role().upper()
     else:
       return self.get_full_name() + ', ' + self.get_role()
 
@@ -83,14 +77,8 @@ class Problem(models.Model):
 
   id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
-  def get_name(self):
-    return self.name
-
-  def get_state(self):
-    return self.state
-
   def __str__(self):
-    return 'PROBLEM: ' + self.get_name() + ', STATE: ' + self.get_state() + ', PATIENT: ' + self.id_user.get_full_name() + ', JOINED: ' + str(self.date_JOINED)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
+    return 'PROBLEM: ' + self.name + ', STATE: ' + self.state + ', PATIENT: ' + self.id_user.get_full_name() + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
 
 class Ticket(models.Model):
   class Status(models.TextChoices):
@@ -101,7 +89,7 @@ class Ticket(models.Model):
 
   status      = models.CharField(max_length=1, choices=Status.choices, default=Status.INWAIT)
   description = models.TextField(blank=True)
-  exam_date   = models.DateTimeField(blank=True)
+  exam_date   = models.DateTimeField(blank=True, null=True)
 
   date_created  = models.DateTimeField(auto_now_add=True)
   date_modified = models.DateTimeField(auto_now=True)

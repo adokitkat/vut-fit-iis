@@ -6,21 +6,27 @@ from django.contrib.auth.decorators import login_required, permission_required
 
 from .decorators import admin_required, patient_required, doctor_required, insurance_worker_required, not_patient, not_doctor, not_insurance_worker
 from .forms import CustomUserCreationForm, UserFilterForm, SuperuserRoleChangeForm
-from .models import CustomUser
+from .models import CustomUser, Ticket, HealthRecord, Problem
 
 from django.http import HttpResponseRedirect
 #@login_required
 #@permission_required('permission', raise_exception=True)
 
-"""
-class SuperuserRoleUpdate(UpdateView):
-    model = CustomUser
-    fields = ['role']
-    template_name = 'hospital_app/superuser_menu.html'
-    context_object_name = 'superuser_role_form'
-    #form_class = SuperuserRoleChangeForm
-"""
+def signup(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            #username = form.cleaned_data.get('username')
+            #raw_password = form.cleaned_data.get('password1')
+            #user = authenticate(username=username, password=raw_password)
+            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
+            return redirect('index')
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'hospital_app/signup.html', {'signup_form': form})
 
+@login_required
 def superuser(request):
     if request.method == 'POST':
         superuser_role_form = SuperuserRoleChangeForm(request.POST, instance=request.user)
@@ -35,35 +41,21 @@ def superuser(request):
         'superuser_active': True
         }
 
-    return render(request, 'hospital_app/superuser_menu.html', context)
-"""
-def get_superuser_role_form(request):
-    if request.method == 'POST':
-        superuser_role_form = SuperuserRoleChangeForm(request.POST, instance=request.user)
-        if superuser_role_form.is_valid():
-            superuser_role_form.save()
-    else:
-        superuser_role_form = SuperuserRoleChangeForm()
+    return render(request, 'hospital_app/superuser.html', context)
 
-    return superuser_role_form
-"""
 @login_required
 def index(request):
     context = {
         'index_active': True,
-        #'superuser_role_form': get_superuser_role_form(request),
         }
-    
-    #if request.method == "POST":
-    #    return HttpResponseRedirect("/")
-    
+
     return render(request, 'hospital_app/index.html', context)
 
 
 class UsersView(ListView):
     model = CustomUser
-    template_name = 'hospital_app/users.html'
-    context_object_name = 'Users'
+    template_name = 'hospital_app/user/users.html'
+    context_object_name = 'Objects'
 
     def get_queryset(self):
         query = self.request.GET.get('search')
@@ -93,35 +85,113 @@ class UsersView(ListView):
             'filter_field': self.request.GET.get('filter_field', ''),
         })
         context['users_active'] = True
-        #context['superuser_role_form'] = get_superuser_role_form(self.request)
+
+        return context
+
+class TicketsView(ListView):
+    model = Ticket
+    template_name = 'hospital_app/ticket/tickets.html'
+    context_object_name = 'Objects'
+
+    def get_queryset(self, model=model):
+        query = self.request.GET.get('search')
+        filter_field = self.request.GET.get('filter_field')
+        
+        return model.objects.all()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['search_form'] = UserFilterForm(initial={
+            'search': self.request.GET.get('search', ''),
+            'filter_field': self.request.GET.get('filter_field', ''),
+        })
+        context['tickets_active'] = True
+
+        return context
+
+class ProblemsView(ListView):
+    model = Problem
+    template_name = 'hospital_app/problem/problems.html'
+    context_object_name = 'Objects'
+
+    def get_queryset(self, model=model):
+        query = self.request.GET.get('search')
+        filter_field = self.request.GET.get('filter_field')
+
+        return model.objects.all()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['search_form'] = UserFilterForm(initial={
+            'search': self.request.GET.get('search', ''),
+            'filter_field': self.request.GET.get('filter_field', ''),
+        })
+        context['problems_active'] = True
+
+        return context
+
+class HealthRecordsView(ListView):
+    model = HealthRecord
+    template_name = 'hospital_app/health_record/health_records.html'
+    context_object_name = 'Objects'
+
+    def get_queryset(self, model=model):
+        query = self.request.GET.get('search')
+        filter_field = self.request.GET.get('filter_field')
+
+        return model.objects.all()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(*args, **kwargs)
+        context['search_form'] = UserFilterForm(initial={
+            'search': self.request.GET.get('search', ''),
+            'filter_field': self.request.GET.get('filter_field', ''),
+        })
+        context['hr_active'] = True
 
         return context
 
 @login_required
-def profile(request, user_id):
-    u = get_object_or_404(CustomUser, pk=user_id)
+def profile(request, o_id):
+    o = get_object_or_404(CustomUser, pk=o_id)
 
     context = {
-        'User': u,
+        'Object': o,
         'profile_active': True,
-        #'superuser_role_form': get_superuser_role_form(request),
     }
 
-    #if request.method == "POST":
-    #    return HttpResponseRedirect("/")
+    return render(request, 'hospital_app/user/profile.html', context)
 
-    return render(request, 'hospital_app/profile.html', context)
+@login_required
+def ticket(request, o_id):
+    o = get_object_or_404(Ticket, pk=o_id)
 
-def signup(request):
-    if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            #username = form.cleaned_data.get('username')
-            #raw_password = form.cleaned_data.get('password1')
-            #user = authenticate(username=username, password=raw_password)
-            login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-            return redirect('index')
-    else:
-        form = CustomUserCreationForm()
-    return render(request, 'hospital_app/signup.html', {'signup_form': form})
+    context = {
+        'Object': o,
+        'ticket_active': True, 
+    }
+
+    return render(request, 'hospital_app/ticket/ticket.html', context)
+
+@login_required
+def health_record(request, o_id):
+    o = get_object_or_404(HealthRecord, pk=o_id)
+
+    context = {
+        'Object': o,
+        'hr_active': True, 
+    }
+
+    return render(request, 'hospital_app/health_record/health_record.html', context)
+
+@login_required
+def problem(request, o_id):
+    o = get_object_or_404(Problem, pk=o_id)
+
+    context = {
+        'Object': o,
+        'problem_active': True, 
+    }
+
+    return render(request, 'hospital_app/problem/problem.html', context)
+

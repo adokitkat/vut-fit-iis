@@ -1,0 +1,17 @@
+{% extends "hospital_app/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    {% if Object %}
+
+      <h2>{{ Object.get_status }}</h2>
+
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

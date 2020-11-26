@@ -6,12 +6,12 @@
 
   {% if user.is_authenticated %}
 
-    {% if User %}
+    {% if Object %}
 
-      <h2>{{ User.get_full_name }}</h2>
-      <h2>{{ User.email }}</h2>
-      <h2>{{ User.get_role }}</h2>
-      <h2>Admin: {{ User.is_admin }}</h2>
+      <h2>{{ Object.get_full_name }}</h2>
+      <h2>{{ Object.email }}</h2>
+      <h2>{{ Object.get_role }}</h2>
+      <h2>Admin: {{ Object.is_admin }}</h2>
     
     {% endif %}
 

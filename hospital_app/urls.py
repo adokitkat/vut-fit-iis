@@ -7,13 +7,20 @@ from . import views
 urlpatterns = [
     path('signup/', views.signup, name='signup'),
     path('', views.index, name='index'),
-    
-    #path('profile/', views.profile, name='profile'),
-    path('profile/<int:user_id>/', views.profile, name='profile'),
 
     path('users/', login_required(not_patient(views.UsersView.as_view(), '', '/')), name='users'), # redirects unauthorizet (Patients) to index
+    path('user/<int:o_id>/', views.profile, name='profile'),
+
+    path('tickets/', login_required(views.TicketsView.as_view(), '', '/'), name='tickets'),
+    path('ticket/<int:o_id>/', views.ticket, name='ticket'),
+
+    path('problems/', login_required(views.ProblemsView.as_view(), '', '/'), name='problems'),
+    path('problem/<int:o_id>/', views.problem, name='problem'),
     
-    path('superuser/', views.superuser, name='superuser'), # <int:pk>/ login_required(superuser_required(views.SuperuserRoleUpdate.as_view(), '', '/'))
+    path('health-records/', login_required(views.HealthRecordsView.as_view(), '', '/'), name='health_records'),
+    path('health-record/<int:o_id>/', views.health_record, name='health_record'),
 
     path('accounts/', include('django.contrib.auth.urls')),
+
+    path('superuser/', views.superuser, name='superuser'),
 ]

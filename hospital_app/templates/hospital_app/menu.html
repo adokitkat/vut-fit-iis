@@ -33,6 +33,30 @@
           <a class="nav-link text-light p-auto {% if index_active %}active{% endif %}" href="{% url 'index' %}">Home{% if index_active %} <span class="sr-only">(current)</span>{% endif %}</a>
         </li>
 
+        {% if user.is_doctor or user.is_admin or user.is_superuser %} <!-- FIXME: if not user.is_patient -->
+
+          <li class="nav-item mb-1">
+            <a class="nav-link text-light {% if tickets_active %}active{% endif %}" href="{% url 'tickets' %}">Tickets{% if tickets_active %} <span class="sr-only">(current)</span>{% endif %}</a>
+          </li>
+
+        {% endif %}
+
+        {% if user.is_doctor or user.is_admin or user.is_superuser %} <!-- FIXME: if not user.is_patient -->
+
+          <li class="nav-item mb-1">
+            <a class="nav-link text-light {% if problems_active %}active{% endif %}" href="{% url 'problems' %}">Problems{% if problems_active %} <span class="sr-only">(current)</span>{% endif %}</a>
+          </li>
+
+        {% endif %}
+
+        {% if user.is_doctor or user.is_admin or user.is_superuser %} <!-- FIXME: if not user.is_patient -->
+
+          <li class="nav-item mb-1">
+            <a class="nav-link text-light {% if hr_active %}active{% endif %}" href="{% url 'health_records' %}">Health records{% if hr_active %} <span class="sr-only">(current)</span>{% endif %}</a>
+          </li>
+
+        {% endif %}
+
         {% if user %} <!-- FIXME: if not user.is_patient -->
 
           <li class="nav-item mb-1">

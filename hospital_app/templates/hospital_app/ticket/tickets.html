@@ -1,0 +1,79 @@
+{% extends "hospital_app/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    <form class="row">
+      <div class="col-lg-7 col-sm-6 col-6 pr-1">
+        {{ search_form.search|as_crispy_field }}
+      </div>
+      <div class="col-lg-3 col-sm-3 col-3 pl-1 pr-1">
+        {{ search_form.filter_field|as_crispy_field }}
+      </div>
+      <div class="col-lg-2 col-sm-3 col-3 pl-0 text-center align-bottom">
+        <input type="submit" class="btn btn-primary btn-block" value="Search">
+      </div>
+    </form>
+
+    {% if Objects %}
+
+      <div class="table-responsive rounded">
+        <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Patient name</th>
+              <th scope="col">Ticket status</th>
+              <th scope="col">Ticket description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o in Objects %}
+              
+              {% if not user.is_admin and not o.is_admin or user.is_admin %}
+                {% url 'ticket' o.id as object_page %}
+                <tr>
+                
+                  <th scope="row">
+                    <a href="{{ object_page }}">
+                      {{ o.id }}
+                    </a> 
+                  </th>
+                  
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.id_user.get_full_name }}
+                    </a>  
+                  </td>
+
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.get_status }}
+                    </a>  
+                  </td>
+                  
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.description }}
+                    </a>  
+                  </td>
+
+                </tr>
+              {% endif %}
+
+           {% endfor %}
+           </tbody>
+       </table>
+     </div>
+   {% else %}
+     <h2 class="text-center">There are no users...</h2>
+   {% endif %}
+
+  {% endif %}
+
+{% endblock %}

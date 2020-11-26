@@ -20,7 +20,7 @@
       </div>
     </form>
 
-    {% if Users %}
+    {% if Objects %}
 
       <div class="table-responsive rounded">
         <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
@@ -33,19 +33,36 @@
             </tr>
           </thead>
           <tbody>
-            {% for u in Users %}
+            {% for o in Objects %}
               
-              {% if not user.is_admin and not u.is_admin or user.is_admin %}
-                {% url 'profile' u.id as user_profile %}
+              {% if not user.is_admin and not o.is_admin or user.is_admin %}
+                {% url 'profile' o.id as object_page %}
                 <tr>
-                  <th scope="row">{{ u.id}}</th>
+   
+                  <th scope="row">
+                    <a href="{{ object_page }}">
+                      {{ o.id }}
+                    </a> 
+                  </th>
+                  
                   <td>
-                    <a href="{{ user_profile }}">
-                      {{ u.get_full_name }}
-                    </a>
+                    <a href="{{ object_page }}">
+                      {{ o.get_full_name }}
+                    </a>  
                   </td>
-                  <td>{{ u.email }}</td>
-                  <td>{{ u.get_role }}</td>
+
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.email }}
+                    </a>  
+                  </td>
+                  
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.get_role }}
+                    </a>  
+                  </td>
+
                 </tr>
               {% endif %}
 
