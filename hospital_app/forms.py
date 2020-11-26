@@ -37,7 +37,7 @@ class UserFilterForm(forms.Form):
       ('D', 'Doctors'),
       ('A', 'Admins'),
     )
-  search = forms.CharField(required=False, label="")
+  search = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search'}),)
   filter_field = forms.ChoiceField(choices=FILTER_CHOICES, label="")
 
 
