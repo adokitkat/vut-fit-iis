@@ -209,6 +209,7 @@ def ticket_add(request):
 
     return render(request, 'hospital_app/ticket/ticket_form.html', context)
 
+@login_required
 def ticket_change(request, o_id):
     o = get_object_or_404(Ticket, id=o_id)
     if request.method == 'POST':
@@ -226,4 +227,72 @@ def ticket_change(request, o_id):
 
     return render(request, 'hospital_app/ticket/ticket_form.html', context)
 
+@login_required
+def health_record_add(request):
+    if request.method == 'POST':
+        health_record_form = HealthRecordCreationForm(request.POST)
+        if health_record_form.is_valid():
+            health_record_form.save()
+            return redirect('health_records')
+    else:
+        health_record = HealthRecordCreationForm()
+
+    context = {
+        'page_title': 'Add health record',
+        'ticket_form': health_record,
+        }
+
+    return render(request, 'hospital_app/ticket/health_record_form.html', context)
     
+@login_required
+def health_record_change(request, o_id):
+    o = get_object_or_404(HealthRecord, id=o_id)
+    if request.method == 'POST':
+        health_record_form = HealthRecordChangeForm(request.POST, instance=o)
+        if health_record_form.is_valid():
+            health_record_form.save()
+            return redirect('health_records')
+    else:
+        health_record_form = HealthRecordChangeForm(instance=o)
+
+    context = {
+        'page_title': 'Change health record',
+        'ticket_form': health_record_form,
+        }
+
+    return render(request, 'hospital_app/ticket/health_record_form.html', context)
+
+@login_required
+def problem_add(request):
+    if request.method == 'POST':
+        problem_form = ProblemCreationForm(request.POST)
+        if problem_form.is_valid():
+            problem_form.save()
+            return redirect('problems')
+    else:
+        problem_form = ProblemCreationForm()
+
+    context = {
+        'page_title': 'Add problem',
+        'problem_form': problem_form,
+        }
+
+    return render(request, 'hospital_app/problem/problem_form.html', context)
+    
+@login_required
+def problem_change(request, o_id):
+    o = get_object_or_404(Problem, id=o_id)
+    if request.method == 'POST':
+        problem_form = ProblemChangeForm(request.POST, instance=o)
+        if problem_form.is_valid():
+            problem_form.save()
+            return redirect('problems')
+    else:
+        problem_form = ProblemChangeForm(instance=o)
+
+    context = {
+        'page_title': 'Change problem',
+        'problem_form': problem_form,
+        }
+
+    return render(request, 'hospital_app/problem/problem_form.html', context)

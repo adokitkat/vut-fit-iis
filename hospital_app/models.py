@@ -67,15 +67,23 @@ class CustomUser(AbstractUser): #models.Model
       return self.get_full_name() + ', ' + self.get_role()
 
 class Problem(models.Model):
+  class State(models.TextChoices):
+    INPROG = 'M', _('In progress')
+    DONE   = 'C', _('Completed')
+    ABORT  = 'A', _('Aborted') 
+
   name        = models.CharField(max_length=50)
   description = models.TextField(blank=True)
-  state       = models.CharField(max_length=50)
+  state       = models.CharField(max_length=1, choices=State.choices, default=State.INPROG)
 
   date_created  = models.DateTimeField(auto_now_add=True)
   date_modified = models.DateTimeField(auto_now=True)
   date_closed   = models.DateTimeField(blank=True, null=True)
 
   id_user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+  def get_state(self):
+    return str(self.State(self.state).label)
 
   def __str__(self):
     return 'PROBLEM: ' + self.name + ', STATE: ' + self.state + ', PATIENT: ' + self.id_user.get_full_name() + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
@@ -116,7 +124,7 @@ class HealthRecord(models.Model):
   id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
   def __str__(self): # TODO: Toto asi zmenit
-    return 'PATIENT: ' + self.id_problem.id_user.get_full_name()  + ', PROBLEM: ' + self.id_problem.get_name() + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
+    return 'PATIENT: ' + self.id_problem.id_user.get_full_name()  + ', PROBLEM: ' + self.id_problem.name + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
 
 # TODO:
 #def user_directory_path(instance, filename):

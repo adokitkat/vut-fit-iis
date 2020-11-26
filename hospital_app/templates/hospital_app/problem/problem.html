@@ -8,7 +8,9 @@
 
     {% if Object %}
 
-      <h2>{{ Object.get_status }}</h2>
+      <h2>{{ Object.name }}</h2>
+
+      <a href="{% url 'problem_change' Object.id %}" class="btn btn-primary active" role="button" aria-pressed="true">Edit</a>
 
     {% endif %}
 

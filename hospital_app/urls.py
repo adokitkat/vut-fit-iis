@@ -18,9 +18,13 @@ urlpatterns = [
 
     path('problem/all/', login_required(views.ProblemsView.as_view(), '', '/'), name='problems'),
     path('problem/<int:o_id>/', views.problem, name='problem'),
+    path('problem/add/', views.problem_add, name='problem_add'),
+    path('problem/<int:o_id>/edit/', views.problem_change, name='problem_change'),
     
     path('health-record/all/', login_required(views.HealthRecordsView.as_view(), '', '/'), name='health_records'),
     path('health-record/<int:o_id>/', views.health_record, name='health_record'),
+    path('health-record/add/', views.health_record_add, name='health_record_add'),
+    path('health-record/<int:o_id>/edit/', views.health_record_change, name='health_record_change'),
 
     path('accounts/', include('django.contrib.auth.urls')),
 

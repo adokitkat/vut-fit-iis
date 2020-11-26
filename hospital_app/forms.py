@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser, Ticket, HealthRecord, Problem, File
+from .models import *
 import datetime
 from crispy_forms.helper import FormHelper
 #from crispy_forms.layout import Layout, Submit, Row, Column
@@ -84,11 +84,17 @@ class TicketCreationForm(forms.ModelForm):
 class TicketChangeForm(forms.ModelForm):
 
   #description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description...'}),)
-  exam_date   = forms.SplitDateTimeField(required=False, 
-                  widget=forms.SplitDateTimeWidget(
-                  date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
-                  time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
-                ))
+  exam_date = forms.SplitDateTimeField(required=False, 
+                widget=forms.SplitDateTimeWidget(
+                date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+                time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
+              ))
+
+  date_closed = forms.SplitDateTimeField(required=False, 
+                widget=forms.SplitDateTimeWidget(
+                date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+                time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
+              ))
 
   class Meta:
     model = Ticket
@@ -109,3 +115,70 @@ class TicketChangeForm(forms.ModelForm):
 
     self.fields['id_doctor'].queryset = doctors
     self.fields['id_problem'].queryset = problems
+
+class HealthRecordCreationForm(forms.ModelForm):
+
+  class Meta:
+    model = HealthRecord
+    fields = ['comment', 'id_problem', 'id_ticket']
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    problems = Problem.objects.all()
+    tickets = Ticket.objects.all()
+
+    self.fields['id_problem'].queryset = problems
+    self.fields['id_ticket'].queryset = tickets
+
+
+class HealthRecordChangeForm(forms.ModelForm):
+
+  date_closed = forms.SplitDateTimeField(required=False, 
+                widget=forms.SplitDateTimeWidget(
+                date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+                time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
+              ))
+  
+  class Meta:
+    model = HealthRecord
+    fields = '__all__'
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    problems = Problem.objects.all()#filter(pk=self.fields['id_user'].id)
+    tickets = Tickets.objects.all()
+
+    self.fields['id_problem'].queryset = problems
+    self.fields['id_ticket'].queryset = tickets
+
+class ProblemCreationForm(forms.ModelForm):
+
+  class Meta:
+    model = Problem
+    fields = ['name', 'description', 'id_user']
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    patients = CustomUser.objects.filter(role="P")
+    self.fields['id_user'].queryset = patients
+
+class ProblemChangeForm(forms.ModelForm):
+
+  date_closed = forms.SplitDateTimeField(required=False, 
+                  widget=forms.SplitDateTimeWidget(
+                  date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+                  time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
+                ))
+
+  class Meta:
+    model = Problem
+    fields = '__all__'
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    patients = CustomUser.objects.filter(role="P")#filter(pk=self.fields['id_user'].id)
+    self.fields['id_user'].queryset = patients

@@ -8,7 +8,7 @@
 
   {% if user.is_authenticated %}
 
-    {% url 'health_records' as add_url %}
+    {% url 'health_record_add' as add_url %}
     {% include "hospital_app/search_bar.html" with add_url=add_url %}
 
     {% if Objects %}
@@ -19,7 +19,7 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Patient name</th>
-              <th scope="col">Ticket status</th>
+              <th scope="col">Problem name</th>
               <th scope="col">Ticket description</th>
             </tr>
           </thead>
@@ -44,13 +44,13 @@
 
                   <td>
                     <a href="{{ object_page }}">
-                      {{ o.get_status }}
+                      {{ o.id_problem.name }}
                     </a>  
                   </td>
                   
                   <td>
                     <a href="{{ object_page }}">
-                      {{ o.description }}
+                      {{ o.id_ticket.description }}
                     </a>  
                   </td>
 
