@@ -1,7 +1,7 @@
 from django import forms
 from django.conf import settings
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
-from .models import CustomUser
+from .models import CustomUser, Ticket, HealthRecord, Problem, File
 import datetime
 from crispy_forms.helper import FormHelper
 #from crispy_forms.layout import Layout, Submit, Row, Column
@@ -51,3 +51,61 @@ class SuperuserRoleChangeForm(UserChangeForm):
   class Meta:
     model = CustomUser
     fields = ('role',)
+
+class TicketCreationForm(forms.ModelForm):
+
+  #description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description...'}),)
+  exam_date   = forms.SplitDateTimeField(required=False, 
+                  widget=forms.SplitDateTimeWidget(
+                  date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+                  time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
+                ))
+
+  class Meta:
+    model = Ticket
+    fields = ['status', 'description', 'exam_date', 'id_user', 'id_doctor']
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    patients = CustomUser.objects.filter(role="P")
+    doctors = CustomUser.objects.filter(role="D")
+
+    """
+    instance = kwargs.get("instance")
+    if instance:
+      if instance.id_user:
+        pass
+    """
+    self.fields['id_user'].queryset = patients
+    self.fields['id_doctor'].queryset = doctors
+
+
+class TicketChangeForm(forms.ModelForm):
+
+  #description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description...'}),)
+  exam_date   = forms.SplitDateTimeField(required=False, 
+                  widget=forms.SplitDateTimeWidget(
+                  date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+                  time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
+                ))
+
+  class Meta:
+    model = Ticket
+    fields = '__all__'
+
+  def __init__(self, *args, **kwargs):
+    super().__init__(*args, **kwargs)
+
+    problems = CustomUser.objects.all()#filter(pk=self.fields['id_user'].id)
+    doctors = CustomUser.objects.filter(role="D")
+
+    """ 
+    instance = kwargs.get("instance")
+    if instance:
+      if instance.id_user:
+        pass
+    """
+
+    self.fields['id_doctor'].queryset = doctors
+    self.fields['id_problem'].queryset = problems

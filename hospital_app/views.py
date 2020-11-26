@@ -4,9 +4,9 @@ from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required, permission_required
 
-from .decorators import admin_required, patient_required, doctor_required, insurance_worker_required, not_patient, not_doctor, not_insurance_worker
-from .forms import CustomUserCreationForm, UserFilterForm, SuperuserRoleChangeForm
-from .models import CustomUser, Ticket, HealthRecord, Problem
+from .decorators import *
+from .forms import *
+from .models import *
 
 from django.http import HttpResponseRedirect
 #@login_required
@@ -17,9 +17,6 @@ def signup(request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
-            #username = form.cleaned_data.get('username')
-            #raw_password = form.cleaned_data.get('password1')
-            #user = authenticate(username=username, password=raw_password)
             login(request, user, backend='django.contrib.auth.backends.ModelBackend')
             return redirect('index')
     else:
@@ -195,3 +192,38 @@ def problem(request, o_id):
 
     return render(request, 'hospital_app/problem/problem.html', context)
 
+@login_required
+def ticket_add(request):
+    if request.method == 'POST':
+        ticket_form = TicketCreationForm(request.POST)
+        if ticket_form.is_valid():
+            ticket_form.save()
+            return redirect('tickets')
+    else:
+        ticket_form = TicketCreationForm()
+
+    context = {
+        'page_title': 'Add ticket',
+        'ticket_form': ticket_form,
+        }
+
+    return render(request, 'hospital_app/ticket/ticket_form.html', context)
+
+def ticket_change(request, o_id):
+    o = get_object_or_404(Ticket, id=o_id)
+    if request.method == 'POST':
+        ticket_form = TicketChangeForm(request.POST, instance=o)
+        if ticket_form.is_valid():
+            ticket_form.save()
+            return redirect('tickets')
+    else:
+        ticket_form = TicketChangeForm(instance=o)
+
+    context = {
+        'page_title': 'Change ticket',
+        'ticket_form': ticket_form,
+        }
+
+    return render(request, 'hospital_app/ticket/ticket_form.html', context)
+
+    

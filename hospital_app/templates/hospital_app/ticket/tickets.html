@@ -8,17 +8,8 @@
 
   {% if user.is_authenticated %}
 
-    <form class="row">
-      <div class="col-lg-7 col-sm-6 col-6 pr-1">
-        {{ search_form.search|as_crispy_field }}
-      </div>
-      <div class="col-lg-3 col-sm-3 col-3 pl-1 pr-1">
-        {{ search_form.filter_field|as_crispy_field }}
-      </div>
-      <div class="col-lg-2 col-sm-3 col-3 pl-0 text-center align-bottom">
-        <input type="submit" class="btn btn-primary btn-block" value="Search">
-      </div>
-    </form>
+    {% url 'ticket_add' as add_url %}
+    {% include "hospital_app/search_bar.html" with add_url=add_url %}
 
     {% if Objects %}
 

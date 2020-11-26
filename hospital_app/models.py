@@ -97,7 +97,7 @@ class Ticket(models.Model):
   
   id_user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Patient')
   id_doctor  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Doctor')
-  id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+  id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE, blank=True, null=True)
 
   def get_status(self):
     return str(self.Status(self.status).label)
