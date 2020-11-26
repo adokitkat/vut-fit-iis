@@ -18,9 +18,12 @@
           <thead class="thead-dark">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Patient name</th>
-              <th scope="col">Ticket status</th>
-              <th scope="col">Ticket description</th>
+              {% if not user.is_patient %}<th scope="col">Patient</th>{% endif %}
+              {% if not user.is_doctor %}<th scope="col">Doctor</th>{% endif %}
+              <th scope="col">Date</th>
+              <th scope="col">Problem name</th>
+              <th scope="col">Status</th>
+              <th scope="col">Description</th>
             </tr>
           </thead>
           <tbody>
@@ -35,10 +38,32 @@
                       {{ o.id }}
                     </a> 
                   </th>
+
+                  {% if not user.is_patient %}
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.id_problem.id_user.get_full_name }}
+                    </a>  
+                  </td>
+                  {% endif %}
+
+                  {% if not user.is_doctor %}
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.id_doctor.get_full_name }}
+                    </a>  
+                  </td>
+                  {% endif %}
                   
                   <td>
                     <a href="{{ object_page }}">
-                      {{ o.id_user.get_full_name }}
+                      {{ o.exam_date }}
+                    </a>  
+                  </td>
+
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.id_problem.name }}
                     </a>  
                   </td>
 

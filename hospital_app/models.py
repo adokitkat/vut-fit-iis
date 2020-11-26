@@ -103,7 +103,7 @@ class Ticket(models.Model):
   date_modified = models.DateTimeField(auto_now=True)
   date_closed   = models.DateTimeField(blank=True, null=True)
   
-  id_user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Patient')
+  #id_user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Patient')
   id_doctor  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Doctor')
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE, blank=True, null=True)
 
@@ -121,7 +121,7 @@ class HealthRecord(models.Model):
   date_closed   = models.DateTimeField(blank=True, null=True)
   
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
-  id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
+  #id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
   def __str__(self): # TODO: Toto asi zmenit
     return 'PATIENT: ' + self.id_problem.id_user.get_full_name()  + ', PROBLEM: ' + self.id_problem.name + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]

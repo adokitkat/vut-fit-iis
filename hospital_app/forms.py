@@ -63,23 +63,21 @@ class TicketCreationForm(forms.ModelForm):
 
   class Meta:
     model = Ticket
-    fields = ['status', 'description', 'exam_date', 'id_user', 'id_doctor']
+    fields = ['status', 'description', 'exam_date', 'id_doctor', 'id_problem']
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    patients = CustomUser.objects.filter(role="P")
     doctors = CustomUser.objects.filter(role="D")
-
+    problems = Problem.objects.all()
     """
     instance = kwargs.get("instance")
     if instance:
       if instance.id_user:
         pass
     """
-    self.fields['id_user'].queryset = patients
     self.fields['id_doctor'].queryset = doctors
-
+    self.fields['id_problem'].queryset = problems
 
 class TicketChangeForm(forms.ModelForm):
 
@@ -103,7 +101,7 @@ class TicketChangeForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    problems = CustomUser.objects.all()#filter(pk=self.fields['id_user'].id)
+    problems = Problem.objects.all()#filter(pk=self.fields['id_user'].id)
     doctors = CustomUser.objects.filter(role="D")
 
     """ 
@@ -120,16 +118,16 @@ class HealthRecordCreationForm(forms.ModelForm):
 
   class Meta:
     model = HealthRecord
-    fields = ['comment', 'id_problem', 'id_ticket']
+    fields = ['comment', 'id_problem',]
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
     problems = Problem.objects.all()
-    tickets = Ticket.objects.all()
+    #tickets = Ticket.objects.all()
 
     self.fields['id_problem'].queryset = problems
-    self.fields['id_ticket'].queryset = tickets
+    #self.fields['id_ticket'].queryset = tickets
 
 
 class HealthRecordChangeForm(forms.ModelForm):
@@ -148,10 +146,10 @@ class HealthRecordChangeForm(forms.ModelForm):
     super().__init__(*args, **kwargs)
 
     problems = Problem.objects.all()#filter(pk=self.fields['id_user'].id)
-    tickets = Tickets.objects.all()
+    #tickets = Tickets.objects.all()
 
     self.fields['id_problem'].queryset = problems
-    self.fields['id_ticket'].queryset = tickets
+    #self.fields['id_ticket'].queryset = tickets
 
 class ProblemCreationForm(forms.ModelForm):
 

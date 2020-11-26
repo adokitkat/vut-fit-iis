@@ -42,11 +42,14 @@ def superuser(request):
 
 @login_required
 def index(request):
-    context = {
-        'index_active': True,
-        }
+    o = get_object_or_404(CustomUser, pk=request.user.id)
 
-    return render(request, 'hospital_app/index.html', context)
+    context = {
+        'Object': o,
+        'profile_active': True,
+    }
+
+    return render(request, 'hospital_app/user/profile.html', context)
 
 
 class UsersView(ListView):
@@ -93,8 +96,18 @@ class TicketsView(ListView):
     def get_queryset(self, model=model):
         query = self.request.GET.get('search')
         filter_field = self.request.GET.get('filter_field')
-        
-        return model.objects.all()
+
+        objects = model.objects.all()
+
+        if self.request.user.is_patient(): # If user is patient he sees only his tickets
+            problems = Problem.objects.filter(id_user=self.request.user.id)
+            result = objects.filter(id_problem__in=[o.id for o in problems])
+        elif self.request.user.is_doctor():
+            result = objects.filter(id_doctor=self.request.user.id)
+        else:
+            result = objects
+
+        return result
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -115,7 +128,17 @@ class ProblemsView(ListView):
         query = self.request.GET.get('search')
         filter_field = self.request.GET.get('filter_field')
 
-        return model.objects.all()
+        objects = model.objects.all()
+
+        if self.request.user.is_patient(): # If user is patient he sees only his problems
+            result = objects.filter(id_user=self.request.user.id)
+        elif self.request.user.is_doctor():
+            tickets = Ticket.objects.filter(id_doctor=self.request.user.id)
+            result = objects.filter(id__in=[o.id_problem.id for o in tickets])
+        else:
+            result = objects
+
+        return result
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -136,7 +159,21 @@ class HealthRecordsView(ListView):
         query = self.request.GET.get('search')
         filter_field = self.request.GET.get('filter_field')
 
-        return model.objects.all()
+        objects = model.objects.all()
+
+        if self.request.user.is_patient(): # If user is patient he sees only his health records
+            problems = Problem.objects.filter(id_user=self.request.user.id)
+            result = objects.filter(id_problem__in=[o.id for o in problems])
+
+        elif self.request.user.is_doctor():
+            tickets = Ticket.objects.filter(id_doctor=self.request.user.id)
+            problems = Problem.objects.filter(id__in=[o.id_problem.id for o in tickets])
+            result = objects.filter(id_problem__in=[o.id for o in problems])
+
+        else:
+            result = objects
+
+        return result
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -239,10 +276,10 @@ def health_record_add(request):
 
     context = {
         'page_title': 'Add health record',
-        'ticket_form': health_record,
+        'health_record_form': health_record,
         }
 
-    return render(request, 'hospital_app/ticket/health_record_form.html', context)
+    return render(request, 'hospital_app/health_record/health_record_form.html', context)
     
 @login_required
 def health_record_change(request, o_id):
@@ -257,10 +294,10 @@ def health_record_change(request, o_id):
 
     context = {
         'page_title': 'Change health record',
-        'ticket_form': health_record_form,
+        'health_record_form': health_record_form,
         }
 
-    return render(request, 'hospital_app/ticket/health_record_form.html', context)
+    return render(request, 'hospital_app/health_record/health_record_form.html', context)
 
 @login_required
 def problem_add(request):

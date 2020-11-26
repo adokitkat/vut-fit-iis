@@ -19,8 +19,10 @@
             <tr>
               <th scope="col">#</th>
               <th scope="col">Patient name</th>
-              <th scope="col">Problem state</th>
-              <th scope="col">Problem description</th>
+              <th scope="col">State</th>
+              <th scope="col">Description</th>
+              <th scope="col">Modified</th>
+              <th scope="col">Created</th>
             </tr>
           </thead>
           <tbody>
@@ -54,6 +56,18 @@
                     </a>  
                   </td>
 
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.date_modified }}
+                    </a> 
+                  </td>
+
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.date_created }}
+                    </a> 
+                  </td>
+
                 </tr>
               {% endif %}
 
@@ -62,7 +76,7 @@
        </table>
      </div>
    {% else %}
-     <h2 class="text-center">There are no users...</h2>
+     <h2 class="text-center">There are no problems...</h2>
    {% endif %}
 
   {% endif %}

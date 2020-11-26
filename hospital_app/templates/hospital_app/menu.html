@@ -1,5 +1,3 @@
-{% url 'profile' user.id as current_user_profile %}
-
 {% load crispy_forms_tags %}
 
 {% if user.is_authenticated %}
@@ -13,7 +11,7 @@
     <div class="collapse navbar-collapse flex-column my-mt-2" id="navbarToggler">
 
       <div class="container-fluid text-center rounded mb-2 {% if profile_active %}active bg-primary{% else %}bg-info{% endif %}">
-        <a class="nav-link text-light" href="{{ current_user_profile }}">
+        <a class="nav-link text-light" href="{% url 'index' %}">
           <h6 class="mt-2 font-weight-bold" style="font-size: 1.1rem;">{{ user.get_short_name }}</h6>
           <h6 class="font-weight-light" style="font-size: 0.9rem;">{{ user.get_role }}</h6>
         </a>
@@ -28,10 +26,6 @@
           </li>
 
         {% endif %}
-
-        <li class="nav-item mb-1" >
-          <a class="nav-link text-light p-auto {% if index_active %}active{% endif %}" href="{% url 'index' %}">Home{% if index_active %} <span class="sr-only">(current)</span>{% endif %}</a>
-        </li>
 
         {% if user.is_doctor or user.is_admin or user.is_superuser %} <!-- FIXME: if not user.is_patient -->
 
@@ -57,7 +51,7 @@
 
         {% endif %}
 
-        {% if user %} <!-- FIXME: if not user.is_patient -->
+        {% if not user.is_patient %} <!-- FIXME: if not user.is_patient -->
 
           <li class="nav-item mb-1">
             <a class="nav-link text-light {% if users_active %}active{% endif %}" href="{% url 'users' %}">Users{% if users_active %} <span class="sr-only">(current)</span>{% endif %}</a>
