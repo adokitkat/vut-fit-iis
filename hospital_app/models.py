@@ -110,8 +110,9 @@ class Ticket(models.Model):
   def get_status(self):
     return str(self.Status(self.status).label)
 
-  def __str__(self): # TODO: Toto asi zmenit
-    return 'PATIENT: ' + self.id_user.get_full_name() + ', DOCTOR: '  + self.id_doctor.get_full_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
+  #def __str__(self): # TODO: Toto asi zmenit
+    
+    #return 'PATIENT: ' + self.id_problem.id_user.get_full_name() + ', DOCTOR: '  + self.id_doctor.get_full_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
 
 class HealthRecord(models.Model):
   comment = models.TextField(blank=True)

@@ -124,11 +124,7 @@ class HealthRecordCreationForm(forms.ModelForm):
     super().__init__(*args, **kwargs)
 
     problems = Problem.objects.all()
-    #tickets = Ticket.objects.all()
-
     self.fields['id_problem'].queryset = problems
-    #self.fields['id_ticket'].queryset = tickets
-
 
 class HealthRecordChangeForm(forms.ModelForm):
 

@@ -133,8 +133,14 @@ class ProblemsView(ListView):
         if self.request.user.is_patient(): # If user is patient he sees only his problems
             result = objects.filter(id_user=self.request.user.id)
         elif self.request.user.is_doctor():
+            """FIXME:
             tickets = Ticket.objects.filter(id_doctor=self.request.user.id)
-            result = objects.filter(id__in=[o.id_problem.id for o in tickets])
+            problems = [o.id_problem for o in tickets]
+            # [o.id for o in problems if o is not None]
+            result = objects.filter(id__in=[o.id_problem.id for o in tickets if o.id_problem and o.id_problem.id])
+            """
+            return objects
+            
         else:
             result = objects
 
@@ -166,10 +172,12 @@ class HealthRecordsView(ListView):
             result = objects.filter(id_problem__in=[o.id for o in problems])
 
         elif self.request.user.is_doctor():
+            """FIXME:
             tickets = Ticket.objects.filter(id_doctor=self.request.user.id)
             problems = Problem.objects.filter(id__in=[o.id_problem.id for o in tickets])
             result = objects.filter(id_problem__in=[o.id for o in problems])
-
+            """
+            result = objects
         else:
             result = objects
 
