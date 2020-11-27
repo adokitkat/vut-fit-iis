@@ -21,8 +21,8 @@
               <th scope="col">Patient name</th>
               <th scope="col">State</th>
               <th scope="col">Description</th>
-              <th scope="col">Modified</th>
               <th scope="col">Created</th>
+              <th scope="col">Modified</th>
             </tr>
           </thead>
           <tbody>
@@ -58,13 +58,13 @@
 
                   <td>
                     <a href="{{ object_page }}">
-                      {{ o.date_modified }}
+                      {{ o.date_created }}
                     </a> 
                   </td>
 
                   <td>
                     <a href="{{ object_page }}">
-                      {{ o.date_created }}
+                      {{ o.date_modified}}
                     </a> 
                   </td>
 

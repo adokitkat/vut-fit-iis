@@ -21,6 +21,7 @@
               <th scope="col">Patient name</th>
               <th scope="col">Problem name</th>
               <th scope="col">Ticket description</th>
+              <th scope="col">Comment</th>
             </tr>
           </thead>
           <tbody>
@@ -51,6 +52,12 @@
                   <td>
                     <a href="{{ object_page }}">
                       {{ o.id_ticket.description }}
+                    </a>  
+                  </td>
+
+                  <td>
+                    <a href="{{ object_page }}">
+                      {{ o.comment }}
                     </a>  
                   </td>
 
