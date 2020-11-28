@@ -21,7 +21,7 @@
         {% block menu %}{% endblock %}
         
 
-        <div class=" col-xl col-lg col-md col-sm col-12 p-2">
+        <div class="col-lg-10 col-sm-9 col-12 p-2">
 
     {% endif %}
 
@@ -41,14 +41,17 @@
     <script src="https://code.jquery.com/jquery-3.5.1.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
     <script>
-
       //function inserts form into modal template and changes url according to action
       var url_backup;
       $('.modal-button').on('click', function(e) {
         var button = $(this);
         var modal = $('#modalForm');
         modal.find('.modal-content').load(button.data("remote"));
-        url_backup = window.location.pathname; //FIXME: to edit wrong
+        
+        if(button[0].id != "editButton"){
+          url_backup = window.location.pathname;
+        }
+        
         //TODO: ADD if TO CHECK IF ACTION IS add OR edit >> replaceState(null,null,'obj.id/edit')
         if(button[0].id == "addButton"){
           history.pushState(null,null, 'add/');
@@ -67,10 +70,12 @@
         window.location.pathname = url_backup;
       });
 
-      $('#modalForm').modal('handleUpdate');
-      
-      
+      $('.close').click(function() {
+        $('#modalForm').modal('hide');
+        window.location.pathname = url_backup;
+      });
 
+      $('#modalForm').modal('handleUpdate');
     </script>
   </body>
 </html>

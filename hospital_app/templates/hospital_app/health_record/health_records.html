@@ -39,7 +39,7 @@
                   </th>
                   
                   <td>
-                 <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_user.get_full_name }}
                     </a>  
                   </td>
@@ -65,8 +65,8 @@
                 </tr>
               {% endif %}
 
-            {% block modal %}{% include "hospital_app/modal_window.html" %}{% endblock %}
             {% endfor %}
+            {% include "hospital_app/modal_window.html" %}
           </tbody>
        </table>
      </div>

@@ -8,11 +8,21 @@
 
     {% if Object %}
 
-      <h2>{{ Object.name }}</h2>
+      <!-- HEADER -->    
+      <div class="modal-header">
+        <h5 class="modal-title" id="title-label">{{ page_title }}</h5>
+        <button type="button" class="close" data-dimiss="modal" aria-label="Close">&times;</button>
+      </div>
 
-      <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'problem_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
+      <!-- BODY -->
+      <div class="modal-body">
+        <h2>{{ Object.name }}</h2>
+      </div>
 
-      {% block modal %}{% include "hospital_app/modal_window.html" %}{% endblock %}
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'problem_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
+      </div>
 
     {% endif %}
 
