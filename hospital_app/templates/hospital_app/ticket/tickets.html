@@ -35,14 +35,14 @@
                 <tr>
                 
                   <th scope="row">
-                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id }}
                     </a> 
                   </th>
 
                   {% if not user.is_patient %}
                   <td>
-                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_problem.id_user.get_full_name }}
                     </a>  
                   </td>
@@ -50,32 +50,32 @@
 
                   {% if not user.is_doctor %}
                   <td>
-                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_doctor.get_full_name }}
                     </a>  
                   </td>
                   {% endif %}
                   
                   <td>
-                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.exam_date }}
                     </a>  
                   </td>
 
                   <td>
-                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_problem.name }}
                     </a>  
                   </td>
 
                   <td>
-                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.get_status }}
                     </a>  
                   </td>
                   
                   <td>
-                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.description }}
                     </a>  
                   </td>

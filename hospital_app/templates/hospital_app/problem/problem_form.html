@@ -14,7 +14,7 @@
 
   <!-- BODY -->
   <div class="modal-body">
-    <form id="modal-form" method="post">
+    <form id="postForm" method="post">
       {% csrf_token %}
       {{ problem_form|crispy }}
     </form>
@@ -22,7 +22,7 @@
 
   <!-- FOOTER -->
   <div class="modal-footer">
-    <button type="submit" class="btn btn-success" form="modal-form">Save</button>
+    <button type="submit" id="submitButton" class="btn btn-success" form="postForm">Save</button>
   </div>
 
   {% endif %}

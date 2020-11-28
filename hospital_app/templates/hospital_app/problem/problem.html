@@ -10,7 +10,9 @@
 
       <h2>{{ Object.name }}</h2>
 
-      <a href="{% url 'problem_change' Object.id %}" class="btn btn-primary active" role="button" aria-pressed="true">Edit</a>
+      <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'problem_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
+
+      {% block modal %}{% include "hospital_app/modal_window.html" %}{% endblock %}
 
     {% endif %}
 

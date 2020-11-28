@@ -10,7 +10,7 @@
 
       <h2>{{ Object.comment }}</h2>
 
-      <a href="{% url 'health_record_change' Object.id %}" class="btn btn-primary active" role="button" aria-pressed="true">Edit</a>
+      <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'health_record_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
 
     {% endif %}
 
