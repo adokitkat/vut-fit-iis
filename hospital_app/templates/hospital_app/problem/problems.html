@@ -1,4 +1,5 @@
 {% extends "hospital_app/base.html" %}
+{% block menu %}{% include "hospital_app/menu.html" %}{% endblock %}
 
 {% load crispy_forms_tags %}
 
@@ -33,37 +34,37 @@
                 <tr>
                 
                   <th scope="row">
-                    <a href="{{ object_page }}">
+                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id }}
                     </a> 
                   </th>
                   
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_user.get_full_name }}
                     </a>  
                   </td>
 
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.get_state }}
                     </a>  
                   </td>
                   
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.description }}
                     </a>  
                   </td>
 
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.date_created }}
                     </a> 
                   </td>
 
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.date_modified}}
                     </a> 
                   </td>
@@ -71,8 +72,9 @@
                 </tr>
               {% endif %}
 
-           {% endfor %}
-           </tbody>
+            {% block modal %}{% include "hospital_app/modal_window.html" %}{% endblock %}
+            {% endfor %}
+          </tbody>
        </table>
      </div>
    {% else %}
