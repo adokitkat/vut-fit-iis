@@ -11,17 +11,17 @@ urlpatterns = [
     path('user/all/', login_required(not_patient(views.UsersView.as_view(), '', '/')), name='users'), # redirects unauthorizet (Patients) to index
     path('user/<int:o_id>/', views.profile, name='profile'),
 
-    path('ticket/all/', login_required(views.TicketsView.as_view(), '', '/'), name='tickets'),
+    path('ticket/', login_required(views.TicketsView.as_view(), '', '/'), name='tickets'),
     path('ticket/<int:o_id>/', views.ticket, name='ticket'),
     path('ticket/add/', views.ticket_add, name='ticket_add'),
     path('ticket/<int:o_id>/edit/', views.ticket_change, name='ticket_change'),
 
-    path('problem/all/', login_required(views.ProblemsView.as_view(), '', '/'), name='problems'),
+    path('problem/', login_required(views.ProblemsView.as_view(), '', '/'), name='problems'),
     path('problem/<int:o_id>/', views.problem, name='problem'),
     path('problem/add/', views.problem_add, name='problem_add'),
     path('problem/<int:o_id>/edit/', views.problem_change, name='problem_change'),
     
-    path('health-record/all/', login_required(views.HealthRecordsView.as_view(), '', '/'), name='health_records'),
+    path('health-record/', login_required(views.HealthRecordsView.as_view(), '', '/'), name='health_records'),
     path('health-record/<int:o_id>/', views.health_record, name='health_record'),
     path('health-record/add/', views.health_record_add, name='health_record_add'),
     path('health-record/<int:o_id>/edit/', views.health_record_change, name='health_record_change'),

@@ -1,4 +1,5 @@
 {% extends "hospital_app/base.html" %}
+{% block menu %}{% include "hospital_app/menu.html" %}{% endblock %}
 
 {% load crispy_forms_tags %}
 
@@ -34,14 +35,14 @@
                 <tr>
                 
                   <th scope="row">
-                    <a href="{{ object_page }}">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id }}
                     </a> 
                   </th>
 
                   {% if not user.is_patient %}
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_problem.id_user.get_full_name }}
                     </a>  
                   </td>
@@ -49,41 +50,42 @@
 
                   {% if not user.is_doctor %}
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_doctor.get_full_name }}
                     </a>  
                   </td>
                   {% endif %}
                   
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.exam_date }}
                     </a>  
                   </td>
 
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.id_problem.name }}
                     </a>  
                   </td>
 
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.get_status }}
                     </a>  
                   </td>
                   
                   <td>
-                    <a href="{{ object_page }}">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.description }}
                     </a>  
                   </td>
-
+                  
                 </tr>
               {% endif %}
-
-           {% endfor %}
-           </tbody>
+              
+            {% endfor %}
+            {% include "hospital_app/modal_window.html" %}
+            </tbody>
        </table>
      </div>
    {% else %}

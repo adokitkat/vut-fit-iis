@@ -4,7 +4,7 @@
 }
 
 /* Navbar hamburger button focus outline disable */
-#navbar_button:focus {
+#navbar_button:focus, .close:focus {
     outline: none;
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
@@ -46,3 +46,4 @@
         margin-top: .5rem!important;
     }
 }
+
