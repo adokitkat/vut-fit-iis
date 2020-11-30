@@ -67,6 +67,10 @@
           {% endif %} 
           
         <li class="nav-item mb-1 mt-auto">
+          <a class="nav-link text-light p-auto bg-secondary" href="{% url 'user_change' user.id %}">Edit profile</a>
+        </li>
+
+        <li class="nav-item mb-1">
           <a class="nav-link text-light p-auto bg-warning" href="{% url 'password_change' %}">Change password</a>
         </li>
       

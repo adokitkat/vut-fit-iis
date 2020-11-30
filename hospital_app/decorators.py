@@ -35,7 +35,7 @@ def patient_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, log
     redirects to the log-in page if necessary.
     '''
     actual_decorator = user_passes_test(
-        lambda u: u.is_active and u.is_patient(),
+        lambda u: u.is_active and (u.is_patient() or u.is_admin()),
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )
@@ -63,7 +63,7 @@ def doctor_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, logi
     redirects to the log-in page if necessary.
     '''
     actual_decorator = user_passes_test(
-        lambda u: u.is_active and u.is_doctor(),
+        lambda u: u.is_active and (u.is_doctor() or u.is_admin()),
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )
@@ -91,7 +91,7 @@ def insurance_worker_required(function=None, redirect_field_name=REDIRECT_FIELD_
     redirects to the log-in page if necessary.
     '''
     actual_decorator = user_passes_test(
-        lambda u: u.is_active and u.is_insurance_worker(),
+        lambda u: u.is_active and (u.is_insurance_worker() or u.is_admin()),
         login_url=login_url,
         redirect_field_name=redirect_field_name
     )
