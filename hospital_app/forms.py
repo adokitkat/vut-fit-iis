@@ -37,8 +37,16 @@ class UserFilterForm(forms.Form):
       ('D', 'Doctors'),
       ('A', 'Admins'),
     )
+  
+  TABLE_CHOICES = ( #FIXME: not working
+    ('all', 'All'),
+    ('I', 'ID'),
+    ('N', 'Name'),
+    ('E', 'E-mail'),
+  )
   search = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search'}),)
   filter_field = forms.ChoiceField(choices=FILTER_CHOICES, label="")
+  table_field = forms.ChoiceField(choices=TABLE_CHOICES, label="")
 
 
 class SuperuserRoleChangeForm(UserChangeForm):

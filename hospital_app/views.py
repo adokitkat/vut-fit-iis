@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import ListView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.decorators import login_required, permission_required
+from django.db.models import Q
 
 from .decorators import *
 from .forms import *
@@ -67,23 +68,23 @@ class UsersView(ListView):
         else: 
             result_filter_field = CustomUser.objects.filter(role=filter_field)
         
-        if query is None or query == "":
-            result = result_filter_field
-        else:  
-            if query.isdigit():
-                result = result_filter_field.filter(pk=query)
-            else:
-                result = result_filter_field.filter(first_name__unaccent__icontains=query)# First name
-                result |= result_filter_field.filter(last_name__unaccent__icontains=query)# Last name
-                result |= result_filter_field.filter(email__icontains=query)              # Email
-
-        return result
+        if query:
+            result_filter_field = result_filter_field.filter (
+                Q(tel_number__icontains=query) | 
+                Q(email__icontains=query) |
+                Q(first_name__icontains=query) |
+                Q(last_name__icontains=query) |
+                Q(pk__icontains=query)
+            )
+        
+        return result_filter_field
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
         context['search_form'] = UserFilterForm(initial={
             'search': self.request.GET.get('search', ''),
             'filter_field': self.request.GET.get('filter_field', ''),
+            'table_field': self.request.GET.get('table_field', ''),
         })
         context['users_active'] = True
 
@@ -110,31 +111,18 @@ class TicketsView(ListView):
 
         result_filter_field = result_all
 
-        if query is None or query == "":
-            result = result_filter_field
-        else:  
-            if query.isdigit():
-                result = result_filter_field.filter(pk=query)
-            else:
-                result_user = CustomUser.objects.filter(first_name__unaccent__icontains=query)
-                result_user |= CustomUser.objects.filter(last_name__unaccent__icontains=query)
-                user_ids = [o.id for o in result_user]
+        if query:
+            result_filter_field = result_filter_field.filter (
+                Q(description__icontains=query) | 
+                Q(id_problem__name__icontains=query) |
+                Q(id_problem__id_user__first_name__icontains=query) |
+                Q(id_problem__id_user__last_name__icontains=query) |
+                Q(id_doctor__first_name__icontains=query) |
+                Q(id_doctor__last_name__icontains=query) |
+                Q(pk__icontains=query)
+            )
 
-                tickets_filtered = [o for o in result_filter_field if o.id_problem is not None]
-                problem_id_filtered = [o.id_problem.id for o in tickets_filtered]
-                problems = Problem.objects.filter(pk__in=problem_id_filtered)
-                users_problem_ids = [o.id for o in problems if o.id_user.id in user_ids]
-                
-                problem_names = problems.filter(name__unaccent__icontains=query)
-                problem_name_ids = [o.id for o in problem_names]
-
-                problem_ids = users_problem_ids + problem_name_ids
-
-                result = result_filter_field.filter(id_doctor__in=user_ids)                 # Doctor's name
-                result |= result_filter_field.filter(id_problem__in=problem_ids)            # Patients & problem's name
-                result |= result_filter_field.filter(description__unaccent__icontains=query)# Description
-
-        return result
+        return result_filter_field
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -168,31 +156,16 @@ class ProblemsView(ListView):
 
         result_filter_field = result_all
 
-        if query is None or query == "":
-            result = result_filter_field
-        else:  
-            if query.isdigit():
-                result = result_filter_field.filter(pk=query)
-            else:
-                result_user = CustomUser.objects.filter(first_name__unaccent__icontains=query)
-                result_user |= CustomUser.objects.filter(last_name__unaccent__icontains=query)
-                user_ids = [o.id for o in result_user]
-                
-                user_ids_filtered = [o.id_user.id for o in result_filter_field if o.id_user.id in user_ids] 
-
-                problem_result_ids = [o.id for o in result_filter_field]
-
-                tickets = Ticket.objects.filter(id_doctor__in=user_ids)
-                problem_ids = [o.id_problem.id for o in tickets if o.id_problem is not None]
-
-                doctor_ids_pks = [o for o in problem_ids if o in problem_result_ids]
-
-                result = result_filter_field.filter(id_user__in=user_ids_filtered)          # Patient's name
-                result |= result_filter_field.filter(description__unaccent__icontains=query)# Description
-                result |= result_filter_field.filter(name__unaccent__icontains=query)       # Name
-                result |= result_filter_field.filter(pk__in=doctor_ids_pks)                 # Doctor's name
-
-        return result
+        if query:
+            result_filter_field = result_filter_field.filter (
+                Q(description__icontains=query) | 
+                Q(name__icontains=query) |
+                Q(id_user__first_name__icontains=query) |
+                Q(id_user__last_name__icontains=query) |
+                Q(pk__icontains=query)
+            )
+        
+        return result_filter_field
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(*args, **kwargs)
@@ -225,6 +198,15 @@ class HealthRecordsView(ListView):
             result = objects.filter(id_problem__in=[o.id_problem.id for o in tickets_filtered])
         else:
             result = objects
+
+        if query:
+            result = result.filter (
+                Q(comment__icontains=query) | 
+                Q(id_problem__name__icontains=query) |
+                Q(id_problem__id_user__first_name__icontains=query) |
+                Q(id_problem__id_user__last_name__icontains=query) |
+                Q(pk__icontains=query)
+            )
 
         return result
 
@@ -273,6 +255,18 @@ class FilesView(ListView):
         # search
 
         result = result_filter_field
+            
+        if query:
+            result = result.filter (
+                Q(name__icontains=query) | 
+                Q(description__icontains=query) |
+                Q(id_health_record__comment__icontains=query) |  
+                Q(id_health_record__id_problem__name__icontains=query) |
+                Q(id_health_record__id_problem__id_user__first_name__icontains=query) |
+                Q(id_health_record__id_problem__id_user__last_name__icontains=query) |
+                Q(id_health_record__pk__icontains=query) |
+                Q(pk__icontains=query)
+        )
 
         return result
 
@@ -309,6 +303,12 @@ class MedicalActsView(ListView):
         """
         result = objects
 
+        if query:
+            result = result.filter (
+                Q(description__icontains=query) |
+                Q(pk__icontains=query)
+        )
+
         return result
 
     def get_context_data(self, *args, **kwargs):
@@ -343,6 +343,12 @@ class MedicalCompensationView(ListView):
         else:
         """
         result = objects
+
+        if query:
+            result = result.filter (
+                Q(id_medical_act__description__icontains=query) |
+                Q(pk__icontains=query)
+        )
 
         return result
 
