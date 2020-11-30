@@ -25,13 +25,22 @@
           </div>
         </div>
 
+        {% if not user.is_patient %}
+        {% if not Object.covered %}
         <!-- FOOTER -->
         <div class="modal-footer">
-          {% if not user.is_patient %}
+            {% if not Object.id_medical_act.coverable %}
+            <p> Not coverable by the Insurance co. </p>
+            {% else %}
             <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'medical_compensation_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
+            {% endif %}
+            {% if not user.is_insurance_worker %}
             <a id="deleteButton" class="btn btn-danger modal-button" role="button" aria-pressed="true" href="{% url 'medical_compensation_delete' Object.id %}">Delete</a>
-        {% endif %}
+            {% endif %}
         </div>
+        {% endif %}
+        {% endif %}
+
       </div>
     {% endif %}
 

@@ -17,7 +17,7 @@
       <form id="postForm" method="post">
         {% if user.is_insurance_worker or user.is_admin %}
           {% csrf_token %}
-          {{ mc_form|crispy }}
+          {{ mc_form.covered|as_crispy_field }}
         {% else %}
           {% csrf_token %}
           {{ mc_form.id_medical_act|as_crispy_field }}

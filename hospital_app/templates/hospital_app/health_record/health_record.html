@@ -8,6 +8,9 @@
 
     {% if Object %}
 
+      <div class="col-lg-12 col-sm-12 col-12">
+
+        <!-- HEADER -->   
         <div class="modal-header">
           <ul class="list-inline m-0">
             <li class="list-inline-item modal-title h5" id="title-label"> Health record no. {{ Object.id }} </li> 
@@ -61,6 +64,14 @@
                 <ul class="p-1 list-inline m-0">
                   <li class="list-inline-item font-weight-bold">
                     <div class="card" style="width: 75px; border: 0px;">
+                      Patient:
+                    </div>
+                  </li>
+                  <li class="list-inline-item">{{ Object.id_problem.id_user.get_full_name }}</li>
+                </ul>
+                <ul class="p-1 list-inline m-0">
+                  <li class="list-inline-item font-weight-bold">
+                    <div class="card" style="width: 75px; border: 0px;">
                       Problem:
                     </div>
                   </li>
@@ -93,11 +104,14 @@
           
         </div>
 
+        {% if not user.is_patient %}
         <!-- FOOTER -->
         <div class="modal-footer">
           <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'health_record_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
         </div>
+        {% endif %}
 
+      </div>
     {% endif %}
 
   {% endif %}

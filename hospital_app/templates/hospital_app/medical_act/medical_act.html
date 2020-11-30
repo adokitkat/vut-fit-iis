@@ -52,13 +52,16 @@
           </div>
         </div>
 
+        {% if not user.is_patient %}
         <!-- FOOTER -->
         <div class="modal-footer">
           {% if user.is_doctor or user.is_admin %}
             <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'medical_act_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
             <a id="deleteButton" class="btn btn-danger modal-button" role="button" aria-pressed="true" href="{% url 'medical_act_delete' Object.id %}">Delete</a>
-        {% endif %}
+          {% endif %}
         </div>
+        {% endif %}
+
       </div>
     {% endif %}
 
