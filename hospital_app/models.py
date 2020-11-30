@@ -88,6 +88,25 @@ class Problem(models.Model):
   def __str__(self):
     return 'PROBLEM: ' + self.name + ', STATE: ' + self.state + ', PATIENT: ' + self.id_user.get_full_name() + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
 
+class MedicalAct(models.Model):
+  description = models.TextField(blank=False, null=False)
+  coverable = models.BooleanField(blank=False, null=False, default=False)
+
+  def __str__(self):
+    return 'Medical act: ' + self.description
+  
+class MedicalCompensation(models.Model):
+  covered = models.BooleanField(blank=False, null=False, default=False)
+  linked = models.BooleanField(blank=False, null=False, default=False)
+  
+  id_medical_act = models.ForeignKey(MedicalAct, on_delete=models.CASCADE)
+
+  def get_description(self):
+    return self.id_medical_act.description + ' (' + str(self.id) + ')'
+
+  def __str__(self):
+    return 'Compensation for: ' + self.id_medical_act.description + ' (' + str(self.id) + ')'
+
 class Ticket(models.Model):
   class Status(models.TextChoices):
     INWAIT = 'Y', _('Inwaiting') # Yearning to happed, my lord
@@ -105,13 +124,13 @@ class Ticket(models.Model):
   
   #id_user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Patient')
   id_doctor  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Doctor')
-  id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE, blank=True, null=True)
+  id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
+  id_medical_acts = models.ManyToManyField(MedicalCompensation, blank=True)
 
   def get_status(self):
     return str(self.Status(self.status).label)
 
-  #def __str__(self): # TODO: Toto asi zmenit
-    
+  #def __str__(self): # TODO: Toto asi zmenit 
     #return 'PATIENT: ' + self.id_problem.id_user.get_full_name() + ', DOCTOR: '  + self.id_doctor.get_full_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
 
 class HealthRecord(models.Model):
@@ -122,7 +141,6 @@ class HealthRecord(models.Model):
   date_closed   = models.DateTimeField(blank=True, null=True)
   
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
-  #id_ticket  = models.ForeignKey(Ticket, on_delete=models.CASCADE)
 
   def __str__(self): # TODO: Toto asi zmenit
     return 'PATIENT: ' + self.id_problem.id_user.get_full_name()  + ', PROBLEM: ' + self.id_problem.name + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
@@ -138,10 +156,12 @@ class File(models.Model):
   description = models.TextField(blank=True)
 
   date_created  = models.DateTimeField(auto_now_add=True)
-  #date_modified = models.DateTimeField(auto_now=True)
-  date_closed   = models.DateTimeField(blank=True, null=True)
+  #date_closed   = models.DateTimeField(blank=True, null=True) #FIXME: nepotrebne?
   
   id_health_record = models.ForeignKey(HealthRecord, on_delete=models.CASCADE)
 
   def __str__(self):
     return 'NAME: ' + self.name + ', PATIENT: ' + self.id_health_record.id_problem.id_user.get_full_name() + ', CREATED: ' + str(self.date_created)[:-13] 
+
+  def is_img(self):
+    return self.file.name.endswith(('.jpg', 'jpeg', '.png', '.bmp'))

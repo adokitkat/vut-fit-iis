@@ -28,44 +28,44 @@
 
         {% endif %}
 
-        {% if not user.is_patient %}
-
+          {% if not user.is_patient %}
           <li class="nav-item mb-1">
             <a class="nav-link text-light {% if users_active %}active{% endif %}" href="{% url 'users' %}">Users{% if users_active %} <span class="sr-only">(current)</span>{% endif %}</a>
           </li>
-
-        {% endif %}        
-
-        {% if user.is_doctor or user.is_admin or user.is_superuser %}
+          {% endif %}        
 
           <li class="nav-item mb-1">
             <a class="nav-link text-light {% if problems_active %}active{% endif %}" href="{% url 'problems' %}">Problems{% if problems_active %} <span class="sr-only">(current)</span>{% endif %}</a>
           </li>
 
-        {% endif %}
-
-        {% if user.is_doctor or user.is_admin or user.is_superuser %}
 
           <li class="nav-item mb-1">
             <a class="nav-link text-light {% if tickets_active %}active{% endif %}" href="{% url 'tickets' %}">Tickets{% if tickets_active %} <span class="sr-only">(current)</span>{% endif %}</a>
           </li>
 
-        {% endif %}
 
-        {% if user.is_doctor or user.is_admin or user.is_superuser %}
-
-          <li class="nav-item mb-auto">
+          <li class="nav-item mb-1">
             <a class="nav-link text-light {% if hr_active %}active{% endif %}" href="{% url 'health_records' %}">Health records{% if hr_active %} <span class="sr-only">(current)</span>{% endif %}</a>
           </li>
-
-        {% endif %}
-
-        <!--
-        <li class="nav-item ">
-          <a class="nav-link disabled" tabindex="-1" aria-disabled="true" href="#">Disabled</a>
-        </li>
-        -->
-
+          
+          {% if user.is_doctor or user.is_admin %}
+          <li class="nav-item mb-1">
+            <a class="nav-link text-light {% if files_active %}active{% endif %}" href="{% url 'files' %}">Files{% if files_active %} <span class="sr-only">(current)</span>{% endif %}</a>
+          </li>
+          {% endif %}
+          
+          {% if user.is_insurance_worker or user.is_admin %}  
+          <li class="nav-item mb-1">
+            <a class="nav-link text-light {% if ma_active %}active{% endif %}" href="{% url 'medical_acts' %}">Medical acts{% if ma_active %} <span class="sr-only">(current)</span>{% endif %}</a>
+          </li>
+          {% endif %}  
+  
+          {% if not user.is_patient %}
+          <li class="nav-item mb-auto">
+            <a class="nav-link text-light {% if mc_active %}active{% endif %}" href="{% url 'medical_compensations' %}">Medical compensations{% if mc_active %} <span class="sr-only">(current)</span>{% endif %}</a>
+          </li>
+          {% endif %} 
+          
         <li class="nav-item mb-1 mt-2">
           <a class="nav-link text-light p-auto bg-warning" href="{% url 'password_change' %}">Change password</a>
         </li>

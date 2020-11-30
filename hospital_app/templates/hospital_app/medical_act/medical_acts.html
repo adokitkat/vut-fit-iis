@@ -1,0 +1,66 @@
+{% extends "hospital_app/base.html" %}
+{% block menu %}{% include "hospital_app/menu.html" %}{% endblock %}
+
+{% load crispy_forms_tags %}
+
+{% load static %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    {% url 'medical_act_add' as add_url %}
+    {% include "hospital_app/search_bar.html" with add_url=add_url %}
+    {% include "hospital_app/modal_window.html" %}
+
+    {% if Objects %}
+
+      <div class="table-responsive rounded my-table">
+        <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
+          <thead class="thead-dark">
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">Description</th>
+              <th scope="col">Compensatable</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for o in Objects %}
+              
+              {% if not user.is_admin and not o.is_admin or user.is_admin %}
+                {% url 'medical_act' o.id as object_page %}
+                <tr>
+                  
+                  <th scope="row">
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                      {{ o.id }}
+                    </a> 
+                  </th>
+
+                  <td>
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                      {{ o.description }}
+                    </a>  
+                  </td>
+
+                  <td>
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                      {{ o.coverable }}
+                    </a>  
+                  </td>
+
+                </tr>
+              {% endif %}
+
+            {% endfor %}
+            
+          </tbody>
+       </table>
+     </div>
+   {% else %}
+     <h2 class="text-center">There are no medical acts...</h2>
+   {% endif %}
+
+  {% endif %}
+
+{% endblock %}

@@ -11,17 +11,17 @@
 
     {% url 'health_record_add' as add_url %}
     {% include "hospital_app/search_bar.html" with add_url=add_url %}
+    {% include "hospital_app/modal_window.html" %}
 
     {% if Objects %}
 
-      <div class="table-responsive rounded">
+      <div class="table-responsive rounded my-table">
         <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
           <thead class="thead-dark">
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Patient name</th>
+              {% if not user.is_patient %}<th scope="col">Patient name</th>{% endif %}
               <th scope="col">Problem name</th>
-              <th scope="col">Ticket description</th>
               <th scope="col">Comment</th>
             </tr>
           </thead>
@@ -38,27 +38,23 @@
                     </a> 
                   </th>
                   
+                  {% if not user.is_patient %}
                   <td>
                     <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
-                      {{ o.id_user.get_full_name }}
+                      {{ o.id_problem.id_user.get_full_name }}
+                    </a>  
+                  </td>
+                  {% endif %}
+
+                  <td>
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                      {{ o.id_problem.name|truncatechars:50 }}
                     </a>  
                   </td>
 
                   <td>
                     <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
-                      {{ o.id_problem.name }}
-                    </a>  
-                  </td>
-                  
-                  <td>
-                   <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
-                      {{ o.id_ticket.description }}
-                    </a>  
-                  </td>
-
-                  <td>
-                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
-                      {{ o.comment }}
+                      {{ o.comment|truncatechars:100 }}
                     </a>  
                   </td>
 
@@ -66,7 +62,7 @@
               {% endif %}
 
             {% endfor %}
-            {% include "hospital_app/modal_window.html" %}
+            
           </tbody>
        </table>
      </div>

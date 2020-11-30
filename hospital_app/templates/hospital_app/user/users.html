@@ -21,9 +21,11 @@
       </div>
     </form>
 
+    {% include "hospital_app/modal_window.html" %}
+
     {% if Objects %}
 
-      <div class="table-responsive rounded">
+      <div class="table-responsive rounded my-table">
         <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
           <thead class="thead-dark">
             <tr>

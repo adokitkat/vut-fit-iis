@@ -1,3 +1,12 @@
+/* To make table scrollable inside */
+.table-max-height {
+    max-height: 92vh;
+}
+
+.my-table {
+    max-height: inherit;
+}
+
 /* Width of menu items */
 #navbar_ul {
     width: 100%;

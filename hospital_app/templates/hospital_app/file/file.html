@@ -1,0 +1,83 @@
+{% extends "hospital_app/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    {% if Object %}
+
+    <!-- HEADER -->    
+      <div class="modal-header">
+        <h5 class="modal-title" id="title-label">File no. {{ Object.id }}</h5>
+        <button type="button" class="close" data-dimiss="modal" aria-label="Close">&times;</button>
+      </div>
+
+      <!-- BODY -->
+      <div class="modal-body">
+        {% if Object.is_img %}
+        <img class="rounded mx-auto d-block img-fluid" src="{{ Object.file.url }}" />
+        {% else %}
+        <div class="text-center">
+          <a href="{{ Object.file.url }}">Link</a>
+        </div>
+        {% endif %}
+
+        <hr>
+
+        <!-- DATES -->
+          <div class="col-12 p-0">
+            <ul class="list-group-flush p-0 m-0">
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item font-weight-bold">
+                  <div class="card" style="width: 75px; border: 0px;">
+                    Created:
+                  </div>
+                </li>
+                <li class="list-inline-item">{{ Object.date_created }}</li>
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+              </ul>
+            </ul>
+          </div>
+
+          <div class="">
+            <ul class="list-group p-0 m-0" style="border: 0px;">
+              <li class="list-group-item pb-2 pt-0 pl-0" style="border: 0px;">
+                <ul class="p-1 list-inline m-0">
+                  <li class="list-inline-item font-weight-bold">
+                    <div class="card" style="width: 75px; border: 0px;">
+                      Patient:
+                    </div>
+                  </li>
+                  <li class="list-inline-item">{{ Object.id_health_record.id_problem.id_user.get_full_name }}</li>
+                </ul>
+              </li>
+              {% if Object.description %}
+              <div class="card">
+                <div class="card-header pl-1">
+                  <div class="m-0 font-weight-bold">Description:</div>
+                </div>
+                <div class="card-body">
+                  {{ Object.description }}
+                </div>
+              </div>
+              {% endif %}
+            </ul>
+          </div>
+
+      </div>
+
+      <!-- FOOTER -->
+      <div class="modal-footer">
+        {% if user.is_doctor or user.is_admin %}
+        <a id="deleteButton" class="btn btn-danger modal-button" role="button" aria-pressed="true" href="{% url 'file_delete' Object.id %}">Delete</a>
+        {% endif %}
+      </div>
+
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

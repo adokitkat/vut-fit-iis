@@ -9,13 +9,88 @@
     {% if Object %}
 
         <div class="modal-header">
-          <h5 class="modal-title" id="title-label">Health record no. {{ Object.id }}</h5>
+          <ul class="list-inline m-0">
+            <li class="list-inline-item modal-title h5" id="title-label"> Health record no. {{ Object.id }} </li> 
+            <!-- MAYBE FOR INSURANCE PAYMENT? 
+              <li class="list-inline-item font-weight-light">  {{ Object.get_state }} </li> 
+            -->
+          </ul>
           <button type="button" class="close" data-dimiss="modal" aria-label="Close">&times;</button>
         </div>
 
         <!-- BODY -->
         <div class="modal-body">
-          <h2>{{ Object.comment }}</h2>
+
+          <!-- DATES -->
+          <div class="col-12 p-0">
+            <ul class="list-group-flush p-0 m-0">
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item font-weight-bold">
+                  <div class="card" style="width: 75px; border: 0px;">
+                    Created:
+                  </div>
+                </li>
+                <li class="list-inline-item">{{ Object.date_created }}</li>
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item font-weight-bold">
+                  <div class="card" style="width: 75px; border: 0px;">
+                    Modified:
+                  </div>
+                </li>
+                <li class="list-inline-item">{{ Object.date_modified }}</li>
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item font-weight-bold" style="margin-right: 22px;">
+                  <div class="card" style="width: 75px; border: 0px;">
+                    Closed:
+                  </div>
+                </li>
+                {% if Object.date_closed %}
+                  <li class="list-inline-item">{{ Object.date_closed }}</li>
+                {% endif %}
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+              </ul>
+            </ul>
+          </div>
+
+          <div class="">
+            <ul class="list-group p-0 m-0" style="border: 0px;">
+              <li class="list-group-item pb-2 pt-0 pl-0" style="border: 0px;">
+                <ul class="p-1 list-inline m-0">
+                  <li class="list-inline-item font-weight-bold">
+                    <div class="card" style="width: 75px; border: 0px;">
+                      Problem:
+                    </div>
+                  </li>
+                  <li class="list-inline-item">{{ Object.id_problem.name }}</li>
+                </ul>
+                <!-- MAYBE TICKET??? -->
+                <!-- MAYBE FILES??? -->
+              </li>
+              <div class="card">
+                <div class="card-header pl-1">
+                  <div class="m-0 font-weight-bold">Comment:</div>
+                </div>
+                <div class="card-body">
+                  {{ Object.comment }}
+                </div>
+                <div class="card-footer p-1">
+                  {% for f in Files %}
+                    {% if f.is_img %}
+                      <img class="rounded mx-auto d-block img-fluid" src="{{ f.file.url }}" />
+                    {% else %}
+                      <div class="text-center">
+                      <a href="{{ f.file.url }}">{{ f.file }}</a>
+                      </div>
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </ul>
+          </div>
+          
         </div>
 
         <!-- FOOTER -->

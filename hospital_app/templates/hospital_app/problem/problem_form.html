@@ -6,24 +6,24 @@
 
   {% if user.is_authenticated %}
 
-  <!-- HEADER -->    
-  <div class="modal-header">
-    <h5 class="modal-title" id="title-label">{{ page_title }}</h5>
-    <button type="button" class="close" data-dimiss="modal" aria-label="Close">&times;</button>
-  </div>
+    <!-- HEADER -->    
+    <div class="modal-header">
+      <h5 class="modal-title" id="title-label">{{ page_title }}</h5>
+      <button type="button" class="close" data-dimiss="modal" aria-label="Close">&times;</button>
+    </div>
 
-  <!-- BODY -->
-  <div class="modal-body">
-    <form id="postForm" method="post">
-      {% csrf_token %}
-      {{ problem_form|crispy }}
-    </form>
-  </div>
+    <!-- BODY -->
+    <div class="modal-body">
+      <form id="postForm" method="post">
+        {% csrf_token %}
+        {{ problem_form|crispy }}
+      </form>
+    </div>
 
-  <!-- FOOTER -->
-  <div class="modal-footer">
-    <button type="submit" id="submitButton" class="btn btn-success" form="postForm">Save</button>
-  </div>
+    <!-- FOOTER -->
+    <div class="modal-footer">
+      <button type="submit" id="submitButton" class="btn btn-success" form="postForm">Save</button>
+    </div>
 
   {% endif %}
 

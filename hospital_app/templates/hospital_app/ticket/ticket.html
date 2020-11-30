@@ -8,22 +8,116 @@
 
     {% if Object %}
 
+      <div class="col-lg-12 col-sm-12 col-12">
         <!-- HEADER -->    
         <div class="modal-header">
-          <h5 class="modal-title" id="title-label">Ticket no. {{ Object.id }}</h5>
+          <ul class="list-inline m-0">
+            <li class="list-inline-item modal-title h5" id="title-label"> Ticket no. {{ Object.id }} </li> 
+            <li class="list-inline-item font-weight-light">  {{ Object.get_status }} </li> 
+          </ul>
           <button type="button" class="close" data-dimiss="modal" aria-label="Close">&times;</button>
         </div>
 
         <!-- BODY -->
         <div class="modal-body">
-          <h2>{{ Object.get_status }}</h2>
+
+          <!-- DATES -->
+          <div class="col-12 p-0">
+            <ul class="list-group-flush p-0 m-0">
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0">
+                <li class="h6 list-inline-item font-weight-bold">Examination date: </li>
+                {% if Object.exam_date %}
+                  <li class="h6 list-inline-item">{{ Object.exam_date }}</li>
+                {% endif %}
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item font-weight-bold">
+                  <div class="card" style="width: 75px; border: 0px;">
+                    Created:
+                  </div>
+                </li>
+                <li class="list-inline-item">{{ Object.date_created }}</li>
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item font-weight-bold">
+                  <div class="card" style="width: 75px; border: 0px;">
+                    Modified:
+                  </div>
+                </li>
+                <li class="list-inline-item">{{ Object.date_modified }}</li>
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item font-weight-bold" style="margin-right: 22px;">
+                  <div class="card" style="width: 75px; border: 0px;">
+                    Closed:
+                  </div>
+                </li>
+                {% if Object.date_closed %}
+                  <li class="list-inline-item">{{ Object.date_closed }}</li>
+                {% endif %}
+              </ul>
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+              </ul>
+            </ul>
+          </div>
+          
+          <div class="">
+            <ul class="list-group p-0 m-0" style="border: 0px;">
+              <li class="list-group-item pb-2 pt-0 pl-0" style="border: 0px;">
+                <ul class="p-1 list-inline m-0">
+                  <li class="list-inline-item font-weight-bold">
+                    <div class="card" style="width: 75px; border: 0px;">
+                      Patient:
+                    </div>
+                  </li>
+                  <li class="list-inline-item">{{ Object.id_problem.id_user.get_full_name }}</li>
+                </ul>
+                <ul class="p-1 list-inline m-0">
+                  <li class="list-inline-item font-weight-bold">
+                    <div class="card" style="width: 75px; border: 0px;">
+                      Doctor: 
+                    </div>
+                  </li>
+                  <li class="list-inline-item">{{ Object.id_doctor.get_full_name }}</li>
+                </ul>
+                <ul class="p-1 list-inline m-0">
+                  <li class="list-inline-item font-weight-bold">
+                    <div class="card" style="width: 75px; border: 0px;">
+                      Problem:
+                    </div>
+                  </li>
+                  <li class="list-inline-item">{{ Object.id_problem.name }}</li>
+                </ul>
+              </li>
+              <div class="card">
+                <div class="card-header pl-1">
+                  <div class="m-0 font-weight-bold">Description:</div>
+                </div>
+                <div class="card-body">
+                  {{ Object.description }}
+                </div>
+              </div>
+            </ul>
+          </div>
+
+          <div class="col-12 p-0">
+            <ul class="list-group-flush p-0 m-0">
+
+              {% for comp in Object.id_medical_acts.all %}
+              <ul class="li list-group-item pl-1 pt-1 pb-1 list-inline m-0 small">
+                <li class="list-inline-item">{{ comp }}</li>
+              </ul>
+              {% endfor %}
+
+            </ul>
+          </div>
         </div>
 
         <!-- FOOTER -->
         <div class="modal-footer">
           <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'ticket_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
         </div>
-
+     
     {% endif %}
 
   {% endif %}

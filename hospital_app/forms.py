@@ -55,21 +55,22 @@ class SuperuserRoleChangeForm(UserChangeForm):
 class TicketCreationForm(forms.ModelForm):
 
   #description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description...'}),)
-  exam_date   = forms.SplitDateTimeField(required=False, 
-                  widget=forms.SplitDateTimeWidget(
-                  date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
-                  time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
-                ))
+  exam_date = forms.SplitDateTimeField(required=False, 
+                widget=forms.SplitDateTimeWidget(
+                date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+                time_attrs={'class': 'form-control', 'placeholder': 'Time (hh:mm:ss)'},
+              ))
 
   class Meta:
     model = Ticket
-    fields = ['status', 'description', 'exam_date', 'id_doctor', 'id_problem']
+    fields = ['status', 'description', 'exam_date', 'id_doctor', 'id_problem', 'id_medical_acts']
 
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
     doctors = CustomUser.objects.filter(role="D")
     problems = Problem.objects.all()
+    medical_act_compensations = MedicalCompensation.objects.filter(linked=False)
     """
     instance = kwargs.get("instance")
     if instance:
@@ -78,6 +79,8 @@ class TicketCreationForm(forms.ModelForm):
     """
     self.fields['id_doctor'].queryset = doctors
     self.fields['id_problem'].queryset = problems
+    self.fields['id_medical_acts'].queryset = medical_act_compensations
+
 
 class TicketChangeForm(forms.ModelForm):
 
@@ -103,6 +106,7 @@ class TicketChangeForm(forms.ModelForm):
 
     problems = Problem.objects.all()#filter(pk=self.fields['id_user'].id)
     doctors = CustomUser.objects.filter(role="D")
+    medical_act_compensations = MedicalCompensation.objects.filter(linked=False)
 
     """ 
     instance = kwargs.get("instance")
@@ -111,8 +115,14 @@ class TicketChangeForm(forms.ModelForm):
         pass
     """
 
+    instance = kwargs.get("instance", None)
+    if instance:
+      self.fields['id_medical_acts'].queryset = instance.id_medical_acts.all()
+    
     self.fields['id_doctor'].queryset = doctors
     self.fields['id_problem'].queryset = problems
+    self.fields['id_medical_acts'].queryset |= medical_act_compensations
+
 
 class HealthRecordCreationForm(forms.ModelForm):
 
@@ -176,3 +186,22 @@ class ProblemChangeForm(forms.ModelForm):
 
     patients = CustomUser.objects.filter(role="P")#filter(pk=self.fields['id_user'].id)
     self.fields['id_user'].queryset = patients
+
+
+class FileCreationForm(forms.ModelForm):
+
+  class Meta:
+    model = File
+    fields = '__all__'
+
+class MedicalActCreationForm(forms.ModelForm):
+
+  class Meta:
+    model = MedicalAct
+    fields = '__all__'
+
+class MedicalCompensationForm(forms.ModelForm):
+
+  class Meta:
+    model = MedicalCompensation
+    fields = '__all__'
