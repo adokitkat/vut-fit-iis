@@ -1,0 +1,40 @@
+{% extends "hospital_app/base.html" %}
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+  {% if user.is_authenticated %}
+
+    {% if Object %}
+
+      <div class="col-lg-12 col-sm-12 col-12">
+        <!-- HEADER -->    
+        <div class="modal-header">
+          <ul class="list-inline m-0">
+            <li class="list-inline-item modal-title h5" id="title-label"> Medical compensation no. {{ Object.id }}</li> 
+            <li class="list-inline-item font-weight-light">{{ Object.covered }}</li> 
+          </ul>
+          <button type="button" class="close" data-dimiss="modal" aria-label="Close">&times;</button>
+        </div>
+
+        <!-- BODY -->
+        <div class="modal-body">
+           <div class="col-12 p-0">
+            <h6>{{ Object.id_medical_act.description }}</h6>
+          </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div class="modal-footer">
+          {% if not user.is_patient %}
+            <a id="editButton" data-toggle="" data-target="#modalForm" data-remote="{% url 'medical_compensation_change' Object.id %}" class="btn btn-primary active modal-button" role="button" aria-pressed="true">Edit</a>
+            <a id="deleteButton" class="btn btn-danger modal-button" role="button" aria-pressed="true" href="{% url 'medical_compensation_delete' Object.id %}">Delete</a>
+        {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+  {% endif %}
+
+{% endblock %}

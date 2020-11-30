@@ -21,7 +21,7 @@
         {% block menu %}{% endblock %}
         
 
-        <div class="col-lg-10 col-sm-9 col-12 p-2">
+        <div id="col10" class="col-lg-10 col-sm-9 col-12 p-2 table-max-height">
 
     {% endif %}
 
@@ -43,11 +43,12 @@
     <script>
       //function inserts form into modal template and changes url according to action
       var url_backup;
+     
       $('.modal-button').on('click', function(e) {
         var button = $(this);
         var modal = $('#modalForm');
         modal.find('.modal-content').load(button.data("remote"));
-        
+       
         if(button[0].id != "editButton"){
           url_backup = window.location.pathname;
         }
@@ -64,6 +65,8 @@
         }
       });
 
+      $("[id=col10]:eq(1)").removeClass('col-lg-10').removeClass('col-sm-9').removeClass('table-max-height');
+
       $('#modalForm').on('hidden.bs.modal', function(e) {
         var button = $(e.relatedTarget);
         var modal = $(this);
@@ -76,6 +79,7 @@
       });
 
       $('#modalForm').modal('handleUpdate');
+
     </script>
   </body>
 </html>

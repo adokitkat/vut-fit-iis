@@ -11,17 +11,18 @@
 
     {% url 'ticket_add' as add_url %}
     {% include "hospital_app/search_bar.html" with add_url=add_url %}
+    {% include "hospital_app/modal_window.html" %}
 
     {% if Objects %}
 
-      <div class="table-responsive rounded">
+      <div class="table-responsive rounded my-table">
         <table id="user_table" class="table table-striped" data-filter-data="" data-filter-control="true">
           <thead class="thead-dark">
             <tr>
               <th scope="col">#</th>
               {% if not user.is_patient %}<th scope="col">Patient</th>{% endif %}
               {% if not user.is_doctor %}<th scope="col">Doctor</th>{% endif %}
-              <th scope="col">Date</th>
+              <th scope="col">Exam date</th>
               <th scope="col">Problem name</th>
               <th scope="col">Status</th>
               <th scope="col">Description</th>
@@ -64,7 +65,7 @@
 
                   <td>
                     <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
-                      {{ o.id_problem.name }}
+                      {{ o.id_problem.name|truncatechars:50 }}
                     </a>  
                   </td>
 
@@ -76,7 +77,7 @@
                   
                   <td>
                     <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
-                      {{ o.description }}
+                      {{ o.description|truncatechars:50 }}
                     </a>  
                   </td>
                   
@@ -84,12 +85,11 @@
               {% endif %}
               
             {% endfor %}
-            {% include "hospital_app/modal_window.html" %}
             </tbody>
        </table>
      </div>
    {% else %}
-     <h2 class="text-center">There are no users...</h2>
+     <h2 class="text-center">There are no tickets...</h2>
    {% endif %}
 
   {% endif %}

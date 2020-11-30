@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.admin import UserAdmin
 
 from .forms import  CustomUserChangeForm, CustomUserCreationForm
-from .models import CustomUser, Problem, Ticket, HealthRecord, File
+from .models import *
 class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
@@ -31,3 +31,5 @@ admin.site.register(Problem)
 admin.site.register(Ticket)
 admin.site.register(HealthRecord)
 admin.site.register(File)
+admin.site.register(MedicalAct)
+admin.site.register(MedicalCompensation)
