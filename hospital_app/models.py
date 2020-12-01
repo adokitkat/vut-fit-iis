@@ -107,6 +107,7 @@ class MedicalCompensation(models.Model):
 
 class Ticket(models.Model):
   class Status(models.TextChoices):
+    WANT   = 'W', _('Wanted')
     INWAIT = 'Y', _('Inwaiting') # Yearning to happed, my lord
     MISS   = 'M', _('Missed')
     OK     = 'C', _('Completed')

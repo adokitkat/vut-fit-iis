@@ -625,10 +625,10 @@ def ticket(request, o_id):
     return render(request, 'hospital_app/ticket/ticket.html', context)
 
 @login_required
-@doctor_required
+@not_insurance_worker
 def ticket_add(request):
     if request.method == 'POST':
-        ticket_form = TicketCreationForm(request.POST)
+        ticket_form = TicketCreationForm(request.POST, user=request.user)
         if ticket_form.is_valid():
             ticket_form.save()
 
@@ -637,7 +637,7 @@ def ticket_add(request):
 
             return redirect('tickets')
     else:
-        ticket_form = TicketCreationForm()
+        ticket_form = TicketCreationForm(user=request.user)
 
     context = {
         'page_title': 'Add ticket',
@@ -745,15 +745,15 @@ def problem(request, o_id):
 
 
 @login_required
-@doctor_required
+@not_insurance_worker
 def problem_add(request):
     if request.method == 'POST':
-        problem_form = ProblemCreationForm(request.POST)
+        problem_form = ProblemCreationForm(request.POST, user=request.user)
         if problem_form.is_valid():
             problem_form.save()
             return redirect('problems')
     else:
-        problem_form = ProblemCreationForm()
+        problem_form = ProblemCreationForm(user=request.user)
 
     context = {
         'page_title': 'Add problem',

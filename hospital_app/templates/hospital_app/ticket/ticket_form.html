@@ -15,8 +15,16 @@
         <!-- BODY -->
         <div class="modal-body">
           <form id="postForm" method="post">
+          {% if user.is_admin or user.is_doctor %}
             {% csrf_token %}
             {{ ticket_form|crispy }}
+          {% else %}
+            {% csrf_token %}
+            {{ ticket_form.status|as_crispy_field }}
+            {{ ticket_form.description|as_crispy_field }}
+            {{ ticket_form.id_doctor|as_crispy_field }}
+            {{ ticket_form.id_problem|as_crispy_field }}
+          {% endif %}
           </form>
         </div>
 
