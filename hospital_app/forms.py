@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from .models import *
 import datetime
 from crispy_forms.helper import FormHelper
+from django.db.models import Q
 #from crispy_forms.layout import Layout, Submit, Row, Column
 
 class CustomUserCreationForm(UserCreationForm):
@@ -181,20 +182,32 @@ class TicketCreationForm(forms.ModelForm):
     fields = ['status', 'description', 'exam_date', 'id_doctor', 'id_problem', 'id_medical_acts']
 
   def __init__(self, *args, **kwargs):
+    user = kwargs.pop('user')
+
     super().__init__(*args, **kwargs)
 
     doctors = CustomUser.objects.filter(role="D")
-    problems = Problem.objects.all()
-    medical_act_compensations = MedicalCompensation.objects.filter(linked=False)
-    """
-    instance = kwargs.get("instance")
-    if instance:
-      if instance.id_user:
-        pass
-    """
     self.fields['id_doctor'].queryset = doctors
-    self.fields['id_problem'].queryset = problems
-    self.fields['id_medical_acts'].queryset = medical_act_compensations
+
+    if user:
+      if user.is_patient():
+        self.fields['status'].choices = (('W', 'Wanted'),)
+        problems = Problem.objects.filter(Q(id_user=user.id))
+
+        self.fields['id_problem'].queryset = problems
+
+      else:
+        problems = Problem.objects.all()
+        medical_act_compensations = MedicalCompensation.objects.filter(linked=False)
+
+        self.fields['id_problem'].queryset = problems
+        self.fields['id_medical_acts'].queryset = medical_act_compensations
+    else:
+      problems = Problem.objects.all()
+      medical_act_compensations = MedicalCompensation.objects.filter(linked=False)
+
+      self.fields['id_problem'].queryset = problems
+      self.fields['id_medical_acts'].queryset = medical_act_compensations
 
 
 class TicketChangeForm(forms.ModelForm):
@@ -279,10 +292,19 @@ class ProblemCreationForm(forms.ModelForm):
     fields = ['name', 'description', 'id_user']
 
   def __init__(self, *args, **kwargs):
+    user = kwargs.pop('user')
+
     super().__init__(*args, **kwargs)
 
-    patients = CustomUser.objects.filter(role="P")
-    self.fields['id_user'].queryset = patients
+    if user:
+      if user.is_patient():
+        self.fields['id_user'].queryset = CustomUser.objects.filter(pk=user.id)
+      else:
+        patients = CustomUser.objects.filter(role="P")
+        self.fields['id_user'].queryset = patients
+    else:
+      patients = CustomUser.objects.filter(role="P")
+      self.fields['id_user'].queryset = patients
 
 class ProblemChangeForm(forms.ModelForm):
 

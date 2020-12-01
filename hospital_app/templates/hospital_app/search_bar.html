@@ -6,8 +6,6 @@
 
       {% if users_active %}
       <div class="col-lg-6 col-5 pr-1">
-      {% elif tickets_active and user.is_patient or problems_active and user.is_patient %}
-      <div class="col-lg-6 col-5 pr-1">
       {% elif hr_active and user.is_patient or user.is_insurance_worker and mc_active %}
       <div class="col-lg-8 col-6 pr-1">
       {% elif tickets_active or problems_active %}
@@ -36,7 +34,7 @@
 
       {% if users_active %}
       <div class="col-lg-2 col-3 pl-1">
-      {% elif tickets_active and user.is_patient or problems_active and user.is_patient or hr_active and user.is_patient or user.is_insurance_worker and mc_active %}
+      {% elif user.is_patient and hr_active or user.is_patient and mc_active or user.is_insurance_worker and mc_active %}
       <div class="col-lg-2 col-3 pl-1">
       {% else %}
       <div class="col-lg-2 col-3 pl-1 pr-1">
@@ -45,13 +43,11 @@
       </div>
 
       {% if not users_active %}
-        {% if not user.is_patient %}
-          {% if not user.is_insurance_worker or not mc_active %}
+          {% if not user.is_insurance_worker and not user.is_patient or not mc_active and not hr_active %}
             <div class="col-lg-1 col-2 pl-1">
               <a id="addButton" class="btn btn-success btn-block modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ add_url }}" role="button" aria-pressed="true">Add</a>
             </div>
           {% endif %}
-        {% endif %}
       {% endif %}
    
     </form>
