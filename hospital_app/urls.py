@@ -9,6 +9,7 @@ from . import views
 urlpatterns = [
     path('', views.profile, name='index'),
     path('signup/', views.signup, name='signup'),
+    path('doc/', views.doc, name='doc'),
 
     path('user/', views.profile, name='index'),
     path('user/all/', login_required(doctor_required(views.UsersView.as_view(), '', '/')), name='users'), # redirects unauthorizet (Patients) to index
