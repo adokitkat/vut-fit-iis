@@ -113,7 +113,11 @@ Povinné polia formulárov sú odlíšené * (hviezdičkou).
 			<p style="margin-bottom: 1rem; margin-top: 0px">riešené pomocou editácie tiketov (zobrazujú sa iba tikety priradené danému lekárovi)</p>
 				<ul>
 					<li>vkládat lékařské zprávy</li>
-					
+					zobrazenie všetkých problémov patriace danému lekárovi <code>class ProblemsView(ListView)</code> <br>
+					zobrazenie jednotlivých problémov <code>def problem(request, o_id)</code> <br>
+					pridávanie problémov <code>def problem_add(request)</code> &rarr; formulár <code>class ProblemCreationForm(forms.ModelForm)</code> <br>
+					editácia problémov <code>def problem_change(request, o_id)</code> &rarr; formulár <code>class ProblemChangeForm(forms.ModelForm)</code> <br>
+					neexistuje mazanie problémov kvôli vedeniu histórie, problém sa jednoducho uvedie do vybaveného stavu <br>
 					<li>zažádat o proplacení n zdravotních úkonů zdravotní pojišťovnou</li>
 				</ul>
 			</li>
