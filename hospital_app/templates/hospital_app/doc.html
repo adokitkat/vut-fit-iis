@@ -86,21 +86,31 @@ Povinné polia formulárov sú odlíšené * (hviezdičkou).
 	<li>                            
 		<p><b>lékař:</b></p>                            
 		<ul>
-			<li>vytváří záznamy o zdravotních problémech (v takovém případě se stává <b>správcem daného záznamu</b>):
-			zobrazenie všetkých problémov <code>class ProblemsView(ListView)</code> <br>
+			<li>vytváří záznamy o zdravotních problémech:
+			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+			<p style="margin-bottom: 1rem; margin-top: 0px">
+			zobrazenie všetkých problémov patriace danému lekárovi <code>class ProblemsView(ListView)</code> <br>
 			zobrazenie jednotlivých problémov <code>def problem(request, o_id)</code> <br>
 			pridávanie problémov <code>def problem_add(request)</code> &rarr; formulár <code>class ProblemCreationForm(forms.ModelForm)</code> <br>
 			editácia problémov <code>def problem_change(request, o_id)</code> &rarr; formulár <code>class ProblemChangeForm(forms.ModelForm)</code> <br>
-			neexistuje mazanie problémov kvôli vedeniu histórie, problém sa jednoducho uvedie do vybaveného stavu
+			neexistuje mazanie problémov kvôli vedeniu histórie, problém sa jednoducho uvedie do vybaveného stavu <br>
 				<ul>
 					<li>vytváří žádosti o vyšetření (tikety); přiřazuje je jiným lékařům (nebo sobě - pro žádosti o proplácení zdravotních úkonů)</li>
-					
-					<li>může předat záznam o zdravotním problému jinému lékaři (přestane být správcem daného záznamu)</li>
+					<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+					<p style="margin-bottom: 1rem; margin-top: 0px">
+					zobrazenie všetkých tiketov patriace danému lekárovi <code>class TicketsView(ListView)</code> <br>
+					zobrazenie jednotlivých tiketov <code>def ticket(request, o_id)</code> <br>
+					pridávanie tiketov (priradenie aj iným lekárom) <code>def ticket_add(request)</code> &rarr; formulár <code>class TicketCreationForm(forms.ModelForm)</code> <br>
+					editácia tiketov (prípadná zmena priradenia) <code>def ticket_change(request, o_id)</code> &rarr; formulár <code>class TicketChangeForm(forms.ModelForm)</code> <br>
+					neexistuje mazanie tiketov kvôli vedeniu histórie, tiket sa jednoducho uvedie do vybaveného stavu <br>
+					<li>může předat záznam o zdravotním problému jinému lékaři</li>
+					<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+					<p style="margin-bottom: 1rem; margin-top: 0px">problém sa automaticky zobrazí lekárovi, ktorý má pridelený tiket s daným problémom, keďže tiket existuje na riešenie daného problému ku ktorému patrí<p>
 				</ul>
 			</li>
-			<li>vyřizuje přiřazené tikety (lékař vidí pouze daný tiket a přidružený            
-				popis, nikoliv záznam celého zdravotního problému); v rámci        
-				tiketu může:
+			<li>vyřizuje přiřazené tikety; v rámci tiketu může:
+			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+			<p style="margin-bottom: 1rem; margin-top: 0px">riešené pomocou editácie tiketov (zobrazujú sa iba tikety priradené danému lekárovi)</p>
 				<ul>
 					<li>vkládat lékařské zprávy</li>
 					<li>zažádat o proplacení n zdravotních úkonů zdravotní pojišťovnou</li>
