@@ -5,23 +5,18 @@ from .models import *
 import datetime
 from crispy_forms.helper import FormHelper
 from django.db.models import Q
-#from crispy_forms.layout import Layout, Submit, Row, Column
 
 class CustomUserCreationForm(UserCreationForm):
   first_name = forms.CharField(required=True, max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your first name'}),)
   last_name = forms.CharField(required=True, max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your last name'}),)
   address = forms.CharField(required=True, max_length=300, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your address'}),)
   date_birth = forms.DateField(required=True, label='Date of birth', widget=forms.SelectDateWidget(years=[x for x in range(datetime.datetime.now().year, 1900-1, -1)], attrs={'class':'form-control', 'type':'date'}))
-  #date_birth = forms.CharField(required=True, max_length=150, help_text='Last name help text', widget=forms.DateInput(attrs={'class': 'form-control', 'type': 'date', 'placeholder': 'Select a date'}),)
-  #date_birth = forms.DateField(required=True, input_formats=settings.DATE_INPUT_FORMATS, widget=forms.DateInput(attrs={'class':'form-control', 'type':'date', 'format': 'yyyy-mm-dd', 'placeholder':'Select a date'}),)
-  #date_birth = forms.DateField(required=True, label='Date of birth', input_formats=settings.DATE_INPUT_FORMATS, widget=forms.DateInput(format='%d-%m-%Y', attrs={'class':'form-control', 'type': 'date'}), years=[x for x in range(1900, datetime.datetime.now().year+1)])
-
   email = forms.CharField(required=True, help_text='You will use your email as username.', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'foo@bar.org'}),)
   tel_number = forms.CharField(required=False, max_length=50, label='Phone number', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+421 900 123 456'}),)
 
   class Meta(UserCreationForm):
     model = CustomUser
-    fields = ('first_name', 'last_name', 'date_birth', 'address', 'email', 'tel_number', 'password1', 'password2',) # 
+    fields = ('first_name', 'last_name', 'date_birth', 'address', 'email', 'tel_number', 'password1', 'password2',)
 
 class CustomUserChangeForm(UserChangeForm):
 
@@ -45,27 +40,6 @@ class CustomUserChangeForm(UserChangeForm):
   class Meta(UserCreationForm):
     model = CustomUser
     fields = ('first_name', 'last_name', 'email', 'tel_number', 'date_died', 'date_birth', 'is_active',)
-
-
-class UserFilterForm(forms.Form):
-
-  FILTER_CHOICES = (
-      ('all', 'All'),
-      ('P', 'Patients'),
-      ('H', 'Insurance Co. Workers'),
-      ('D', 'Doctors'),
-      ('A', 'Admins'),
-    )
-  
-  TABLE_CHOICES = ( #FIXME: not working
-    ('all', 'All'),
-    ('I', 'ID'),
-    ('N', 'Name'),
-    ('E', 'E-mail'),
-  )
-  search = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search'}),)
-  filter_field = forms.ChoiceField(choices=FILTER_CHOICES, label="")
-  table_field = forms.ChoiceField(choices=TABLE_CHOICES, label="")
 
 class FilterForm(forms.Form):
 
@@ -181,7 +155,6 @@ class SuperuserRoleChangeForm(UserChangeForm):
 
 class TicketCreationForm(forms.ModelForm):
 
-  #description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description...'}),)
   exam_date = forms.SplitDateTimeField(required=False, 
                 widget=forms.SplitDateTimeWidget(
                 date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
@@ -223,7 +196,6 @@ class TicketCreationForm(forms.ModelForm):
 
 class TicketChangeForm(forms.ModelForm):
 
-  #description = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Description...'}),)
   exam_date = forms.SplitDateTimeField(required=False, 
                 widget=forms.SplitDateTimeWidget(
                 date_attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
@@ -243,7 +215,7 @@ class TicketChangeForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    problems = Problem.objects.all()#filter(pk=self.fields['id_user'].id)
+    problems = Problem.objects.all()
     doctors = CustomUser.objects.filter(role="D")
     medical_act_compensations = MedicalCompensation.objects.filter(linked=False)
 
@@ -290,11 +262,9 @@ class HealthRecordChangeForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    problems = Problem.objects.all()#filter(pk=self.fields['id_user'].id)
-    #tickets = Tickets.objects.all()
+    problems = Problem.objects.all()
 
     self.fields['id_problem'].queryset = problems
-    #self.fields['id_ticket'].queryset = tickets
 
 class ProblemCreationForm(forms.ModelForm):
 
@@ -332,7 +302,7 @@ class ProblemChangeForm(forms.ModelForm):
   def __init__(self, *args, **kwargs):
     super().__init__(*args, **kwargs)
 
-    patients = CustomUser.objects.filter(role="P")#filter(pk=self.fields['id_user'].id)
+    patients = CustomUser.objects.filter(role="P")
     self.fields['id_user'].queryset = patients
 
 

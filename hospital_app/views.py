@@ -10,8 +10,6 @@ from .forms import *
 from .models import *
 
 from django.http import HttpResponseRedirect
-#@login_required
-#@permission_required('permission', raise_exception=True)
 
 def doc(request):
     return render(request, 'hospital_app/doc.html')
@@ -108,7 +106,6 @@ class UsersView(ListView):
         if query:
                 if table_field == 'all':
                     result_filter_field = result_filter_field.filter (
-                        #Q(tel_number__icontains=query) | 
                         Q(email__icontains=query) |
                         Q(first_name__icontains=query) |
                         Q(last_name__icontains=query) |
@@ -291,7 +288,6 @@ class HealthRecordsView(ListView):
     def get_queryset(self, model=model):
         query = self.request.GET.get('search')
         filter_field = self.request.GET.get('filter_field')
-        #table_field = self.request.GET.get('table_field')
 
         objects = model.objects.all()
 
@@ -355,7 +351,6 @@ class FilesView(ListView):
     def get_queryset(self, model=model):
         query = self.request.GET.get('search')
         filter_field = self.request.GET.get('filter_field')
-        #table_field = self.request.GET.get('table_field')
 
         objects = model.objects.all()
         
@@ -451,22 +446,10 @@ class MedicalActsView(ListView):
         query = self.request.GET.get('search')
         filter_field = self.request.GET.get('filter_field')
 
-        """
-        if self.request.user.is_patient(): # If user is patient he sees only his health records
-            problems = Problem.objects.filter(id_user=self.request.user.id)
-            result = objects.filter(id_problem__in=[o.id for o in problems])
-
-        elif self.request.user.is_doctor():
-            tickets = Ticket.objects.filter(id_doctor=self.request.user.id)
-            tickets_filtered = [o for o in tickets if o.id_problem is not None]
-            result = objects.filter(id_problem__in=[o.id_problem.id for o in tickets_filtered])
-        else:
-        """
         if filter_field is None or filter_field == 'all':
             result = model.objects.all()
         else: 
             result = model.objects.filter(coverable=filter_field)
-
 
         if query:
             result = result.filter (
@@ -495,18 +478,6 @@ class MedicalCompensationView(ListView):
     def get_queryset(self, model=model):
         query = self.request.GET.get('search')
         filter_field = self.request.GET.get('filter_field')
-
-        """
-        if self.request.user.is_patient(): # If user is patient he sees only his health records
-            problems = Problem.objects.filter(id_user=self.request.user.id)
-            result = objects.filter(id_problem__in=[o.id for o in problems])
-
-        elif self.request.user.is_doctor():
-            tickets = Ticket.objects.filter(id_doctor=self.request.user.id)
-            tickets_filtered = [o for o in tickets if o.id_problem is not None]
-            result = objects.filter(id_problem__in=[o.id_problem.id for o in tickets_filtered])
-        else:
-        """
         
         if filter_field is None or filter_field == 'all':
             result = model.objects.all()
@@ -549,7 +520,6 @@ def profile(request, o_id=None):
         problems = Problem.objects.filter(Q(id_user=request.user.id))
         tickets = Ticket.objects.filter(Q(id_problem__id_user=request.user.id))
         health_records = HealthRecord.objects.filter(Q(id_problem__id_user=request.user.id))
-        #files = File.objects.filter(Q(id_health_record__id_problem__id_user=request.user.id))
 
     elif request.user.is_doctor():
 

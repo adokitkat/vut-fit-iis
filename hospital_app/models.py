@@ -24,7 +24,7 @@ class CustomUser(AbstractUser): #models.Model
   address    = models.CharField(max_length=300)
   tel_number = models.CharField(_('telephone number'), max_length=50, blank=True, null=True)
 
-  date_birth = models.DateField(_('date of birth'), blank=False, null=True) #FIXME: nullable
+  date_birth = models.DateField(_('date of birth'), blank=False, null=True)
   #date_joined
   date_modified = models.DateTimeField(auto_now=True)
   date_died = models.DateTimeField(_('date of death'), blank=True, null=True)
@@ -128,9 +128,6 @@ class Ticket(models.Model):
   def get_status(self):
     return str(self.Status(self.status).label)
 
-  #def __str__(self):
-  #  return 'PATIENT: ' + self.id_problem.id_user.get_full_name() + ', DOCTOR: '  + self.id_doctor.get_full_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
-
 class HealthRecord(models.Model):
   comment = models.TextField(blank=True)
 
@@ -144,7 +141,7 @@ class HealthRecord(models.Model):
     return 'PATIENT: ' + self.id_problem.id_user.get_full_name()  + ', PROBLEM: ' + self.id_problem.name + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
 
 class File(models.Model):
-  file        = models.FileField(upload_to='uploads/%Y/%m/%d/') # Mazanie suboru spolu s polozkou v databazi?
+  file        = models.FileField(upload_to='uploads/%Y/%m/%d/')
   name        = models.CharField(max_length=50)
   description = models.TextField(blank=True)
 
