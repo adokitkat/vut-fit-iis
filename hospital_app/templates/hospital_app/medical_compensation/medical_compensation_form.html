@@ -18,7 +18,7 @@
         {% if user.is_insurance_worker %}
           {% csrf_token %}
           {{ mc_form.covered|as_crispy_field }}
-        {% elif or user.is_admin%}
+        {% elif user.is_admin%}
           {% csrf_token %}
           {{ mc_form|crispy }}
         {% else %}
