@@ -48,6 +48,8 @@
       </a>
       {% endif %}
 
+      {% if not user.is_insurance_worker %}
+
       <a href="{% url 'problems' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         Problems
         <span class="badge badge-primary badge-pill">{{ problems.count }}</span>
@@ -62,11 +64,14 @@
         Health records
         <span class="badge badge-primary badge-pill">{{ health_records.count }}</span>
       </a>
+      {% endif %}
 
+      {% if user.is_doctor or user.is_admin%}
       <a href="{% url 'files' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         Files
         <span class="badge badge-primary badge-pill">{{ files.count }}</span>
       </a>
+      {% endif %}
 
       {% if user.is_insurance_worker or user.is_admin %}
       <a href="{% url 'medical_acts' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
