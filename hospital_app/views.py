@@ -13,6 +13,10 @@ from django.http import HttpResponseRedirect
 #@login_required
 #@permission_required('permission', raise_exception=True)
 
+def doc(request):
+    return render(request, 'hospital_app/doc.html')
+
+    
 def signup(request):
     if request.method == 'POST':
         form = CustomUserCreationForm(request.POST)
