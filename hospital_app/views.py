@@ -353,9 +353,6 @@ class FilesView(ListView):
 
             health_records = HealthRecord.objects.filter(id_problem__in=tickets_filtered_problem_ids)
 
-            #tickets_filtered = [o for o in tickets if o.id_problem is not None]
-            #result = objects.filter(id_file__in=[o.id_problem.id for o in tickets_filtered]) 
-
             result_all = objects.filter(id_health_record__in=[o.id for o in health_records])
         
         elif self.request.user.is_admin():
@@ -540,17 +537,27 @@ def profile(request, o_id=None):
         problems = Problem.objects.filter(Q(id_user=request.user.id))
         tickets = Ticket.objects.filter(Q(id_problem__id_user=request.user.id))
         health_records = HealthRecord.objects.filter(Q(id_problem__id_user=request.user.id))
-        files = File.objects.filter(Q(id_health_record__id_problem__id_user=request.user.id))
+        #files = File.objects.filter(Q(id_health_record__id_problem__id_user=request.user.id))
 
     elif request.user.is_doctor():
         tickets = Ticket.objects.filter(id_doctor=request.user.id)
         
         tickets_filtered = [o for o in tickets if o.id_problem is not None]
+        problem_ids = [o.id_problem.id for o in tickets_filtered]
         
-        problems = Problem.objects.filter(id__in=[o.id_problem.id for o in tickets_filtered])
+        problems = Problem.objects.filter(id__in=problem_ids)
+
+        health_records = HealthRecord.objects.filter(id_problem__in=problem_ids)
+
+        files = File.objects.filter(id_health_record__in=[o.id for o in health_records])
+
+        mcs = MedicalCompensation.objects.all()
+
+        users = CustomUser.objects.all()
 
     elif request.user.is_insurance_worker():
-        pass
+        mas = MedicalAct.objects.all()
+        mcs = MedicalCompensation.objects.all()
 
     elif request.user.is_admin():
         users = CustomUser.objects.all()
@@ -626,9 +633,7 @@ def ticket_change(request, o_id):
             ticket.id_medical_acts.all().update(linked=True) # medical compensations
 
             new_ids = [o.id for o in ticket.id_medical_acts.all()]
-          
-            #unlink_ids = [i for i in new_ids + old_ids if i not in new_ids or i not in old_ids]
-            #print(unlink_ids)
+
             unlink_ids = [x for x in old_ids if x not in new_ids]
 
             if unlink_ids:

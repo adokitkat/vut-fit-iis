@@ -1,7 +1,7 @@
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.decorators import login_required, user_passes_test
 
-def superuser_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def superuser_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is an admin,
     redirects to the log-in page if necessary.
@@ -15,7 +15,7 @@ def superuser_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, l
         return actual_decorator(function)
     return actual_decorator
 
-def admin_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def admin_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is an admin,
     redirects to the log-in page if necessary.
@@ -29,7 +29,7 @@ def admin_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login
         return actual_decorator(function)
     return actual_decorator
 
-def patient_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def patient_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is a patient,
     redirects to the log-in page if necessary.
@@ -43,7 +43,7 @@ def patient_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, log
         return actual_decorator(function)
     return actual_decorator
 
-def not_patient(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def not_patient(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is a patient,
     redirects to the log-in page if necessary.
@@ -57,7 +57,7 @@ def not_patient(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_ur
         return actual_decorator(function)
     return actual_decorator
 
-def doctor_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def doctor_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is a doctor,
     redirects to the log-in page if necessary.
@@ -71,7 +71,7 @@ def doctor_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, logi
         return actual_decorator(function)
     return actual_decorator
 
-def not_doctor(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def not_doctor(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is a patient,
     redirects to the log-in page if necessary.
@@ -85,7 +85,7 @@ def not_doctor(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url
         return actual_decorator(function)
     return actual_decorator
 
-def insurance_worker_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def insurance_worker_required(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is an insurance co. worker,
     redirects to the log-in page if necessary.
@@ -99,7 +99,7 @@ def insurance_worker_required(function=None, redirect_field_name=REDIRECT_FIELD_
         return actual_decorator(function)
     return actual_decorator
 
-def not_insurance_worker(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='login'):
+def not_insurance_worker(function=None, redirect_field_name=REDIRECT_FIELD_NAME, login_url='index'):
     '''
     Decorator for views that checks that the logged in user is a patient,
     redirects to the log-in page if necessary.
