@@ -24,9 +24,17 @@ class CustomUserCreationForm(UserCreationForm):
 
 class CustomUserChangeForm(UserChangeForm):
 
-  class Meta:
+  first_name = forms.CharField(required=True, max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your first name'}),)
+  last_name = forms.CharField(required=True, max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your last name'}),)
+  address = forms.CharField(required=True, max_length=300, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your address'}),)
+  date_birth = forms.DateField(required=True, label='Date of birth', widget=forms.SelectDateWidget(years=[x for x in range(datetime.datetime.now().year, 1900-1, -1)], attrs={'class':'form-control', 'type':'date'}))
+  email = forms.CharField(required=True, help_text='You will use your email as username.', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'foo@bar.org'}),)
+  tel_number = forms.CharField(required=False, max_length=50, label='Phone number', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+421 900 123 456'}),)
+
+  class Meta(UserCreationForm):
     model = CustomUser
-    fields = ('email',)
+    fields = ('first_name', 'last_name', 'date_birth', 'address', 'email', 'tel_number',) # 
+
 
 class UserFilterForm(forms.Form):
 
@@ -37,9 +45,116 @@ class UserFilterForm(forms.Form):
       ('D', 'Doctors'),
       ('A', 'Admins'),
     )
+  
+  TABLE_CHOICES = ( #FIXME: not working
+    ('all', 'All'),
+    ('I', 'ID'),
+    ('N', 'Name'),
+    ('E', 'E-mail'),
+  )
   search = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search'}),)
   filter_field = forms.ChoiceField(choices=FILTER_CHOICES, label="")
+  table_field = forms.ChoiceField(choices=TABLE_CHOICES, label="")
 
+class FilterForm(forms.Form):
+
+  table_field = forms.ChoiceField(label="")
+  filter_field = forms.ChoiceField(label="")
+  search = forms.CharField(required=False, label="", widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Search'}),)
+
+  def __init__(self, *args, **kwargs):
+    page = kwargs.pop('page')
+
+    super().__init__(*args, **kwargs)
+
+    FILTER_CHOICES = ()
+    TABLE_CHOICES = ()
+
+    if page == 'Users':
+      FILTER_CHOICES = (
+        ('all', 'All (filter by role)'),
+        ('P', 'Patients'),
+        ('H', 'Insurance Co. Workers'),
+        ('D', 'Doctors'),
+        ('A', 'Admins'),
+      )
+
+      TABLE_CHOICES = (
+        ('all', 'All (search only by field)'),
+        ('name', 'Name'),
+        ('email', 'E-mail'),
+        ('id', 'ID'),
+      )
+    
+    elif page == 'Tickets':
+      FILTER_CHOICES = (
+        ('all', 'All (filter by status)'),
+        ('Y', 'Inwaiting'),
+        ('M', 'Missed'),
+        ('C', 'Completed'),
+        ('A', 'Aborted'),
+      )
+
+      TABLE_CHOICES = (
+        ('all', 'All (search only by field)'),
+        ('name', 'Name'),
+        ('description', 'Description'),
+        ('prob_name', 'Problem name'),
+        ('id', 'ID'),
+      )
+
+    elif page == 'Problems':
+      FILTER_CHOICES = (
+        ('all', 'All (filter by state)'),
+        ('M', 'In progress'),
+        ('C', 'Completed'),
+        ('A', 'Aborted'),
+      )
+
+      TABLE_CHOICES = (
+        ('all', 'All (search only by field)'),
+        ('name', 'Name'),
+        ('description', 'Descrioption'),
+        ('id', 'ID'),
+      )
+    
+    elif page == 'HealthRecords':
+      FILTER_CHOICES = (
+        ('all', 'All (search only by field)'),
+        ('name', 'Name'),
+        ('comment', 'Comment'),
+        ('id', 'ID'),
+      )
+
+    elif page == 'Files':
+      FILTER_CHOICES = (
+        ('all', 'All (search only by field)'),
+        ('name', 'Name'),
+        ('patient', 'Patient'),
+        ('hr_id', 'Health record ID'),
+        ('hr_comment', 'Health record comment'),
+        ('problem', 'Problem name'),
+        ('description', 'Descrioption'),
+        ('id', 'ID'),
+      )
+    
+    elif page == 'MedAct':
+      FILTER_CHOICES = (
+        ('all', 'All (filter by covered)'),
+        ('True', 'Coverable: True'),
+        ('False', 'Coverable: False'),
+      )
+
+    elif page == 'MedCom':
+      FILTER_CHOICES = (
+        ('all', 'All (filter by covered)'),
+        ('True', 'Covered: True'),
+        ('False', 'Covered: False'),
+      )
+    
+
+    self.fields['filter_field'].choices = FILTER_CHOICES
+    self.fields['table_field'].choices = TABLE_CHOICES
 
 class SuperuserRoleChangeForm(UserChangeForm):
 

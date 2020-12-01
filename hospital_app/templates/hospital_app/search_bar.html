@@ -5,27 +5,53 @@
     <form class="row">
 
       {% if users_active %}
-      <div class="col-lg-7 col-3 pr-1">
+      <div class="col-lg-6 col-5 pr-1">
+      {% elif tickets_active and user.is_patient or problems_active and user.is_patient %}
+      <div class="col-lg-6 col-5 pr-1">
+      {% elif hr_active and user.is_patient %}
+      <div class="col-lg-8 col-6 pr-1">
+      {% elif tickets_active or problems_active %}
+      <div class="col-lg-5 col-3 pr-1">
       {% else %}
-      <div class="col-lg-9 col-6 pr-1">
+      <div class="col-lg-7 col-4 pr-1">
       {% endif %}
         {{ search_form.search|as_crispy_field }}
       </div>
 
-      {% if users_active %}
+      {% if users_active or tickets_active or problems_active %}
+      <div class="col-lg-2 col-2 pl-1 pr-1">
+      {% else %}
       <div class="col-lg-2 col-3 pl-1 pr-1">
+      {% endif %}
         {{ search_form.filter_field|as_crispy_field }}
+      </div>
+      
+
+      {% if users_active or tickets_active or problems_active %}
+      <div class="col-lg-2 col-2 pl-1 pr-1">
+        {{ search_form.table_field|as_crispy_field }}
       </div>
       {% endif %}
 
+
+      {% if users_active %}
+      <div class="col-lg-2 col-3 pl-1">
+      {% elif tickets_active and user.is_patient or problems_active and user.is_patient or hr_active and user.is_patient %}
+      <div class="col-lg-2 col-3 pl-1">
+      {% else %}
       <div class="col-lg-2 col-3 pl-1 pr-1">
+      {% endif %}
         <input type="submit" class="btn btn-primary btn-block" value="Search">
       </div>
 
-      <div class="col-lg-1 col-3 pl-1"> <!-- FIXME:   data-toggle="modal" bypasses form field check   -->
+      {% if not users_active %}
+      {% if not user.is_patient%}
+      <div class="col-lg-1 col-2 pl-1">
         <a id="addButton" class="btn btn-success btn-block modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ add_url }}" role="button" aria-pressed="true">Add</a>
       </div>
-
+      {% endif %}
+      {% endif %}
+   
     </form>
 
 {% endblock %}

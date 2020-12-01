@@ -69,13 +69,13 @@
 
       </div>
 
+      {% if user.is_doctor or user.is_admin %}
       <!-- FOOTER -->
       <div class="modal-footer">
-        {% if user.is_doctor or user.is_admin %}
         <a id="deleteButton" class="btn btn-danger modal-button" role="button" aria-pressed="true" href="{% url 'file_delete' Object.id %}">Delete</a>
-        {% endif %}
       </div>
-
+      {% endif %}
+      
     {% endif %}
 
   {% endif %}

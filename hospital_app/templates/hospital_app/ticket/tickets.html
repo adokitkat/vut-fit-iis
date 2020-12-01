@@ -26,6 +26,7 @@
               <th scope="col">Problem name</th>
               <th scope="col">Status</th>
               <th scope="col">Description</th>
+              <th scope="col">Created</th>
             </tr>
           </thead>
           <tbody class="" style="">
@@ -79,6 +80,12 @@
                     <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
                       {{ o.description|truncatechars:50 }}
                     </a>  
+                  </td>
+
+                  <td>
+                    <a class="modal-button" data-toggle="modal" data-target="#modalForm" data-remote="{{ object_page }}" role="button" aria-pressed="true">
+                      {{ o.date_created }}
+                    </a> 
                   </td>
                   
                 </tr>

@@ -28,6 +28,7 @@
             {% for o in Objects %}
               
               {% if not user.is_admin and not o.is_admin or user.is_admin %}
+              {% if user.is_insurance_worker and o.linked or not user.is_insurance_worker%}
                 {% url 'medical_compensation' o.id as object_page %}
                 <tr>
                   
@@ -50,6 +51,7 @@
                   </td>
 
                 </tr>
+              {% endif %}
               {% endif %}
 
             {% endfor %}
