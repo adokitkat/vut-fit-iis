@@ -33,7 +33,7 @@ class CustomUserChangeForm(UserChangeForm):
 
   class Meta(UserCreationForm):
     model = CustomUser
-    fields = ('first_name', 'last_name', 'date_birth', 'address', 'email', 'tel_number',) # 
+    fields = ('first_name', 'last_name', 'date_birth', 'address', 'email', 'tel_number', 'role',) # 
 
 
 class UserFilterForm(forms.Form):

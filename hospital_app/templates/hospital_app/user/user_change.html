@@ -44,6 +44,14 @@
         </div>
       </div>
 
+      {% if user.is_admin %}
+      <div class="row">
+        <div class="col-12">
+          {{ signup_form.role|as_crispy_field }}
+        </div>
+      </div>
+      {% endif %}
+
       <div class="text-center">
         <button type="submit" class="btn btn-success mt-1">Save</button>
       </div>
