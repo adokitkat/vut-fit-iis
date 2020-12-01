@@ -40,6 +40,16 @@ def index(request):
 
     return render(request, 'hospital_app/user/profile.html', context)
 
+def custom_redirect(request, title, message):
+    
+    context = {
+        'page_title': title,
+        'message': message,
+        'redirect_active': True,
+    }
+
+    return render(request, 'hospital_app/redirect.html', context)
+
 @login_required
 def user_change(request, o_id=None):
     if o_id is None:
@@ -611,7 +621,9 @@ def user_delete(request, o_id=None):
     if o.is_doctor() or o.is_admin() or o.is_superuser:
         tickets = Ticket.objects.filter(id_doctor=o.id)
         if tickets:
-            return redirect('index') #TODO: zobraz spravu/page s redirectom ako v registration/password_change_done.html o preneseni ticketov pred vymazanim
+            return redirect('custom_redirect', title='Error',
+                    message='You cannot delete a doctor with assigned tickets. Move tickets to another doctor first.'
+                ) 
 
     o.delete()
     return redirect('users')

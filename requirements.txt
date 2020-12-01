@@ -4,3 +4,5 @@ django-heroku
 whitenoise
 dj-database-url
 django-crispy-forms
+pydot
+django_extensions

@@ -28,13 +28,24 @@ class CustomUserChangeForm(UserChangeForm):
   first_name = forms.CharField(required=True, max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your first name'}),)
   last_name = forms.CharField(required=True, max_length=150, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your last name'}),)
   address = forms.CharField(required=True, max_length=300, widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Your address'}),)
-  date_birth = forms.DateField(required=True, label='Date of birth', widget=forms.SelectDateWidget(years=[x for x in range(datetime.datetime.now().year, 1900-1, -1)], attrs={'class':'form-control', 'type':'date'}))
+  #date_birth = forms.DateField(required=True, label='Date of birth', widget=forms.SelectDateWidget(years=[x for x in range(datetime.datetime.now().year, 1900-1, -1)], attrs={'class':'form-control', 'type':'date'}))
   email = forms.CharField(required=True, help_text='You will use your email as username.', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'foo@bar.org'}),)
   tel_number = forms.CharField(required=False, max_length=50, label='Phone number', widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': '+421 900 123 456'}),)
 
+  date_died = forms.DateField(required=False, label="Date of death",
+                widget=forms.DateInput(
+                attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+              ))
+
+  date_birth = forms.DateField(required=False, label="Birth date",
+                widget=forms.DateInput(
+                attrs={'class': 'form-control', 'placeholder': 'Date (YYYY-mm-dd)'},
+              ))
+
+  is_active = forms.BooleanField(required=True, initial=True, label='Alive')
   class Meta(UserCreationForm):
     model = CustomUser
-    fields = ('first_name', 'last_name', 'date_birth', 'address', 'email', 'tel_number', 'role',) # 
+    fields = '__all__'
 
 
 class UserFilterForm(forms.Form):

@@ -35,8 +35,10 @@
 <table>
 <tbody><tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
 <tr><td>andragogika@kadlecova.sk</td><td>heslo123</td><td>Admin</td></tr>
-<tr><td>dr@dr.sk</td><td>heslo123</td><td>Doctor</td></tr>
+<tr><td>dr@dr.sk</td><td>heslo123+</td><td>Doctor</td></tr>
+<tr><td>jochy@gmail.com</td><td>heslo123</td><td>Doctor</td></tr>
 <tr><td>star@wars.com</td><td>a1s2d3f4g5h6j7k8l9</td><td>Patient</td></tr>
+<tr><td>emil@olej.sk</td><td>heslo123</td><td>Patient</td></tr>
 <tr><td>jankosmrekovec@centrum.sk</td><td>heslo123</td><td>Health Insurance Company Worker</td></tr>
 </tbody></table>
 
@@ -63,7 +65,7 @@ Povinné polia formulárov sú odlíšené * (hviezdičkou).
 		</ul>
 	</li>
 	<li>                            
-		<p><b>pracovník zdravotní pojišťovny:</b></p>
+		<p><b>pracovník zdravotnej poišťovne:</b></p>
 		<ul>
 			<li>vytváří databázi typů hrazených úkonů</li>
 			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
@@ -84,7 +86,7 @@ Povinné polia formulárov sú odlíšené * (hviezdičkou).
 		</ul>                            
 	</li>
 	<li>                            
-		<p><b>lékař:</b></p>                            
+		<p><b>lekár:</b></p>                            
 		<ul>
 			<li>vytváří záznamy o zdravotních problémech:
 			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
@@ -94,47 +96,86 @@ Povinné polia formulárov sú odlíšené * (hviezdičkou).
 			pridávanie problémov <code>def problem_add(request)</code> &rarr; formulár <code>class ProblemCreationForm(forms.ModelForm)</code> <br>
 			editácia problémov <code>def problem_change(request, o_id)</code> &rarr; formulár <code>class ProblemChangeForm(forms.ModelForm)</code> <br>
 			neexistuje mazanie problémov kvôli vedeniu histórie, problém sa jednoducho uvedie do vybaveného stavu <br>
+			</p>
 				<ul>
 					<li>vytváří žádosti o vyšetření (tikety); přiřazuje je jiným lékařům (nebo sobě - pro žádosti o proplácení zdravotních úkonů)</li>
 					<p style="margin: 0px; padding-left: 4rem">&darr;</p>
 					<p style="margin-bottom: 1rem; margin-top: 0px">
 					zobrazenie všetkých tiketov patriace danému lekárovi <code>class TicketsView(ListView)</code> <br>
 					zobrazenie jednotlivých tiketov <code>def ticket(request, o_id)</code> <br>
-					pridávanie tiketov (priradenie aj iným lekárom) <code>def ticket_add(request)</code> &rarr; formulár <code>class TicketCreationForm(forms.ModelForm)</code> <br>
+					pridávanie tiketov (priradenie aj iným lekárom; musí byť priradený už ke existujúcemu problému) <code>def ticket_add(request)</code> &rarr; formulár <code>class TicketCreationForm(forms.ModelForm)</code> <br>
 					editácia tiketov (prípadná zmena priradenia) <code>def ticket_change(request, o_id)</code> &rarr; formulár <code>class TicketChangeForm(forms.ModelForm)</code> <br>
 					neexistuje mazanie tiketov kvôli vedeniu histórie, tiket sa jednoducho uvedie do vybaveného stavu <br>
+					</p>
 					<li>může předat záznam o zdravotním problému jinému lékaři</li>
 					<p style="margin: 0px; padding-left: 4rem">&darr;</p>
 					<p style="margin-bottom: 1rem; margin-top: 0px">problém sa automaticky zobrazí lekárovi, ktorý má pridelený tiket s daným problémom, keďže tiket existuje na riešenie daného problému ku ktorému patrí<p>
 				</ul>
 			</li>
+			<br>
 			<li>vyřizuje přiřazené tikety; v rámci tiketu může:
 			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
 			<p style="margin-bottom: 1rem; margin-top: 0px">riešené pomocou editácie tiketov (zobrazujú sa iba tikety priradené danému lekárovi)</p>
 				<ul>
 					<li>vkládat lékařské zprávy</li>
-					zobrazenie všetkých lekárskych danému lekárovi <code>class ProblemsView(ListView)</code> <br>
-					zobrazenie jednotlivých problémov <code>def problem(request, o_id)</code> <br>
-					pridávanie problémov <code>def problem_add(request)</code> &rarr; formulár <code>class ProblemCreationForm(forms.ModelForm)</code> <br>
-					editácia problémov <code>def problem_change(request, o_id)</code> &rarr; formulár <code>class ProblemChangeForm(forms.ModelForm)</code> <br>
-					neexistuje mazanie problémov kvôli vedeniu histórie, problém sa jednoducho uvedie do vybaveného stavu <br>
+					<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+					<p style="margin-bottom: 1rem; margin-top: 0px">
+					zobrazenie všetkých lekárskych správ viazané na prístupný problém <code>class HealthRecordsView(ListView)</code> <br>
+					zobrazenie jednotlivých lekárskych správ <code>def health_record(request, o_id)</code> <br>
+					pridávanie lekárskych správ <code>def health_record_add(request)</code> &rarr; formulár <code>class HealthRecordCreationForm(forms.ModelForm)</code> <br>
+					editácia lekárskych správ <code>def health_record_change(request, o_id)</code> &rarr; formulár <code>class HealthRecordChangeForm(forms.ModelForm)</code> <br>
+					neexistuje mazanie lekárskych správ kvôli vedeniu histórie <br>
+					</p>
+					<li>vkladanie súborov do jednotlivých lekárskych správ</li>
+					<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+					<p style="margin-bottom: 1rem; margin-top: 0px">
+					zobrazenie všetkých súborov viazané na prístupné lekárske správy <code>class FilesView(ListView)</code> <br>
+					zobrazenie jednotlivých súborov <code>def file_page(request, o_id)</code> <br>
+					pridávanie súborov <code>def file_add(request)</code> &rarr; formulár <code>class FileCreationForm(forms.ModelForm)</code> <br>
+					mazanie súborov <code>def file_delete(request, o_id)</code> <br>
+					</p>
 					<li>zažádat o proplacení n zdravotních úkonů zdravotní pojišťovnou</li>
+					zobrazenie všetkých zdravotných úkonov <code>class MedicalCompensationView(ListView)</code> <br>
+					zobrazenie jednotlivých zdravotných úkonov <code>def medical_compensation(request, o_id)</code> <br>
+					pridávanie zdravotných úkonov <code>def medical_compensation_add(request)</code> &rarr; formulár <code>class MedicalCompensationForm(forms.ModelForm)</code> <br>
+					editácia zdravotných úkonov (po schválení/zamietnutí úkonu poisťovňou nie je možná)<code>def medical_compensation_change(request, o_id)</code> &rarr; obmedzený formulár <code>class MedicalCompensationForm(forms.ModelForm)</code> <br>
+					mazanie zdravotných úkonov (po schválení úkonu poisťovňou nie je možné)<code>def medical_compensation_delete(request, o_id)</code> <br>
 				</ul>
 			</li>
+			<br><br>
 			<li>vkládá lékařské zprávy ke spravovaným záznamům</li>
+			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+			<p style="margin-bottom: 1rem; margin-top: 0px">
+			realizované v pridávaní/editácií lekárskej správy
+			</p>
 		</ul>                            
 	</li>
 	<li>                            
-		<p><b>pacient:</b></p>                            
+		<p><b>pacient:</b></p>
 		<ul>
 			<li>prohlíží záznamy o svých zdravotních problémech</li>
+			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+			<p style="margin-bottom: 1rem; margin-top: 0px">
+			riešené obmedzeniami zobrazovania v príslušných šablónach (obmedzené na vlastné problémy a tikety)
+			</p>
+			<li>objednáva sa a môže vytvárať problém na ktorý sa chce objednať</li>
+			<p style="margin: 0px; padding-left: 4rem">&darr;</p>
+			<p style="margin-bottom: 1rem; margin-top: 0px">
+			môže pridať problém (bez editácie) a tiket v stave "wanted"
+			</p>
 		</ul>
 	</li>
 </ul>
+<p>Implementovaný search bar ku každej tabulke so šablónou <code>search_bar.html</code> s riešenou logikou vyhľadávania v príslušných "views"
+   náhľadov a filtrami vyhľadávania vo forme <code>class FilterForm(forms.Form)</code> a filtrom stavu ak zobrazovaná entita má atribút stavu. <br>
+   Šablóny foriem sú obalené modálnym oknom (pop-upom) pre zrozumitelnejšiu orientáciu v systéme <code>modal_window.html</code>. 
+   Logika načítavania šablón s formulármi do modálneho okna je riešená v <code>base.html</code> pomocou JS (implementovaná zmena url aj napriek tomu že modálne okná url nemenia).
+</p>
 
 <h3>Databáza</h3>
 
-Zde vložte grafické schéma relační databáze (tabulek v databázi).
+{% load static %}
+<img src="{% static 'hospital_app/hospital_app_models.png' %}" style="width: 1200px;"></img>
 
 <h2>Inštalácia</h2>
 
