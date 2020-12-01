@@ -41,47 +41,50 @@
       </div>
     
     <div class="col-lg-6 col-12 list-group pl-4 pr-4">
-      {% if user.is_doctor or user.is_admin %}
-      <a href="{% url 'users' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      {% if users %}
+      <a href="{% if o_id != user.id %}#{% else %}{% url 'users' %}{% endif %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         {% if user.is_doctor %}Patients{% else %}Users{% endif %}
         <span class="badge badge-primary badge-pill">{{ users.count }}</span>
       </a>
       {% endif %}
 
-      {% if not user.is_insurance_worker %}
-
-      <a href="{% url 'problems' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      {% if problems %}
+      <a href="{% if o_id != user.id %}#{% else %}{% url 'problems' %}{% endif %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         Problems
         <span class="badge badge-primary badge-pill">{{ problems.count }}</span>
       </a>
+      {% endif %}
 
-      <a href="{% url 'tickets' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      {% if tickets %}
+      <a href="{% if o_id != user.id %}#{% else %}{% url 'tickets' %}{% endif %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         Tickets
         <span class="badge badge-primary badge-pill">{{ tickets.count }}</span>
       </a>
+      {% endif %}
 
-      <a href="{% url 'health_records' %}" class="list-group-item list-group-item-action list-group-item-action d-flex justify-content-between align-items-center">
+      {% if health_records %}
+      <a href="{% if o_id != user.id %}#{% else %}{% url 'health_records' %}{% endif %}" class="list-group-item list-group-item-action list-group-item-action d-flex justify-content-between align-items-center">
         Health records
         <span class="badge badge-primary badge-pill">{{ health_records.count }}</span>
       </a>
       {% endif %}
 
-      {% if user.is_doctor or user.is_admin%}
-      <a href="{% url 'files' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      {% if files%}
+      <a href="{% if o_id != user.id %}#{% else %}{% url 'files' %}{% endif %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         Files
         <span class="badge badge-primary badge-pill">{{ files.count }}</span>
       </a>
       {% endif %}
 
-      {% if user.is_insurance_worker or user.is_admin %}
-      <a href="{% url 'medical_acts' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      {% if mas %}
+      <a href="{% if o_id != user.id %}#{% else %}{% url 'medical_acts' %}{% endif %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         Medical Acts
         <span class="badge badge-primary badge-pill">{{ mas.count }}</span>
       </a>
       {% endif %}
 
-      {% if user.is_doctor or user.is_insurance_worker or user.is_admin %}
-      <a href="{% url 'medical_compensations' %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+      {% if mcs %}
+      <a href="{% if o_id != user.id %}#{% else %}{% url 'medical_compensations' %}{% endif %}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
         Medical compensations
         <span class="badge badge-primary badge-pill">{{ mcs.count }}</span>
       </a>

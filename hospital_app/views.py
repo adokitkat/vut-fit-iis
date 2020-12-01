@@ -540,36 +540,49 @@ def profile(request, o_id=None):
         #files = File.objects.filter(Q(id_health_record__id_problem__id_user=request.user.id))
 
     elif request.user.is_doctor():
-        tickets = Ticket.objects.filter(id_doctor=request.user.id)
-        
-        tickets_filtered = [o for o in tickets if o.id_problem is not None]
-        problem_ids = [o.id_problem.id for o in tickets_filtered]
-        
-        problems = Problem.objects.filter(id__in=problem_ids)
 
-        health_records = HealthRecord.objects.filter(id_problem__in=problem_ids)
+        if o_id != request.user.id:
+            problems = Problem.objects.filter(Q(id_user=o_id))
+            tickets = Ticket.objects.filter(Q(id_problem__id_user=o_id))
+            health_records = HealthRecord.objects.filter(Q(id_problem__id_user=o_id))
+        else:
+            tickets = Ticket.objects.filter(id_doctor=request.user.id)
+            
+            tickets_filtered = [o for o in tickets if o.id_problem is not None]
+            problem_ids = [o.id_problem.id for o in tickets_filtered]
+            
+            problems = Problem.objects.filter(id__in=problem_ids)
 
-        files = File.objects.filter(id_health_record__in=[o.id for o in health_records])
+            health_records = HealthRecord.objects.filter(id_problem__in=problem_ids)
 
-        mcs = MedicalCompensation.objects.all()
+            files = File.objects.filter(id_health_record__in=[o.id for o in health_records])
 
-        users = CustomUser.objects.all()
+            mcs = MedicalCompensation.objects.all()
+
+            users = CustomUser.objects.all()
 
     elif request.user.is_insurance_worker():
         mas = MedicalAct.objects.all()
         mcs = MedicalCompensation.objects.all()
 
     elif request.user.is_admin():
-        users = CustomUser.objects.all()
-        problems = Problem.objects.all()
-        tickets = Ticket.objects.all()
-        health_records = HealthRecord.objects.all()
-        files = File.objects.all()
-        mas = MedicalAct.objects.all()
-        mcs = MedicalCompensation.objects.all()
+
+        if o_id != request.user.id:
+            problems = Problem.objects.filter(Q(id_user=o_id))
+            tickets = Ticket.objects.filter(Q(id_problem__id_user=o_id))
+            health_records = HealthRecord.objects.filter(Q(id_problem__id_user=o_id))
+        else:
+            users = CustomUser.objects.all()
+            problems = Problem.objects.all()
+            tickets = Ticket.objects.all()
+            health_records = HealthRecord.objects.all()
+            files = File.objects.all()
+            mas = MedicalAct.objects.all()
+            mcs = MedicalCompensation.objects.all()
         
     context = {
         'Object': o,
+        'o_id': o_id,
         'profile_active': True,
         'users' : users,
         'problems' : problems,
