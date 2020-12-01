@@ -90,6 +90,7 @@ class FilterForm(forms.Form):
     elif page == 'Tickets':
       FILTER_CHOICES = (
         ('all', 'All (filter by status)'),
+        ('W', 'Wanted'),
         ('Y', 'Inwaiting'),
         ('M', 'Missed'),
         ('C', 'Completed'),
