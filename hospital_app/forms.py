@@ -39,7 +39,7 @@ class CustomUserChangeForm(UserChangeForm):
   is_active = forms.BooleanField(required=False, initial=True, label='Alive')
   class Meta(UserCreationForm):
     model = CustomUser
-    fields = ('first_name', 'last_name', 'email', 'tel_number', 'date_died', 'date_birth', 'is_active',)
+    fields = ('first_name', 'last_name', 'address', 'email', 'tel_number', 'date_died', 'date_birth', 'is_active', 'role',)
 
 class FilterForm(forms.Form):
 
