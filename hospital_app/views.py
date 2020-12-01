@@ -344,8 +344,6 @@ class FilesView(ListView):
         #table_field = self.request.GET.get('table_field')
 
         objects = model.objects.all()
-
-        # TODO: if patient or worker redirect
         
         if self.request.user.is_doctor():
             tickets = Ticket.objects.filter(id_doctor=self.request.user.id)
@@ -594,6 +592,25 @@ def profile(request, o_id=None):
     }
 
     return render(request, 'hospital_app/user/profile.html', context)
+
+@login_required
+def user_delete(request, o_id=None):
+    if o_id is None:
+        o_id = request.user.id
+
+    if o_id != request.user.id:
+        if not request.user.is_admin():
+            return redirect('index')
+
+    o = get_object_or_404(CustomUser, pk=o_id)
+
+    if o.is_doctor() or o.is_admin() or o.is_superuser:
+        tickets = Ticket.objects.filter(id_doctor=o.id)
+        if tickets:
+            return redirect('index') #TODO: zobraz spravu/page s redirectom ako v registration/password_change_done.html o preneseni ticketov pred vymazanim
+
+    o.delete()
+    return redirect('users')
 
 @login_required
 @not_insurance_worker

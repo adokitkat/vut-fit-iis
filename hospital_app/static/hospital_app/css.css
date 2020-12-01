@@ -28,17 +28,6 @@
     .full-height-big-screen {
         height: 100vh;
     }
-    
-    /* TODO: Not using anymore */
-    .log-out-bottom-align {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 100%;
-        padding: 8px 8px 8px 8px;
-    }
-
 }
 
 @media screen and (max-width: 575px) {
