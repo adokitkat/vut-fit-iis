@@ -10,10 +10,11 @@ urlpatterns = [
     path('', views.profile, name='index'),
     path('signup/', views.signup, name='signup'),
 
+    path('user/', views.profile, name='index'),
     path('user/all/', login_required(doctor_required(views.UsersView.as_view(), '', '/')), name='users'), # redirects unauthorizet (Patients) to index
     path('user/<int:o_id>/', views.profile, name='profile'),
     path('user/<int:o_id>/edit/', views.user_change, name='user_change'),
-    #path('user/<int:o_id>/delete/', views.user_delete, name='user_delete'),
+    path('user/<int:o_id>/delete/', views.user_delete, name='user_delete'),
 
     path('ticket/', login_required(not_insurance_worker(views.TicketsView.as_view(), '', '/')), name='tickets'),
     path('ticket/<int:o_id>/', views.ticket, name='ticket'),

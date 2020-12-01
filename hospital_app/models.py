@@ -3,8 +3,6 @@ from django.contrib.auth.models import AbstractUser #, Group
 from django.utils.translation import gettext_lazy as _ # gettext_lazy => wrap __proxy__ in str() in function... bug?
 from django.conf import settings
 from .managers import CustomUserManager
-# TODO:
-# Niektore DateTime aby mohli byt NULL / blank => should be done?
 
 class CustomUser(AbstractUser): #models.Model
   """
@@ -122,7 +120,6 @@ class Ticket(models.Model):
   date_modified = models.DateTimeField(auto_now=True)
   date_closed   = models.DateTimeField(blank=True, null=True)
   
-  #id_user    = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Patient')
   id_doctor  = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='Doctor')
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
   id_medical_acts = models.ManyToManyField(MedicalCompensation, blank=True)
@@ -130,8 +127,8 @@ class Ticket(models.Model):
   def get_status(self):
     return str(self.Status(self.status).label)
 
-  #def __str__(self): # TODO: Toto asi zmenit 
-    #return 'PATIENT: ' + self.id_problem.id_user.get_full_name() + ', DOCTOR: '  + self.id_doctor.get_full_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
+  #def __str__(self):
+  #  return 'PATIENT: ' + self.id_problem.id_user.get_full_name() + ', DOCTOR: '  + self.id_doctor.get_full_name() + ', EXAM: '  + str(self.exam_date)[:-13] + ', STATUS: ' + self.get_status() 
 
 class HealthRecord(models.Model):
   comment = models.TextField(blank=True)
@@ -142,13 +139,8 @@ class HealthRecord(models.Model):
   
   id_problem = models.ForeignKey(Problem, on_delete=models.CASCADE)
 
-  def __str__(self): # TODO: Toto asi zmenit
+  def __str__(self):
     return 'PATIENT: ' + self.id_problem.id_user.get_full_name()  + ', PROBLEM: ' + self.id_problem.name + ', CREATED: ' + str(self.date_created)[:-13] + ', MODIFIED: ' + str(self.date_modified)[:-13]
-
-# TODO:
-#def user_directory_path(instance, filename):
-#    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
-#    return 'user_{0}/{1}'.format(instance.file.id, filename)
 
 class File(models.Model):
   file        = models.FileField(upload_to='uploads/%Y/%m/%d/') # Mazanie suboru spolu s polozkou v databazi?
@@ -156,7 +148,6 @@ class File(models.Model):
   description = models.TextField(blank=True)
 
   date_created  = models.DateTimeField(auto_now_add=True)
-  #date_closed   = models.DateTimeField(blank=True, null=True) #FIXME: nepotrebne?
   
   id_health_record = models.ForeignKey(HealthRecord, on_delete=models.CASCADE)
 

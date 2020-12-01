@@ -9,17 +9,20 @@
     
     {% if Object %}
 
-    {% if user.is_admin and Object.id != user.id %}
+    {% if user.is_admin or Object.id == user.id %}
     <div class="row ">
-      <div class="col-12">
+      <div class="col-6">
         <a id="editButton" href="{% url 'user_change' Object.id %}" class="btn btn-secondary active btn-block " role="button" aria-pressed="true">Edit</a>
+      </div>
+      <div class="col-6">
+        <a id="deleteButton" href="{% url 'user_delete' Object.id %}" class="btn btn-danger active btn-block " role="button" aria-pressed="true">Delete</a>
       </div>
     </div>
     {% endif %}
 
     <div class="row d-flex align-items-center" style="height: 94vh;">
     
-      <div class="col-lg-6 col-12 pl-4 " >
+      <div class="col-lg-6 col-12 pl-3 " >
 
         <div class="card">
             <h5 class="card-header font-weight-bold">User info:</h5>
